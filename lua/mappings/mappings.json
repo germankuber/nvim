@@ -1,5 +1,21 @@
 [
     {
+        "title": "Project Commands",
+        "base_lhs": "<Leader>p",
+        "commands": [
+            {
+                "lhs": "c",
+                "rhs": "<cmd>belowright split | resize 17 | terminal<CR>",
+                "desc": "Open console (terminal)"
+            },
+            {
+                "lhs": "s",
+                "rhs": "<cmd>NvimTreeToggle<CR>",
+                "desc": "Toggle Tree View"
+            }
+        ]
+    },
+    {
         "title": "Find commands",
         "base_lhs": "<Leader>f",
         "commands": [
