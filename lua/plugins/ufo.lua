@@ -2,6 +2,7 @@ return {
   {
     "kevinhwang91/nvim-ufo",
     lazy = false,
+    keymaps = false,
     dependencies = { "kevinhwang91/promise-async" },
     config = function()
       -- Configuración básica

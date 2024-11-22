@@ -50,7 +50,9 @@ require "plugins" -- Asegúrate de que tus plugins estén cargados
 require "null-ls-config"
 
 -- Configuración de LSP
+
 local lspconfig = require "lspconfig"
+
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 -- LSP para Lua
@@ -113,11 +115,22 @@ require("rust-tools").setup {
   server = {
     capabilities = capabilities,
     on_attach = function(_, bufnr)
-      local opts = { noremap = true, silent = true, buffer = bufnr }
-      vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
-      vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
-      vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-      vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
+      -- local opts = { noremap = true, silent = true, buffer = bufnr }
+      -- vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, vim.tbl_extend("force", opts, { desc = "LSP Rename" }))
+      -- vim.keymap.set(
+      --   "n",
+      --   "<leader>ra",
+      --   vim.lsp.buf.code_action,
+      --   vim.tbl_extend("force", opts, { desc = "Code actions" })
+      -- )
+      -- vim.keymap.set(
+      --   "n",
+      --   "<leader>rg",
+      --   vim.lsp.buf.code_action_group,
+      --   vim.tbl_extend("force", opts, { desc = "Code actions group" })
+      -- )
+      -- vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+      -- vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
     end,
     settings = {
       ["rust-analyzer"] = {
@@ -177,3 +190,11 @@ vim.api.nvim_create_autocmd("BufWritePre", {
     }
   end,
 })
+vim.keymap.set("n", "]]", function()
+  require("illuminate").goto_next_reference(false)
+end, { desc = "Siguiente referencia iluminada" })
+
+-- Usar '[[' para ir a la referencia iluminada anterior
+vim.keymap.set("n", "[[", function()
+  require("illuminate").goto_prev_reference(false)
+end, { desc = "Referencia iluminada anterior" })
