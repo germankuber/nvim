@@ -8,4 +8,9 @@ return {
   unpack(require "plugins.ufo"),
   unpack(require "plugins.whichkey"),
   unpack(require "plugins.schemastore"),
+  unpack(require "plugins.tree"),
+  unpack(require "plugins.treesitter"),
+  unpack(require "plugins.mason"),
+  unpack(require "plugins.gitsigns"),
+  unpack(require "plugins.theme"),
 }

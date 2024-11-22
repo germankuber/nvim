@@ -1,11 +1,12 @@
 [
+    
     {
         "title": "Project Commands",
         "base_lhs": "<Leader>p",
         "commands": [
             {
                 "lhs": "c",
-                "rhs": "<cmd>belowright split | resize 17 | terminal<CR>",
+                "rhs": "<cmd>lua require('utils.terminal').toggle()<CR>",
                 "desc": "Open console (terminal)"
             },
             {
@@ -15,6 +16,7 @@
             }
         ]
     },
+
     {
         "title": "Find commands",
         "base_lhs": "<Leader>f",
@@ -28,6 +30,17 @@
                 "lhs": "g",
                 "rhs": "<cmd>Telescope live_grep<CR>",
                 "desc": "Search text in all files"
+            },
+            {
+                "title": "Find Code",
+                "base_lhs": "c",
+                "commands": [
+                    {
+                        "lhs": "f",
+                        "rhs": "<cmd>Telescope lsp_document_symbols<CR>",
+                        "desc": "List and navigate function definitions"
+                    }
+                ]
             },
             {
                 "title": "Find commands",
