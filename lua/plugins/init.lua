@@ -7,4 +7,5 @@ return {
   unpack(require "plugins.illuminate"),
   unpack(require "plugins.ufo"),
   unpack(require "plugins.whichkey"),
+  unpack(require "plugins.schemastore"),
 }

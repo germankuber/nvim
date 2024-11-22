@@ -54,7 +54,15 @@ require "null-ls-config"
 local lspconfig = require "lspconfig"
 
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
-
+lspconfig.jsonls.setup {
+  settings = {
+    json = {
+      schemas = require("schemastore").json.schemas(), -- Mueve esto aquí
+      validate = { enable = true },
+    },
+  },
+  capabilities = require("cmp_nvim_lsp").default_capabilities(),
+}
 -- LSP para Lua
 lspconfig.lua_ls.setup {
   settings = {
@@ -181,7 +189,7 @@ vim.api.nvim_create_autocmd("VimEnter", {
 })
 
 vim.api.nvim_create_autocmd("BufWritePre", {
-  pattern = { "*.lua", "*.toml" },
+  pattern = { "*.lua", "*.toml", "*.json" },
   callback = function()
     vim.lsp.buf.format {
       bufnr = vim.api.nvim_get_current_buf(),
@@ -190,6 +198,7 @@ vim.api.nvim_create_autocmd("BufWritePre", {
     }
   end,
 })
+
 vim.keymap.set("n", "]]", function()
   require("illuminate").goto_next_reference(false)
 end, { desc = "Siguiente referencia iluminada" })
