@@ -3,6 +3,6 @@ return {
   unpack(require "plugins.lsp"),
   unpack(require "plugins.dap"),
   unpack(require "plugins.ui"),
-  unpack(require "plugins.cmp"),
+  unpack(require "plugins.neominimap"),
   unpack(require "plugins.ufo"),
 }

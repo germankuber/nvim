@@ -155,6 +155,9 @@ require("nvim-tree").setup {
       "^.DS_Store$", -- Filter out .DS_Store file
     },
   },
+  renderer = {
+    group_empty = true,
+  },
 }
 
 -- Auto abrir Nvim Tree al inicio
