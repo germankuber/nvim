@@ -1,42 +1,138 @@
-[
-  {
-    "title": "Debugger commands",
-    "base_lhs": "<Leader>d",
-    "commands": [
-      { "lhs": "l", "rhs": "<cmd>lua require'dap'.step_into()<CR>", "desc": "Debugger step into" },
-      { "lhs": "j", "rhs": "<cmd>lua require'dap'.step_over()<CR>", "desc": "Debugger step over" },
-      { "lhs": "k", "rhs": "<cmd>lua require'dap'.step_out()<CR>", "desc": "Debugger step out" },
-      { "lhs": "c", "rhs": "<cmd>lua require'dap'.continue()<CR>", "desc": "Debugger continue" },
-      { "lhs": "b", "rhs": "<cmd>lua require'dap'.toggle_breakpoint()<CR>", "desc": "Debugger toggle breakpoint" },
-      {
-        "lhs": "d",
-        "rhs": "<cmd>lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>",
-        "desc": "Debugger set conditional breakpoint"
-      },
-      { "lhs": "e", "rhs": "<cmd>lua require'dap'.terminate()<CR>", "desc": "Debugger reset" },
-      { "lhs": "r", "rhs": "<cmd>lua require'dap'.run_last()<CR>", "desc": "Debugger run last" }
-    ]
-  },
-  {
-    "title": "LSP commands",
-    "base_lhs": "<Leader>g",
-    "commands": [
-      { "lhs": "d", "rhs": "<cmd>lua vim.lsp.buf.definition()<CR>", "desc": "Go to definition", "noremap": true, "silent": true },
-      { "lhs": "h", "rhs": "<cmd>lua vim.lsp.buf.hover()<CR>", "desc": "Hover actions", "noremap": true, "silent": true },
-      { "lhs": "i", "rhs": "<cmd>lua vim.lsp.buf.implementation()<CR>", "desc": "Go to implementation", "noremap": true, "silent": true },
-      { "lhs": "s", "rhs": "<cmd>lua vim.lsp.buf.signature_help()<CR>", "desc": "Signature", "noremap": true, "silent": true },
-      { "lhs": "t", "rhs": "<cmd>lua vim.lsp.buf.type_definition()<CR>", "desc": "Go to type definition", "noremap": true, "silent": true },
-      { "lhs": "r", "rhs": "<cmd>lua vim.lsp.buf.references()<CR>", "desc": "Find references", "noremap": true, "silent": true }
-    ]
-  },
-  {
-    "title": "Refactor commands",
-    "base_lhs": "<Leader>r",
-    "commands": [
-      { "lhs": "n", "rhs": "<cmd>vim.lsp.buf.rename()<CR>", "desc": "LSP Rename" },
-      { "lhs": "a", "rhs": "<cmd>vim.lsp.buf.code_action()<CR>", "desc": "Code actions" },
-      { "lhs": "g", "rhs": "<cmd>vim.lsp.buf.code_action_group()<CR>", "desc": "Code actions group" }
-    ]
-  }
-]
 
+
+[
+    {
+        "title": "Find commands",
+        "base_lhs": "<Leader>f",
+        "commands": [
+            {
+                "lhs": "f",
+                "rhs": "<cmd>Telescope find_files<CR>",
+                "desc": "Find a file"
+            },
+            {
+                "lhs": "g",
+                "rhs": "<cmd>Telescope live_grep<CR>",
+                "desc": "Search text in all files"
+            },
+            {
+                "lhs": "r",
+                "rhs": "<cmd>lua vim.lsp.buf.references()<CR>",
+                "desc": "Find references"
+            }
+        ]
+    },
+    {
+        "title": "Window navigation",
+        "commands": [
+            {
+                "lhs": "<C-h>",
+                "rhs": "<C-w>h",
+                "desc": "Move to the left panel"
+            },
+            {
+                "lhs": "<C-l>",
+                "rhs": "<C-w>l",
+                "desc": "Move to the right panel"
+            },
+            {
+                "lhs": "<C-j>",
+                "rhs": "<C-w>j",
+                "desc": "Move to the panel below"
+            },
+            {
+                "lhs": "<C-k>",
+                "rhs": "<C-w>k",
+                "desc": "Move to the panel above"
+            }
+        ]
+    },
+    {
+        "title": "Debugger commands",
+        "base_lhs": "<Leader>d",
+        "commands": [
+            {
+                "lhs": "l",
+                "rhs": "<cmd>lua require'dap'.step_into()<CR>",
+                "desc": "Debugger step into"
+            },
+            {
+                "lhs": "j",
+                "rhs": "<cmd>lua require'dap'.step_over()<CR>",
+                "desc": "Debugger step over"
+            },
+            {
+                "lhs": "k",
+                "rhs": "<cmd>lua require'dap'.step_out()<CR>",
+                "desc": "Debugger step out"
+            },
+            {
+                "lhs": "c",
+                "rhs": "<cmd>lua require'dap'.continue()<CR>",
+                "desc": "Debugger continue"
+            },
+            {
+                "lhs": "b",
+                "rhs": "<cmd>lua require'dap'.toggle_breakpoint()<CR>",
+                "desc": "Debugger toggle breakpoint"
+            },
+            {
+                "lhs": "d",
+                "rhs": "<cmd>lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>",
+                "desc": "Debugger set conditional breakpoint"
+            },
+            {
+                "lhs": "e",
+                "rhs": "<cmd>lua require'dap'.terminate()<CR>",
+                "desc": "Debugger reset"
+            },
+            {
+                "lhs": "r",
+                "rhs": "<cmd>lua require'dap'.run_last()<CR>",
+                "desc": "Debugger run last"
+            }
+        ]
+    },
+    {
+        "title": "LSP commands",
+        "base_lhs": "<Leader>g",
+        "commands": [
+            {
+                "lhs": "d",
+                "rhs": "<cmd>lua vim.lsp.buf.definition()<CR>",
+                "desc": "Go to definition"
+            },
+            {
+                "lhs": "i",
+                "rhs": "<cmd>lua vim.lsp.buf.implementation()<CR>",
+                "desc": "Go to implementation"
+            },
+            {
+                "lhs": "t",
+                "rhs": "<cmd>lua vim.lsp.buf.type_definition()<CR>",
+                "desc": "Go to type definition"
+            }
+        ]
+    },
+    {
+        "title": "Refactor commands",
+        "base_lhs": "<Leader>r",
+        "commands": [
+            {
+                "lhs": "n",
+                "rhs": "<cmd>vim.lsp.buf.rename()<CR>",
+                "desc": "LSP Rename"
+            },
+            {
+                "lhs": "a",
+                "rhs": "<cmd>vim.lsp.buf.code_action()<CR>",
+                "desc": "Code actions"
+            },
+            {
+                "lhs": "g",
+                "rhs": "<cmd>vim.lsp.buf.code_action_group()<CR>",
+                "desc": "Code action group"
+            }
+        ]
+    }
+]

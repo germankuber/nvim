@@ -1,75 +1,54 @@
-require "nvchad.mappings"
+-- require "nvchad.mappings"
 
--- add yours here
+local function apply_mappings(group, parent_lhs)
+  -- Si no hay comandos, no hacemos nada
+  if not group or not group.commands then
+    return
+  end
 
-local map = vim.keymap.set
+  -- Procesa los comandos del grupo actual
+  for _, command in ipairs(group.commands) do
+    local base_lhs = (parent_lhs or "") .. (group.base_lhs or "") -- Hereda el prefijo padre
+    if command.commands then
+      -- Si hay comandos anidados, llama recursivamente
+      apply_mappings(command, base_lhs)
+    else
+      -- Si es un comando normal, aplica el mapeo
+      local mode = command.mode or "n" -- Modo normal por defecto
+      local lhs = base_lhs .. (command.lhs or "")
+      local rhs = command.rhs or ""
+      local opts = {
+        desc = command.desc,
+        noremap = command.noremap ~= false,
+        silent = command.silent ~= false,
+      }
+      vim.api.nvim_set_keymap(mode, lhs, rhs, opts)
+    end
+  end
+end
 
-map("n", ";", ":", { desc = "CMD enter command mode" })
-map("i", "jk", "<ESC>")
--- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
+-- Función para cargar el archivo JSON y aplicar los mapeos
+local function load_and_apply_mappings(filepath)
+  local mappings_file = vim.fn.stdpath "config" .. "/lua/" .. filepath
+  local ok, content = pcall(vim.fn.readfile, mappings_file)
+  if not ok then
+    vim.notify("Error reading mappings file: " .. mappings_file, vim.log.levels.ERROR)
+    return
+  end
 
--- Nvim DAP
-map("n", "<Leader>dl", "<cmd>lua require'dap'.step_into()<CR>", { desc = "Debugger step into" })
-map("n", "<Leader>dj", "<cmd>lua require'dap'.step_over()<CR>", { desc = "Debugger step over" })
-map("n", "<Leader>dk", "<cmd>lua require'dap'.step_out()<CR>", { desc = "Debugger step out" })
-map("n", "<Leader>dc", "<cmd>lua require'dap'.continue()<CR>", { desc = "Debugger continue" })
-map("n", "<Leader>db", "<cmd>lua require'dap'.toggle_breakpoint()<CR>", { desc = "Debugger toggle breakpoint" })
-map(
-  "n",
-  "<Leader>dd",
-  "<cmd>lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>",
-  { desc = "Debugger set conditional breakpoint" }
-)
-map("n", "<Leader>de", "<cmd>lua require'dap'.terminate()<CR>", { desc = "Debugger reset" })
-map("n", "<Leader>dr", "<cmd>lua require'dap'.run_last()<CR>", { desc = "Debugger run last" })
+  -- Concatenar las líneas en una sola cadena
+  local json_content = table.concat(content, "\n")
+  local mappings = vim.fn.json_decode(json_content)
+  if not mappings then
+    vim.notify("Invalid JSON format in mappings file: " .. mappings_file, vim.log.levels.ERROR)
+    return
+  end
 
--- rustaceanvim
-map("n", "<Leader>dt", "<cmd>lua vim.cmd('RustLsp testables')<CR>", { desc = "Debugger testables" })
--- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
-map(
-  "n",
-  "<Leader>gd",
-  "<cmd>lua vim.lsp.buf.definition()<CR>",
-  { desc = "Go to definition", noremap = true, silent = true }
-)
-map("n", "<Leader>gh", "<cmd>lua vim.lsp.buf.hover()<CR>", { desc = "Hover actions", noremap = true, silent = true })
-map(
-  "n",
-  "<Leader>gi",
-  "<cmd>lua vim.lsp.buf.implementation()<CR>",
-  { desc = "Go to implementation", noremap = true, silent = true }
-)
-map(
-  "n",
-  "<Leader>gs",
-  "<cmd>lua vim.lsp.buf.signature_help()<CR>",
-  { desc = "Signature", noremap = true, silent = true }
-)
-map(
-  "n",
-  "<Leader>gt",
-  "<cmd>lua vim.lsp.buf.type_definition()<CR>",
-  { desc = "Go to type definition", noremap = true, silent = true }
-)
-map(
-  "n",
-  "<Leader>gr",
-  "<cmd>lua vim.lsp.buf.references()<CR>",
-  { desc = "Find references", noremap = true, silent = true }
-)
+  -- Procesa cada grupo de mapeos
+  for _, group in ipairs(mappings) do
+    apply_mappings(group)
+  end
+end
 
--- REFACTORING G
-
-map("n", "<leader>rn", "<cmd>vim.lsp.buf.rename()<CR>", { desc = "LSP Rename" })
-map("n", "<leader>ra", "<cmd>vim.lsp.buf.code_action()<CR>", { desc = "Code actions" })
-map("n", "<leader>rg", "<cmd>vim.lsp.buf.code_action_group()<CR>", { desc = "Code actions group" })
-
-vim.keymap.del("n", "<Leader>th")
-vim.keymap.del("n", "<Leader>pt")
-vim.keymap.del("n", "<Leader>ma")
--- vim.keymap.set(
---   "n",
---   "<Leader>rn",
---   "<cmd>lua vim.lsp.buf.rename()<CR>",
---   { desc = "LSP Rename", noremap = true, silent = true }
--- )
+-- Llama a la función con la ruta correcta
+load_and_apply_mappings "mappings/mappings.json"
