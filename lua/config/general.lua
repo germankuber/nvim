@@ -1,5 +1,3 @@
-vim.api.nvim_set_keymap("v", "<C-u>", "", { noremap = true, silent = true }) -- Deshabilitar en modo visual
-vim.api.nvim_set_keymap("i", "<C-u>", "", { noremap = true, silent = true }) -- Deshabilitar en modo inserción
 vim.g.base46_cache = vim.fn.stdpath "data" .. "/base46/"
 vim.g.mapleader = " "
 vim.opt.number = true
@@ -198,12 +196,3 @@ vim.api.nvim_create_autocmd("BufWritePre", {
     }
   end,
 })
-
-vim.keymap.set("n", "]]", function()
-  require("illuminate").goto_next_reference(false)
-end, { desc = "Siguiente referencia iluminada" })
-
--- Usar '[[' para ir a la referencia iluminada anterior
-vim.keymap.set("n", "[[", function()
-  require("illuminate").goto_prev_reference(false)
-end, { desc = "Referencia iluminada anterior" })

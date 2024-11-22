@@ -14,9 +14,25 @@
                 "desc": "Search text in all files"
             },
             {
-                "lhs": "r",
-                "rhs": "<cmd>lua vim.lsp.buf.references()<CR>",
-                "desc": "Find references"
+                "title": "Find commands",
+                "base_lhs": "r",
+                "commands": [
+                    {
+                        "lhs": "f",
+                        "rhs": "<cmd>lua vim.lsp.buf.references()<CR>",
+                        "desc": "Find references"
+                    },
+                    {
+                        "lhs": "n",
+                        "rhs": "<cmd>lua require('illuminate').goto_next_reference(false)<CR>",
+                        "desc": "Next reference"
+                    },
+                    {
+                        "lhs": "p",
+                        "rhs": "<cmd>lua require('illuminate').goto_prev_reference(false)<CR>",
+                        "desc": "Previous reference"
+                    }
+                ]
             }
         ]
     },
