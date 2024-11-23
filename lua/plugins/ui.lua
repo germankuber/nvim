@@ -66,5 +66,12 @@ return {
         event = 'BufReadPre',
         lazy = false,
         config = function() require('colorizer').setup() end
+    },
+    {
+        "lukas-reineke/indent-blankline.nvim",
+        indent = { highlight = highlight, char = "+" },
+        config = function()
+            require("ibl").setup()
+        end
     }
 }

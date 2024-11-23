@@ -6,9 +6,25 @@ local function apply_mappings(group, parent_lhs)
     return
   end
 
+  -- Hereda el prefijo padre
+  local base_lhs = (parent_lhs or "") .. (group.base_lhs or "")
+
+  -- Si el grupo tiene título y base_lhs, registramos el grupo
+  if group.title and group.title ~= "" and group.base_lhs and group.base_lhs ~= "" then
+    -- Aplicamos un mapping sin acción, solo para la descripción
+    local mode = group.mode or "n" -- Modo normal por defecto
+    local lhs = base_lhs
+    local rhs = "<Nop>"
+    local opts = {
+      desc = group.title,
+      noremap = true,
+      silent = true,
+    }
+    vim.api.nvim_set_keymap(mode, lhs, rhs, opts)
+  end
+
   -- Procesa los comandos del grupo actual
   for _, command in ipairs(group.commands) do
-    local base_lhs = (parent_lhs or "") .. (group.base_lhs or "") -- Hereda el prefijo padre
     if command.commands then
       -- Si hay comandos anidados, llama recursivamente
       apply_mappings(command, base_lhs)
@@ -19,7 +35,6 @@ local function apply_mappings(group, parent_lhs)
       local rhs = command.rhs or ""
       local opts = {
         desc = command.desc,
-        
         noremap = command.noremap ~= false,
         silent = command.silent ~= false,
       }

@@ -16,5 +16,6 @@ return {
   require "plugins.bookmarks",
   require "plugins.mason",
   require "plugins.neominimap",
+  require "plugins.navigation",
   require "plugins.whichkey",
 }
