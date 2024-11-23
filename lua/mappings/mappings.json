@@ -209,14 +209,36 @@
                 "base_lhs": "t",
                 "commands": [
                     {
-                        "lhs": "r",
+                        "lhs": "t",
                         "rhs": "<cmd>lua require('config.terminal').toggle()<CR>",
-                        "desc": "Restore"
+                        "desc": "Toggle"
                     },
                     {
                         "lhs": "n",
                         "rhs": "<cmd>lua require('config.terminal').new_terminal()<CR>",
                         "desc": "New"
+                    }
+                ]
+            },
+            {
+                "title": "Panel",
+                "base_lhs": "p",
+                "commands": [
+                    {
+                        "title": "Split",
+                        "base_lhs": "s",
+                        "commands": [
+                            {
+                                "lhs": "v",
+                                "rhs": "<cmd>vsplit | edit %<CR>",
+                                "desc": "Split window vertically"
+                            },
+                            {
+                                "lhs": "h",
+                                "rhs": "<cmd>split | edit %<CR>",
+                                "desc": "Split window horizontally"
+                            }
+                        ]
                     }
                 ]
             },
