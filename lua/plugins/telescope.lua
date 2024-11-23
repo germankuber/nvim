@@ -1,70 +1,89 @@
 return {
     {
+        "ibhagwan/fzf-lua",
+        lazy = false,
+        dependencies = {"nvim-tree/nvim-web-devicons"} -- Opcional, para íconos bonitos
+    }, {
         "nvim-telescope/telescope.nvim",
         dependencies = {
-            "andrew-george/telescope-themes",
-            "nvim-telescope/telescope-fzf-native.nvim", -- Improves fuzzy matching
-            "nvim-lua/plenary.nvim", -- Required dependency
-            "nvim-tree/nvim-web-devicons", -- For file icons
-            "folke/tokyonight.nvim", -- A vibrant theme for Telescope
+            "nvim-lua/plenary.nvim", -- Dependencia requerida
+            "nvim-tree/nvim-web-devicons", -- Para íconos de archivos
+            {
+                "nvim-telescope/telescope-fzf-native.nvim",
+                build = "make", -- Asegura la compilación de la extensión
+                cond = vim.fn.executable("make") == 1 -- Solo si 'make' está disponible
+            }, "andrew-george/telescope-themes", -- Extensión de temas para Telescope
+            {
+                "isak102/telescope-git-file-history.nvim",
+                dependencies = {"nvim-telescope/telescope.nvim"}
+            }
         },
-        build = "make", -- Required for telescope-fzf-native.nvim
-        lazy = false,
         config = function()
-            -- Get builtin schemes list
-            local builtin_schemes = require("telescope._extensions.themes").builtin_schemes
-
-            -- Telescope setup
+            -- Configuración de Telescope
             require("telescope").setup({
                 defaults = {
-                    -- Layout configuration
                     layout_config = {
                         horizontal = {
                             width = 0.8,
                             height = 0.7,
-                            prompt_position = "top", -- Search bar at the top
-                        },
+                            prompt_position = "top" -- Barra de búsqueda en la parte superior
+                        }
                     },
-                    sorting_strategy = "ascending", -- Results sorted from top to bottom
-                    winblend = 10, -- Slight transparency
-                    prompt_prefix = "🔍 ", -- Custom prompt icon
-                    selection_caret = " ", -- Custom selection indicator
+                    sorting_strategy = "ascending", -- Ordenar resultados de arriba hacia abajo
+                    winblend = 10, -- Transparencia ligera
+                    prompt_prefix = "🔍 ", -- Icono personalizado para el prompt
+                    selection_caret = " " -- Indicador de selección personalizado
                 },
                 extensions = {
                     fzf = {
-                        fuzzy = true, -- Enable fuzzy search
-                        override_generic_sorter = true, -- FZF for generic sorting
-                        override_file_sorter = true, -- FZF for file sorting
+                        fuzzy = true, -- habilita la coincidencia difusa
+                        override_generic_sorter = true, -- reemplaza el clasificador genérico
+                        override_file_sorter = true, -- reemplaza el clasificador de archivos
+                        case_mode = "smart_case" -- "ignore_case" | "respect_case" | "smart_case"
+                    },
+                    git_file_history = {
+                        debug = false -- Desactivar depuración mientras solucionamos el error
                     },
                     themes = {
                         layout_config = {
                             horizontal = {
                                 width = 0.8,
                                 height = 0.7,
-                                prompt_position = "top", -- Search bar at the top
-                            },
+                                prompt_position = "top"
+                            }
                         },
-                        enable_previewer = true, -- Show preview window
-                        enable_live_preview = false, -- Disable live preview
-                        ignore = vim.list_extend(builtin_schemes, { "embark" }),
+                        enable_previewer = true,
+                        enable_live_preview = false,
+                        ignore = vim.list_extend(require(
+                                                     "telescope._extensions.themes").builtin_schemes,
+                                                 {"embark"}),
                         light_themes = {
                             ignore = true,
-                            keywords = { "light", "day", "frappe" },
+                            keywords = {"light", "day", "frappe"}
                         },
                         dark_themes = {
                             ignore = false,
-                            keywords = { "dark", "night", "black" },
+                            keywords = {"dark", "night", "black"}
                         },
                         persist = {
                             enabled = true,
-                            path = vim.fn.stdpath("config") .. "/lua/colorscheme.lua",
+                            path = vim.fn.stdpath("config") ..
+                                "/lua/colorscheme.lua"
                         },
-                    },
-                },
+                        mappings = {
+                            down = "<C-n>",
+                            up = "<C-p>",
+                            accept = "<C-y>"
+                        }
+                    }
+                }
             })
 
-            -- Load extensions
-            -- require("telescope").load"_extension("fzf")
-        end,
-    },
+            -- Cargar extensiones
+            require("telescope").load_extension("fzf")
+            require("telescope").load_extension("git_file_history")
+            require("telescope").load_extension("themes")
+
+        end
+    }
 }

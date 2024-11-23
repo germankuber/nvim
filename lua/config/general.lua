@@ -225,29 +225,21 @@ require('bookmarks').setup {
 
 }
 require('telescope').load_extension('bookmarks')
-
-
-
+-- require("telescope").load_extension("git_file_history")
 
 require("lspconfig").rust_analyzer.setup({
     settings = {
         ["rust-analyzer"] = {
-            cargo = { allFeatures = true },
-            checkOnSave = {
-                command = "clippy",
-            },
-            procMacro = {
-                enable = true,
-            },
-        },
-    },
+            cargo = {allFeatures = true},
+            checkOnSave = {command = "clippy"},
+            procMacro = {enable = true}
+        }
+    }
 })
-
 
 vim.o.scrolloff = 5 -- Keep some context lines above/below the cursor
 vim.o.sidescrolloff = 5 -- Keep some context lines to the left/right
 vim.o.lazyredraw = false -- Ensure no delay in screen redrawing
-
 
 vim.cmd([[
   augroup InsertModeEnhancements
@@ -271,3 +263,41 @@ vim.cmd([[
     autocmd InsertLeave * hi Normal guibg=#11111b
   augroup END
 ]])
+
+-- Configuración básica para nvim-ufo
+vim.o.foldcolumn = '1'
+vim.o.foldlevel = 99
+vim.o.foldlevelstart = 99
+vim.o.foldenable = true
+
+-- Configuración de nvim-ufo
+require('ufo').setup({
+    fold_virt_text_handler = function(virtText, lnum, endLnum, width, truncate)
+        local newVirtText = {}
+        local suffix = (' 󰁂 %d '):format(endLnum - lnum)
+        local sufWidth = vim.fn.strdisplaywidth(suffix)
+        local targetWidth = width - sufWidth
+        local curWidth = 0
+        for _, chunk in ipairs(virtText) do
+            local chunkText = chunk[1]
+            local chunkWidth = vim.fn.strdisplaywidth(chunkText)
+            if targetWidth > curWidth + chunkWidth then
+                table.insert(newVirtText, chunk)
+            else
+                chunkText = truncate(chunkText, targetWidth - curWidth)
+                table.insert(newVirtText, {chunkText, chunk[2]})
+                break
+            end
+            curWidth = curWidth + chunkWidth
+        end
+        table.insert(newVirtText, {suffix, 'MoreMsg'})
+        return newVirtText
+    end
+})
+
+require('diffview').setup({
+    enhanced_diff_hl = true, -- Opcional, resalta mejor las diferencias.
+    use_icons = true -- Opcional, usa íconos si están disponibles.
+})
+-- require('telescope').load_exten
+-- sion('fzf')
