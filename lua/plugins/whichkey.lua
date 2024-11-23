@@ -1,5 +1,11 @@
 return {
     {
+        "echasnovski/mini.nvim",
+        version = false, -- Usa la última versión
+        config = function()
+            require("mini.icons").setup() -- Configuración mínima
+        end
+    }, {
         "folke/noice.nvim",
         lazy = false,
         dependencies = {"MunifTanjim/nui.nvim", "rcarriga/nvim-notify"},
@@ -35,7 +41,7 @@ return {
         "folke/which-key.nvim",
         config = function()
             require("which-key").setup {
-                window = {
+                win = {
                     border = "rounded", -- Bordes redondeados
                     position = "center", -- Forzar que aparezca centrado
                     margin = {1, 1, 1, 1}, -- Márgenes alrededor de la ventana
@@ -47,6 +53,12 @@ return {
                     align = "center" -- Centrar las teclas
                 }
             }
+
+            -- Sobrescribir mapeos conflictivos
+            local wk = require("which-key")
+            wk.add({}, {mode = "n", prefix = "<gc>"}) -- Desactiva <gc>
+            wk.add({}, {mode = "n", prefix = "<gcc>"}) -- Desactiva <gcc>
         end
     }
+
 }
