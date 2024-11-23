@@ -9,6 +9,6 @@ return {
 
         dependencies = 'nvim-lua/plenary.nvim',
         config = function() require('diffview').setup() end
-    }
+    }, {"tpope/vim-fugitive", lazy = false}
 
 }

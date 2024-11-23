@@ -16,5 +16,6 @@ return {
   unpack(require "plugins.bookmarks"),
   unpack(require "plugins.telescope"),
   unpack(require "plugins.visualmulti"),
+  unpack(require "plugins.persistence"),
   unpack(require "plugins.git"),
 }

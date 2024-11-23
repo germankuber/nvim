@@ -41,8 +41,11 @@ return {
                         override_file_sorter = true, -- reemplaza el clasificador de archivos
                         case_mode = "smart_case" -- "ignore_case" | "respect_case" | "smart_case"
                     },
-                    git_file_history = {
-                        debug = false -- Desactivar depuración mientras solucionamos el error
+                    extensions = {
+                        git_file_history = {
+
+                            debug = false -- Desactiva la depuración si no es necesaria
+                        }
                     },
                     themes = {
                         layout_config = {

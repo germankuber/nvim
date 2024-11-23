@@ -1,5 +1,74 @@
 [
     {
+        "title": "Session Management",
+        "base_lhs": "<Leader>s",
+        "commands": [
+            {
+                "lhs": "s",
+                "rhs": "<cmd>lua require('config.sessions').save_session()<CR>",
+                "desc": "Save session with a name"
+            },
+            {
+                "lhs": "l",
+                "rhs": "<cmd>:Telescope persisted<CR>",
+                "desc": "Load sessions"
+            }
+        ]
+    },
+    {
+        "title": "Quick Quit Commands",
+        "base_lhs": "<Leader>q",
+        "commands": [
+            {
+                "lhs": "q",
+                "rhs": "<cmd>q!<CR>",
+                "desc": "Force quit current window"
+            },
+            {
+                "lhs": "a",
+                "rhs": "<cmd>qa!<CR>",
+                "desc": "Force quit all windows"
+            },
+            {
+                "lhs": "m",
+                "rhs": "<cmd>stop<CR>",
+                "desc": "Minimize Neovim"
+            },
+            {
+                "title": "Write",
+                "base_lhs": "w",
+                "commands": [
+                    {
+                        "lhs": "w",
+                        "rhs": "<cmd>w!<CR>",
+                        "desc": "Force quit all windows"
+                    },
+                    {
+                        "lhs": "q",
+                        "rhs": "<cmd>wq!<CR>",
+                        "desc": "Force quit all windows"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "title": "Lazy",
+        "base_lhs": "<leader>z",
+        "commands": [
+            {
+                "lhs": "s",
+                "rhs": "<cmd>Lazy sync<CR>",
+                "desc": "Sync"
+            },
+            {
+                "lhs": "u",
+                "rhs": "<cmd>Lazy update<CR>",
+                "desc": "Update"
+            }
+        ]
+    },
+    {
         "title": "Git version",
         "base_lhs": "<leader>v",
         "commands": [
