@@ -55,6 +55,15 @@ local Terminal = require "utils.terminal"
 -- Configuración de nvim-cmp
 local cmp = require "cmp"
 
+require("tokyonight").setup {
+  style = "night",
+  on_highlights = function(hl, c)
+    hl.Function = { fg = c.blue, italic = false, font = "Victor Mono" } -- Ajusta la fuente
+    hl.CursorLine = { bg = c.bg_highlight } -- Ajusta el fondo del cursorline
+  end,
+}
+
+
 cmp.setup {
   snippet = {
     expand = function(args)
@@ -155,3 +164,5 @@ vim.api.nvim_create_autocmd("BufWritePre", {
     }
   end,
 })
+
+vim.opt.cursorline = true
