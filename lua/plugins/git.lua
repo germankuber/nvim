@@ -14,7 +14,6 @@ return {
             }
         },
         cmd = {'Fugit2', 'Fugit2Diff', 'Fugit2Graph'},
-        keys = {{'<leader>F', mode = 'n', '<cmd>Fugit2<cr>'}}
     }, {
         'f-person/git-blame.nvim',
         lazy = false,

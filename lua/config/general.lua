@@ -1,4 +1,6 @@
 require("config.lazy")
+require("config.bookmarks")
+require("config.telescope_buffers")
 
 
 

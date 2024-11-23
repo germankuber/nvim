@@ -23,26 +23,21 @@ return {
                 }
             })
         end
-    }, {
-        'RRethy/vim-illuminate', -- Highlight word under cursor
-        event = {'BufReadPost', 'BufNewFile'},
-        lazy = false,
-        config = function()
-            require('illuminate').configure({under_cursor = true, delay = 200})
-        end
-    }, {
-        "declancm/cinnamon.nvim",
-        enabled = false,
-        event = "VeryLazy",
-        lazy = false,
-        config = function()
-            require("cinnamon").setup({
-                keymaps = {
-                    extra = true -- Use the updated option
-                }
-            })
-        end
-    }, {
+    },
+    --  {
+    --     "declancm/cinnamon.nvim",
+    --     enabled = false,
+    --     event = "VeryLazy",
+    --     lazy = false,
+    --     config = function()
+    --         require("cinnamon").setup({
+    --             keymaps = {
+    --                 extra = true -- Use the updated option
+    --             }
+    --         })
+    --     end
+    -- },
+     {
         'norcalli/nvim-colorizer.lua', -- Highlight colors dynamically
         event = 'BufReadPre',
         lazy = false,
