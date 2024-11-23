@@ -1,4 +1,3 @@
--- require "nvchad.mappings"
 
 local function apply_mappings(group, parent_lhs)
   -- Si no hay comandos, no hacemos nada
