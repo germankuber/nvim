@@ -4,6 +4,8 @@ require("config.telescope_buffers")
 require("config.terminal")
 require("config.sessions")
 
+
+
 -- vim.opt.clipboard = "unnamedplus"
 
 -- require "plugins.init"
@@ -204,7 +206,6 @@ vim.cmd([[
     autocmd InsertLeave * hi Normal guibg=#11111b
   augroup END
 ]])
-
 
 -- -- Configuración básica para nvim-ufo
 vim.o.foldcolumn = '1'

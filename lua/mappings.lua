@@ -68,3 +68,4 @@ end
 
 -- Llama a la función con la ruta correcta
 load_and_apply_mappings "mappings/mappings.json"
+ 
