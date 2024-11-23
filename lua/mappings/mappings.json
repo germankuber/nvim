@@ -282,6 +282,16 @@
                 ]
             },
             {
+                "lhs": "c",
+                "rhs": "<cmd>lua require('config.telescope_buffers').close_buffer()<CR>",
+                "desc": "Close panel"
+            },
+            {
+                "lhs": "l",
+                "rhs": "<cmd>lua require('config.telescope_buffers').open_buffer()<CR>",
+                "desc": "Navigate each panel"
+            },
+            {
                 "lhs": "s",
                 "rhs": "<cmd>NvimTreeToggle<CR>",
                 "desc": "Toggle Tree View"
