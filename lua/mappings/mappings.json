@@ -129,7 +129,7 @@
             {
                 "lhs": "e",
                 "rhs": "<cmd>:Fugit2<CR>",
-                "desc": "Toogle blamme"
+                "desc": "Engine"
             },
             {
                 "title": "History",
