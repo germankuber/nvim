@@ -1,9 +1,9 @@
 return {
-    {
-        "ibhagwan/fzf-lua",
-        lazy = false,
-        dependencies = { "nvim-tree/nvim-web-devicons" }
-    },
+    -- {
+    --     "ibhagwan/fzf-lua",
+    --     lazy = false,
+    --     dependencies = { "nvim-tree/nvim-web-devicons" }
+    -- },
     {
         "nvim-telescope/telescope.nvim",
         dependencies = {
@@ -34,6 +34,13 @@ return {
                     selection_caret = " "
                 },
                 extensions = {
+                    -- copilot_chat = {
+                    --     open = function(prompt_bufnr)
+                    --         actions.close(prompt_bufnr)
+                    --         vim.cmd('CopilotChat')
+                    --     end,
+                    -- },
+                    
                     fzf = {
                         fuzzy = true,
                         override_generic_sorter = true,
@@ -76,8 +83,10 @@ return {
             })
 
             -- Cargar extensiones
+            -- require('telescope').load_extension('copilot_chat')
             require("telescope").load_extension("fzf")
             require("telescope").load_extension("themes")
         end
-    }
+    },
+    
 }

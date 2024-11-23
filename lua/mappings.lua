@@ -1,3 +1,4 @@
+-- require "nvchad.mappings"
 
 local function apply_mappings(group, parent_lhs)
   -- Si no hay comandos, no hacemos nada
@@ -18,6 +19,7 @@ local function apply_mappings(group, parent_lhs)
       local rhs = command.rhs or ""
       local opts = {
         desc = command.desc,
+        
         noremap = command.noremap ~= false,
         silent = command.silent ~= false,
       }

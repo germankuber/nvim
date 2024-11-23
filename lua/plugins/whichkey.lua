@@ -41,7 +41,7 @@ return {
         "folke/which-key.nvim",
         config = function()
             require("which-key").setup {
-                win = {
+                windows = {
                     border = "rounded", -- Bordes redondeados
                     position = "center", -- Forzar que aparezca centrado
                     margin = {1, 1, 1, 1}, -- Márgenes alrededor de la ventana

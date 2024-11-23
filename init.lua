@@ -1,2 +1,3 @@
 require "config.general"
--- require "mappings"
+require "mappings"
+
