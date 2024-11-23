@@ -9,6 +9,9 @@ return {
   unpack(require "plugins.lsp"),
   unpack(require "plugins.cmp"),
   unpack(require "plugins.rust"),
+  unpack(require "plugins.schemastore"),
+  unpack(require "plugins.copilot"),
+  unpack(require "plugins.dap"),
 
   unpack(require "plugins.neominimap"),
   unpack(require "plugins.whichkey"),

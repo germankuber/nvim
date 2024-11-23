@@ -1,4 +1,12 @@
 require("config.lazy")
+
+
+
+
+
+
+
+
 -- vim.opt.clipboard = "unnamedplus"
 
 -- require "plugins.init"
