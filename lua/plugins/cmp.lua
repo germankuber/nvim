@@ -9,9 +9,9 @@ return {
             local cmp = require("cmp")
             cmp.setup({
                 mapping = {
-                    ["<Tab>"] = cmp.mapping.select_next_item(), -- Mover al siguiente ítem
-                    ["<S-Tab>"] = cmp.mapping.select_prev_item(), -- Mover al ítem previo
-                    ["<CR>"] = cmp.mapping.confirm({select = true}) -- Confirmar selección
+                    ["<C-j>"] = cmp.mapping.select_next_item(), -- Mover al siguiente ítem
+                    ["<C-k>"] = cmp.mapping.select_prev_item(), -- Mover al ítem previo
+                    ["<C-l>"] = cmp.mapping.confirm({select = true}) -- Confirmar selección
                 },
                 sources = {
                     {name = "nvim_lsp"}, -- Autocompletado desde LSP
