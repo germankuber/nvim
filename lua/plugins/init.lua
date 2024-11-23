@@ -18,4 +18,5 @@ return {
   unpack(require "plugins.visualmulti"),
   unpack(require "plugins.persistence"),
   unpack(require "plugins.git"),
+  unpack(require "plugins.notify"),
 }

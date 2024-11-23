@@ -14,6 +14,11 @@
                 "desc": "Load sessions"
             },
             {
+                "lhs": "o",
+                "rhs": "<cmd>lua require('config.sessions').overwrite_current_session()<CR>",
+                "desc": "Overwrite the current session"
+            },
+            {
                 "lhs": "d",
                 "rhs": "<cmd>lua require('config.sessions').list_and_delete_sessions()<CR>",
                 "desc": "Delete a session"

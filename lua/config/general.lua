@@ -303,3 +303,19 @@ require('diffview').setup({
 -- sion('fzf')
 local overlay = vim.api.nvim_create_buf(false, true)
 
+
+
+require("notify").setup({
+    stages = "slide", -- Use the fade_in_slide_out animation
+    timeout = 600, -- Duration for notifications (in milliseconds)
+    background_colour = "#000000", -- Background color for notifications
+    icons = {
+        ERROR = "",
+        WARN = "",
+        INFO = "",
+        DEBUG = "",
+        TRACE = "✎",
+    },
+})
+
+vim.api.nvim_set_hl(0, "NotifySUCCESS", { fg = "#00ff00", bg = "#000000" }) -- Green for success
