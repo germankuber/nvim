@@ -13,4 +13,5 @@ return {
   unpack(require "plugins.mason"),
   unpack(require "plugins.gitsigns"),
   unpack(require "plugins.theme"),
+  unpack(require "plugins.bookmarks"),
 }

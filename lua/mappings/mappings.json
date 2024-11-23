@@ -1,5 +1,57 @@
 [
     {
+        "title": "Bookmarks Mappings",
+        "base_lhs": "",
+        "commands": [
+            {
+                "lhs": "<C-;>",
+                "rhs": "<cmd>lua require('config.custom_bookmarks').next_global_bookmark()<CR>",
+                "desc": "Jump to next global bookmark"
+            },
+            {
+                "lhs": "<C-g>",
+                "rhs": "<cmd>lua require('config.custom_bookmarks').prev_global_bookmark()<CR>",
+                "desc": "Jump to previous global bookmark"
+            },
+            {
+                "title": "Bookmarks Mappings",
+                "base_lhs": "<leader>b",
+                "commands": [
+                    {
+                        "lhs": "t",
+                        "rhs": "<cmd>lua require('bookmarks').bookmark_toggle()<CR>",
+                        "desc": "Toggle bookmarks"
+                    },
+                    {
+                        "lhs": "a",
+                        "rhs": "<cmd>lua require('bookmarks').bookmark_ann()<CR>",
+                        "desc": "Add a bookmark"
+                    },
+                    {
+                        "lhs": "n",
+                        "rhs": "<cmd>lua require('config.custom_bookmarks').next_global_bookmark()<CR>",
+                        "desc": "Jump next"
+                    },
+                    {
+                        "lhs": "p",
+                        "rhs": "<cmd>lua require('config.custom_bookmarks').prev_global_bookmark()<CR>",
+                        "desc": "Jump prev"
+                    },
+                    {
+                        "lhs": "C",
+                        "rhs": "<cmd>lua require('bookmarks').bookmark_clear_all()<CR>|<cmd>lua require('bookmarks').bookmark_clean()<CR>",
+                        "desc": "Clear all"
+                    },
+                    {
+                        "lhs": "s",
+                        "rhs": "<cmd>lua require('telescope').extensions.bookmarks.list()<CR>",
+                        "desc": "Show marked files in quickfix window"
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "title": "NvimTree Mappings",
         "base_lhs": "",
         "commands": [
