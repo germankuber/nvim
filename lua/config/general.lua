@@ -126,6 +126,9 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 })
 
 vim.opt.cursorline = true
+
+
+
 local wk = require("which-key")
 
 local function apply_mappings(group, parent_lhs, wk_mappings)
