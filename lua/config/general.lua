@@ -166,3 +166,70 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 })
 
 vim.opt.cursorline = true
+local wk = require("which-key")
+
+local function apply_mappings(group, parent_lhs, wk_mappings)
+  if not group or not group.commands then
+    return
+  end
+
+  -- Construye el prefijo acumulado
+  local base_lhs = (parent_lhs or "") .. (group.base_lhs or "")
+
+  -- Agrega el nombre del grupo si está definido
+  if group.title then
+    table.insert(wk_mappings, { base_lhs, group = group.title })
+  end
+
+  -- Itera sobre los comandos
+  for _, command in ipairs(group.commands) do
+    if command.commands then
+      -- Llama recursivamente para subgrupos
+      apply_mappings(command, base_lhs, wk_mappings)
+    else
+      -- Construye el mapeo individual
+      local lhs = base_lhs .. (command.lhs or "")
+      table.insert(wk_mappings, { lhs, desc = command.desc or "" })
+
+      -- Opcional: También mapea con vim.api.nvim_set_keymap si quieres soporte directo
+      local mode = command.mode or "n" -- Modo normal por defecto
+      local rhs = command.rhs or ""
+      local opts = {
+        noremap = command.noremap ~= false,
+        silent = command.silent ~= false,
+      }
+      vim.api.nvim_set_keymap(mode, lhs, rhs, opts)
+    end
+  end
+end
+
+local function load_and_apply_mappings(filepath)
+  local mappings_file = vim.fn.stdpath("config") .. "/lua/" .. filepath
+  local ok, content = pcall(vim.fn.readfile, mappings_file)
+  if not ok then
+    vim.notify("Error reading mappings file: " .. mappings_file, vim.log.levels.ERROR)
+    return
+  end
+
+  -- Lee y decodifica el JSON
+  local json_content = table.concat(content, "\n")
+  local mappings = vim.fn.json_decode(json_content)
+  if not mappings then
+    vim.notify("Invalid JSON format in mappings file: " .. mappings_file, vim.log.levels.ERROR)
+    return
+  end
+
+  -- Recolecta todos los mapeos en formato de which-key
+  local wk_mappings = {}
+
+  -- Procesa cada grupo del JSON
+  for _, group in ipairs(mappings) do
+    apply_mappings(group, nil, wk_mappings)
+  end
+
+  -- Registra los mapeos usando wk.add
+  wk.add(wk_mappings)
+end
+
+-- Llama a la función con el archivo JSON
+load_and_apply_mappings("mappings/mappings.json")

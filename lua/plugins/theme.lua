@@ -14,7 +14,7 @@ return {
           functions = { italic = true },
           variables = {},
         },
-        sidebars = { "qf", "help", "terminal", "packer" }, -- Ajusta paneles especiales
+        sidebars = { "qf", "hel:p", "terminal", "packer" }, -- Ajusta paneles especiales
         dim_inactive = true, -- Atenúa ventanas inactivas
         on_highlights = function(hl, c)
           hl.CursorLine = { bg = c.bg_highlight } -- Ajusta el fondo del cursorline

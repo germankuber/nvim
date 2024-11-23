@@ -60,7 +60,22 @@
                         "lhs": "p",
                         "rhs": "<cmd>lua require('illuminate').goto_prev_reference(false)<CR>",
                         "desc": "Previous reference"
+                    },
+                   
+                    {
+                        "title": "Symbols",
+                        "base_lhs": "s",
+                        "commands": [
+                            {
+                                "lhs": "f",
+                                "rhs": "<cmd>lua require('telescope.builtin').lsp_document_symbols({ symbols = { 'function' } })<CR>",
+                                "desc": "Find all functions in the file:"
+                            }
+                            
+                        ]
                     }
+                    
+                    
                 ]
             }
         ]
