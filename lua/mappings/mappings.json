@@ -1,5 +1,30 @@
 [
-    
+    {
+        "title": "NvimTree Mappings",
+        "base_lhs": "",
+        "commands": [
+            {
+                "lhs": "<CR>",
+                "rhs": "<cmd>lua require('nvim-tree.api').node.open.edit()<CR>",
+                "desc": "Abrir nodo"
+            },
+            {
+                "lhs": "<C-e>",
+                "rhs": "<cmd>lua require('nvim-tree.api').node.navigate.parent_close()<CR>",
+                "desc": "Colapsar carpeta del archivo"
+            },
+            {
+                "lhs": "h",
+                "rhs": "<cmd>lua require('nvim-tree.api').node.navigate.parent_close()<CR>",
+                "desc": "Navegar a la carpeta superior"
+            },
+            {
+                "lhs": "l",
+                "rhs": "<cmd>lua require('nvim-tree.api').node.open.edit()<CR>",
+                "desc": "Navegar a la carpeta siguiente"
+            }
+        ]
+    },
     {
         "title": "Project Commands",
         "base_lhs": "<Leader>p",
@@ -16,7 +41,6 @@
             }
         ]
     },
-
     {
         "title": "Find commands",
         "base_lhs": "<Leader>f",
@@ -61,7 +85,6 @@
                         "rhs": "<cmd>lua require('illuminate').goto_prev_reference(false)<CR>",
                         "desc": "Previous reference"
                     },
-                   
                     {
                         "title": "Symbols",
                         "base_lhs": "s",
@@ -76,11 +99,8 @@
                                 "rhs": "<cmd>lua require('telescope.builtin').lsp_document_symbols({ symbols = { 'struct' } })<CR>",
                                 "desc": "Find STRUCTS"
                             }
-                            
                         ]
                     }
-                    
-                    
                 ]
             }
         ]
