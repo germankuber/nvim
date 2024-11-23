@@ -53,6 +53,7 @@
     },
     {
         "title": "NvimTree Mappings",
+        "buffer_specific": true,
         "base_lhs": "",
         "commands": [
             {
