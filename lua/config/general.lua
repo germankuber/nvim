@@ -109,25 +109,6 @@ require("rust-tools").setup {
         }
     }
 }
-
--- Configuración de Nvim Tree
-require("nvim-tree").setup {
-    view = {width = 50, number = true, relativenumber = true},
-    update_focused_file = {enable = true, update_cwd = true},
-    git = {enable = true, ignore = false, timeout = 500},
-    filters = {
-        dotfiles = false,
-        custom = {
-            "^.cargo$", "^.git$", -- Filter out .git directory
-            "^.github$", -- Filter out .github directory
-            "^.idea$", -- Filter out .idea directory
-            "^target$", -- Filter out target directory
-            "^.DS_Store$" -- Filter out .DS_Store file
-        }
-    },
-    renderer = {group_empty = true}
-}
-
 -- Auto abrir Nvim Tree al inicio
 vim.api.nvim_create_autocmd("VimEnter", {
     callback = function() require("nvim-tree.api").tree.open() end
