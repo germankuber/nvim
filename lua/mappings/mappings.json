@@ -1,5 +1,36 @@
 [
     {
+        "title": "UFO Folding",
+        "base_lhs": "<leader>",
+        "commands": [
+            {
+                "lhs": "fz",
+                "rhs": "<cmd>lua require('ufo').openAllFolds()<CR>",
+                "desc": "Open all folds"
+            },
+            {
+                "lhs": "fc",
+                "rhs": "<cmd>lua require('ufo').closeAllFolds()<CR>",
+                "desc": "Close all folds"
+            },
+            {
+                "lhs": "fr",
+                "rhs": "<cmd>lua require('ufo').openFoldsExceptKinds()<CR>",
+                "desc": "Reduce fold level"
+            },
+            {
+                "lhs": "fm",
+                "rhs": "<cmd>lua require('ufo').closeFoldsWith()<CR>",
+                "desc": "Increase fold level"
+            },
+            {
+                "lhs": "fp",
+                "rhs": "<cmd>lua require('ufo').peekFoldedLinesUnderCursor()<CR>",
+                "desc": "Preview folded code"
+            }
+        ]
+    },
+    {
         "title": "Bookmarks Mappings",
         "base_lhs": "",
         "commands": [

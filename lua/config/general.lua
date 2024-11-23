@@ -229,3 +229,45 @@ require('telescope').load_extension('bookmarks')
 
 
 
+require("lspconfig").rust_analyzer.setup({
+    settings = {
+        ["rust-analyzer"] = {
+            cargo = { allFeatures = true },
+            checkOnSave = {
+                command = "clippy",
+            },
+            procMacro = {
+                enable = true,
+            },
+        },
+    },
+})
+
+
+vim.o.scrolloff = 5 -- Keep some context lines above/below the cursor
+vim.o.sidescrolloff = 5 -- Keep some context lines to the left/right
+vim.o.lazyredraw = false -- Ensure no delay in screen redrawing
+
+
+vim.cmd([[
+  augroup InsertModeEnhancements
+    autocmd!
+    " Highlight cursorline in Insert mode
+    autocmd InsertEnter * hi CursorLine guibg=#3e4451
+    autocmd InsertLeave * hi CursorLine guibg=NONE
+    " Change cursorline visibility based on mode
+    autocmd InsertEnter * set cursorline
+    autocmd InsertLeave * set nocursorline
+  augroup END
+]])
+vim.o.guicursor = "n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50"
+
+vim.cmd([[
+  " Change background when entering Insert mode
+  hi InsertModeBg guibg=#282c34
+  augroup InsertModeBackground
+    autocmd!
+   autocmd InsertEnter * hi Normal guibg=#1e1e2e
+    autocmd InsertLeave * hi Normal guibg=#11111b
+  augroup END
+]])

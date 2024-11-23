@@ -14,4 +14,5 @@ return {
   unpack(require "plugins.gitsigns"),
   unpack(require "plugins.theme"),
   unpack(require "plugins.bookmarks"),
+  unpack(require "plugins.telescope"),
 }

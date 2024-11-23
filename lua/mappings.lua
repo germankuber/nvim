@@ -21,7 +21,7 @@ local function apply_mappings(group, parent_lhs)
         desc = command.desc,
         noremap = command.noremap ~= false,
         silent = command.silent ~= false,
-      }:
+      }
       vim.api.nvim_set_keymap(mode, lhs, rhs, opts)
     end
   end
