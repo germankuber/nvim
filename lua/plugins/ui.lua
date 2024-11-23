@@ -1,5 +1,5 @@
 return {
-{"MunifTanjim/nui.nvim", lazy = false}, {
+    {"MunifTanjim/nui.nvim", lazy = false}, {
         "akinsho/bufferline.nvim",
         version = "*",
         keymaps = false,
@@ -61,20 +61,7 @@ return {
                 }
             })
         end
-    }, --  {
-    --     "declancm/cinnamon.nvim",
-    --     enabled = false,
-    --     event = "VeryLazy",
-    --     lazy = false,
-    --     config = function()
-    --         require("cinnamon").setup({
-    --             keymaps = {
-    --                 extra = true -- Use the updated option
-    --             }
-    --         })
-    --     end
-    -- },
-    {
+    }, {
         'norcalli/nvim-colorizer.lua', -- Highlight colors dynamically
         event = 'BufReadPre',
         lazy = false,

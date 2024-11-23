@@ -4,13 +4,6 @@ require("config.telescope_buffers")
 require("config.terminal")
 require("config.sessions")
 
-
-
-
-
-
-
-
 -- vim.opt.clipboard = "unnamedplus"
 
 -- require "plugins.init"
@@ -88,7 +81,7 @@ require("config.sessions")
 --     end
 -- })
 
--- vim.opt.cursorline = true
+vim.opt.cursorline = true
 
 -- local wk = require("which-key")
 
@@ -181,38 +174,43 @@ require("config.sessions")
 --     }
 -- })
 
--- vim.o.scrolloff = 5 -- Keep some context lines above/below the cursor
--- vim.o.sidescrolloff = 5 -- Keep some context lines to the left/right
--- vim.o.lazyredraw = false -- Ensure no delay in screen redrawing
+vim.o.scrolloff = 5 -- Keep some context lines above/below the cursor
+vim.o.sidescrolloff = 5 -- Keep some context lines to the left/right
+vim.o.lazyredraw = false -- Ensure no delay in screen redrawing
 
--- vim.cmd([[
---   augroup InsertModeEnhancements
---     autocmd!
---     " Highlight cursorline in Insert mode
---     autocmd InsertEnter * hi CursorLine guibg=#3e4451
---     autocmd InsertLeave * hi CursorLine guibg=NONE
---     " Change cursorline visibility based on mode
---     autocmd InsertEnter * set cursorline
---     autocmd InsertLeave * set nocursorline
---   augroup END
--- ]])
--- vim.o.guicursor = "n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50"
+vim.cmd([[
+  augroup InsertModeEnhancements
+    autocmd!
+    " Highlight cursorline in Insert mode with a specific color
+    autocmd InsertEnter * hi CursorLine guibg=#3e4451
+    autocmd InsertLeave * hi CursorLine guibg=#1e1e2e
+    " Keep cursorline visible in all modes
+    autocmd InsertEnter * set cursorline
+    autocmd InsertLeave * set cursorline
+  augroup END
+]])
 
--- vim.cmd([[
---   " Change background when entering Insert mode
---   hi InsertModeBg guibg=#282c34
---   augroup InsertModeBackground
---     autocmd!
---    autocmd InsertEnter * hi Normal guibg=#1e1e2e
---     autocmd InsertLeave * hi Normal guibg=#11111b
---   augroup END
--- ]])
+vim.o.cursorline = true -- Ensure cursorline is always enabled
+
+-- Cursor appearance based on mode
+vim.o.guicursor = "n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50"
+
+vim.cmd([[
+  " Change background when entering Insert mode
+  hi InsertModeBg guibg=#282c34
+  augroup InsertModeBackground
+    autocmd!
+    autocmd InsertEnter * hi Normal guibg=#1e1e2e
+    autocmd InsertLeave * hi Normal guibg=#11111b
+  augroup END
+]])
+
 
 -- -- Configuración básica para nvim-ufo
--- vim.o.foldcolumn = '1'
--- vim.o.foldlevel = 99
--- vim.o.foldlevelstart = 99
--- vim.o.foldenable = true
+vim.o.foldcolumn = '1'
+vim.o.foldlevel = 99
+vim.o.foldlevelstart = 99
+vim.o.foldenable = true
 
 -- -- Configuración de nvim-ufo
 -- require('ufo').setup({
@@ -260,7 +258,7 @@ require("config.sessions")
 --     }
 -- })
 
--- vim.api.nvim_set_hl(0, "NotifySUCCESS", {fg = "#00ff00", bg = "#000000"}) -- Green for success
+vim.api.nvim_set_hl(0, "NotifySUCCESS", {fg = "#00ff00", bg = "#000000"}) -- Green for success
 
 -- local neogit = require('neogit')
 -- neogit.setup {}

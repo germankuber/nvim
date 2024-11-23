@@ -1,4 +1,4 @@
-require "nvchad.options"
+-- require "nvchad.options"
 
 vim.cmd("let g:netrw_liststyle = 3")
 

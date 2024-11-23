@@ -179,6 +179,7 @@ return {
                     end
                 end,
             })
+            vim.cmd([[autocmd VimEnter * NvimTreeOpen]])
         end
     }
 }
