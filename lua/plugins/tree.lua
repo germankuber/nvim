@@ -27,21 +27,33 @@ return {
                       end
                   end, opts("Close folder or go to parent folder"))
 
-                  -- Map `l` to expand the folder if closed, or open the file
                   vim.keymap.set("n", "l", function()
-                      local node = api.tree.get_node_under_cursor()
-                      if node.type == "directory" then
-                          if not node.open then
-                              api.node.open.edit()
-                          end
-                      else
-                          -- Open the file in the current window
-                          vim.cmd("edit " .. node.absolute_path)
-                          -- Trigger necessary autocommands
-                          vim.cmd("doautocmd BufReadPost")
-                          vim.cmd("doautocmd FileType")
-                      end
-                  end, opts("Open folder or file"))
+                    local node = api.tree.get_node_under_cursor()
+                    if node.type == "directory" then
+                        if not node.open then
+                            api.node.open.edit()
+                        end
+                    else
+                        local file_path = vim.fn.fnameescape(node.absolute_path)
+                
+                        -- Find a non-tree window to open the file
+                        local windows = vim.api.nvim_tabpage_list_wins(0)
+                        local tree_win = vim.fn.bufwinid(bufnr)
+                
+                        for _, win in ipairs(windows) do
+                            if win ~= tree_win then
+                                vim.api.nvim_set_current_win(win)
+                                vim.cmd("edit " .. file_path)
+                                return
+                            end
+                        end
+                
+                        -- If no non-tree window exists, split the current window
+                        vim.cmd("vsplit " .. file_path)
+                    end
+                end, opts("Open folder or file"))
+                
+                
 
                   -- Map `Enter` to behave like `l`
                   vim.keymap.set("n", "<CR>", function()
@@ -79,24 +91,30 @@ return {
 
                               -- Ensure preview is shown in the selected window
                               if preview_window then
-                                  local buf = vim.fn.bufadd(node.absolute_path)
-                                  vim.fn.bufload(buf) -- Load the buffer into memory
-                                  vim.api.nvim_win_set_buf(preview_window, buf)
-
-                                  -- Trigger autocommands and ensure syntax highlighting
-                                  vim.api.nvim_buf_set_option(buf, "syntax", "on")
-                                  vim.cmd("filetype detect")
-                                  vim.cmd("doautocmd BufReadPost")
-                                  vim.cmd("doautocmd FileType")
-
-                                  -- Focus back to NvimTree window
-                                  vim.api.nvim_set_current_win(tree_win)
-                              end
+                            
+                                local buf = vim.fn.bufadd(node.absolute_path)
+                                vim.fn.bufload(buf) -- Load the buffer into memory
+                                vim.api.nvim_win_set_buf(preview_window, buf)
+                            
+                                -- Ensure syntax highlighting and filetype detection
+                                vim.api.nvim_buf_call(buf, function()
+                                    vim.cmd("doautocmd BufReadPre")
+                                    vim.cmd("doautocmd BufReadPost")
+                                    vim.cmd("filetype detect")
+                                end)
+                            
+                                -- Focus back to NvimTree window
+                                vim.api.nvim_set_current_win(tree_win)
+                            end
                           end
                       end,
                   })
               end,
-              update_focused_file = {enable = true, update_cwd = true},
+              update_focused_file = {
+                enable = true,
+                update_root = false, -- Evita cambiar el directorio raíz del treeview
+                ignore_list = {}     -- No ignores ningún archivo
+            },
               git = {enable = true, ignore = false, timeout = 500},
               filters = {
                   dotfiles = false,
