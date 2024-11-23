@@ -1,4 +1,38 @@
 [
+
+    {
+        "title": "Comments",
+        "base_lhs": "<Leader>c",
+        "commands": [
+            {
+                "title": "Todo",
+                "base_lhs": "t",
+                "commands": [
+                    {
+                        "lhs": "l",
+                        "rhs": "<cmd>:TodoTelescope<CR>",
+                        "desc": "list"
+                    }
+                ]
+            },
+            {
+                "title": "Comments",
+                "base_lhs": "c",
+                "commands": [
+                    {
+                        "lhs": "l",
+                        "rhs": "<cmd>lua require('Comment.api').toggle.linewise.current()<CR>",
+                        "desc": "Comment/uncomment the current line"
+                    },
+                    {
+                        "lhs": "v",
+                        "rhs": "<cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>",
+                        "desc": "Comment/uncomment the selected lines"
+                    }
+                ]
+            }
+        ]
+    },
     {
         "title": "Session Management",
         "base_lhs": "<Leader>s",
@@ -102,7 +136,7 @@
     },
     {
         "title": "UFO Folding",
-        "base_lhs": "<leader>c",
+        "base_lhs": "<leader>u",
         "commands": [
             {
                 "lhs": "o",

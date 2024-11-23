@@ -300,3 +300,5 @@ require("notify").setup({
 })
 
 vim.api.nvim_set_hl(0, "NotifySUCCESS", { fg = "#00ff00", bg = "#000000" }) -- Green for success
+
+

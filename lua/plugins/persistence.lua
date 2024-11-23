@@ -1,7 +1,7 @@
 return {
     {
         "MunifTanjim/nui.nvim",
-        lazy = true
+        lazy = false
     },
     {
         "folke/persistence.nvim",

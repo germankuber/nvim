@@ -19,4 +19,5 @@ return {
   unpack(require "plugins.persistence"),
   unpack(require "plugins.git"),
   unpack(require "plugins.notify"),
+  unpack(require "plugins.comments"),
 }
