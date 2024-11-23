@@ -206,7 +206,12 @@
         "commands": [
             {
                 "lhs": "c",
-                "rhs": "<cmd>lua require('utils.terminal').toggle()<CR>",
+                "rhs": "<cmd>lua require('config.terminal').toggle()<CR>",
+                "desc": "Open console (terminal)"
+            },
+            {
+                "lhs": "m",
+                "rhs": "<cmd>lua require('config.terminal').minimize()<CR>",
                 "desc": "Open console (terminal)"
             },
             {
