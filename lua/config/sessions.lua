@@ -75,4 +75,72 @@ function M.load_session()
     vim.notify("Session loaded: " .. session_name, vim.log.levels.INFO)
 end
 
+
+function M.list_and_delete_sessions()
+    local sessions_dir = vim.fn.stdpath("state") .. "/sessions/"
+    local session_files = vim.fn.globpath(sessions_dir, "*.vim", false, true)
+
+    if #session_files == 0 then
+        vim.notify("No sessions found.", vim.log.levels.INFO)
+        return
+    end
+
+    local sessions = {}
+    for _, file in ipairs(session_files) do
+        table.insert(sessions, vim.fn.fnamemodify(file, ":t:r")) -- Add file names without extensions
+    end
+
+    -- Custom function to find the index of an element in a table
+    local function find_index(tbl, value)
+        for i, v in ipairs(tbl) do
+            if v == value then
+                return i
+            end
+        end
+        return nil
+    end
+
+    require("telescope.pickers").new({}, {
+        prompt_title = "Delete Sessions",
+        finder = require("telescope.finders").new_table({
+            results = sessions,
+        }),
+        sorter = require("telescope.config").values.generic_sorter({}),
+        attach_mappings = function(prompt_bufnr, map)
+            map("i", "<CR>", function()
+                local selected = require("telescope.actions.state").get_selected_entry(prompt_bufnr)
+
+                if selected then
+                    local session_path = sessions_dir .. selected.value .. ".vim"
+                    local success, err = os.remove(session_path)
+
+                    if success then
+                        vim.notify("Session deleted: " .. selected.value, vim.log.levels.INFO)
+                        -- Remove the deleted session from the list
+                        local index = find_index(sessions, selected.value)
+                        if index then
+                            table.remove(sessions, index)
+                        end
+
+                        if #sessions == 0 then
+                            -- Close the popup if no sessions remain
+                            vim.notify("No more sessions left.", vim.log.levels.INFO)
+                            require("telescope.actions").close(prompt_bufnr)
+                        else
+                            -- Update the Telescope finder dynamically
+                            require("telescope.actions.state").get_current_picker(prompt_bufnr):refresh(
+                                require("telescope.finders").new_table({ results = sessions }),
+                                { reset_prompt = true }
+                            )
+                        end
+                    else
+                        vim.notify("Failed to delete session: " .. err, vim.log.levels.ERROR)
+                    end
+                end
+            end)
+            return true
+        end,
+    }):find()
+end
+
 return M

@@ -12,6 +12,11 @@
                 "lhs": "l",
                 "rhs": "<cmd>:Telescope persisted<CR>",
                 "desc": "Load sessions"
+            },
+            {
+                "lhs": "d",
+                "rhs": "<cmd>lua require('config.sessions').list_and_delete_sessions()<CR>",
+                "desc": "Delete a session"
             }
         ]
     },
@@ -127,12 +132,12 @@
         "commands": [
             {
                 "lhs": "<C-;>",
-                "rhs": "<cmd>lua require('config.custom_bookmarks').next_global_bookmark()<CR>",
+                "rhs": "<cmd>lua require('config.bookmarks').next_global_bookmark()<CR>",
                 "desc": "Jump to next global bookmark"
             },
             {
                 "lhs": "<C-g>",
-                "rhs": "<cmd>lua require('config.custom_bookmarks').prev_global_bookmark()<CR>",
+                "rhs": "<cmd>lua require('config.bookmarks').prev_global_bookmark()<CR>",
                 "desc": "Jump to previous global bookmark"
             },
             {
@@ -151,12 +156,12 @@
                     },
                     {
                         "lhs": "n",
-                        "rhs": "<cmd>lua require('config.custom_bookmarks').next_global_bookmark()<CR>",
+                        "rhs": "<cmd>lua require('config.bookmarks').next_global_bookmark()<CR>",
                         "desc": "Jump next"
                     },
                     {
                         "lhs": "p",
-                        "rhs": "<cmd>lua require('config.custom_bookmarks').prev_global_bookmark()<CR>",
+                        "rhs": "<cmd>lua require('config.bookmarks').prev_global_bookmark()<CR>",
                         "desc": "Jump prev"
                     },
                     {
