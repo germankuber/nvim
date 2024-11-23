@@ -2,10 +2,7 @@
 
 local actions = require("telescope.actions")
 local action_state = require("telescope.actions.state")
-local finders = require("telescope.finders")
-local sorters = require("telescope.sorters")
-local previewers = require("telescope.previewers")
-local conf = require("telescope.config").values
+local finders = require("telescope.finders") -- Asegúrate de requerir este módulo
 
 local M = {}
 
@@ -15,7 +12,7 @@ M.open_buffer = function()
         attach_mappings = function(_, map)
             -- Abrir buffer con Enter en modo inserción
             map("i", "<CR>", function(prompt_bufnr)
-                local selection = action_state.get_selected_entry()
+                local selection = action_state.get_selected_entry(prompt_bufnr)
                 actions.close(prompt_bufnr) -- Cierra la ventana de Telescope
                 if selection and selection.bufnr then
                     vim.api.nvim_set_current_buf(selection.bufnr) -- Enfoca el buffer seleccionado
@@ -23,7 +20,7 @@ M.open_buffer = function()
             end)
             -- Abrir buffer con Enter en modo normal
             map("n", "<CR>", function(prompt_bufnr)
-                local selection = action_state.get_selected_entry()
+                local selection = action_state.get_selected_entry(prompt_bufnr)
                 actions.close(prompt_bufnr) -- Cierra la ventana de Telescope
                 if selection and selection.bufnr then
                     vim.api.nvim_set_current_buf(selection.bufnr) -- Enfoca el buffer seleccionado
@@ -38,8 +35,9 @@ end
 M.close_buffer = function()
     require("telescope.builtin").buffers({
         attach_mappings = function(prompt_bufnr, map)
+            -- Función para cerrar el buffer y refrescar la lista
             local delete_buffer = function()
-                local selection = action_state.get_selected_entry()
+                local selection = action_state.get_selected_entry(prompt_bufnr)
                 if selection and selection.bufnr then
                     vim.api.nvim_buf_delete(selection.bufnr, { force = true }) -- Cierra el buffer seleccionado
                 end
