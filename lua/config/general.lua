@@ -79,36 +79,15 @@ cmp.setup {
     }
 }
 
--- Rust tools setup
-require("rust-tools").setup {
-    server = {
-        capabilities = capabilities,
-        on_attach = function(_, bufnr)
-            -- local opts = { noremap = true, silent = true, buffer = bufnr }
-            -- vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, vim.tbl_extend("force", opts, { desc = "LSP Rename" }))
-            -- vim.keymap.set(
-            --   "n",
-            --   "<leader>ra",
-            --   vim.lsp.buf.code_action,
-            --   vim.tbl_extend("force", opts, { desc = "Code actions" })
-            -- )
-            -- vim.keymap.set(
-            --   "n",
-            --   "<leader>rg",
-            --   vim.lsp.buf.code_action_group,
-            --   vim.tbl_extend("force", opts, { desc = "Code actions group" })
-            -- )
-            -- vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-            -- vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
-        end,
-        settings = {
-            ["rust-analyzer"] = {
-                cargo = {allFeatures = true},
-                checkOnSave = {command = "clippy"}
-            }
-        }
-    }
-}
+require("lspconfig").rust_analyzer.setup({
+    settings = {
+        ["rust-analyzer"] = {
+            inlayHints = {
+                enable = true, -- Activa directamente las hints
+            },
+        },
+    },
+})
 -- Auto abrir Nvim Tree al inicio
 vim.api.nvim_create_autocmd("VimEnter", {
     callback = function() require("nvim-tree.api").tree.open() end
