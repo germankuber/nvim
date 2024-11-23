@@ -1,6 +1,8 @@
 require("config.lazy")
 require("config.bookmarks")
 require("config.telescope_buffers")
+require("config.terminal")
+require("config.sessions")
 
 
 

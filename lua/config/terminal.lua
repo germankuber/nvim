@@ -82,7 +82,7 @@ function M.new_terminal()
 
     -- Reset the state and create a new terminal
     is_hidden = false
-    create_terminal(" New Terminal ")
+    create_terminal(" Terminal 💻 ")
 end
 
 return M

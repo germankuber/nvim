@@ -1,4 +1,5 @@
 return {
+  unpack(require "plugins.persistence"),
   unpack(require "plugins.telescope"),
 
   unpack(require "plugins.ui"),
@@ -15,6 +16,7 @@ return {
   unpack(require "plugins.illuminate"),
   unpack(require "plugins.bookmarks"),
   unpack(require "plugins.mason"),
+
   
   unpack(require "plugins.neominimap"),
   unpack(require "plugins.whichkey"),

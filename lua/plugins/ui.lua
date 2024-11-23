@@ -1,5 +1,5 @@
 return {
-    {"MunifTanjim/nui.nvim", lazy = false}, {
+{"MunifTanjim/nui.nvim", lazy = false}, {
         "akinsho/bufferline.nvim",
         version = "*",
         keymaps = false,
