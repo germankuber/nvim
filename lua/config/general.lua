@@ -209,7 +209,6 @@ require('bookmarks').setup {
 
 }
 require('telescope').load_extension('bookmarks')
--- require("telescope").load_extension("git_file_history")
 
 require("lspconfig").rust_analyzer.setup({
     settings = {
@@ -304,4 +303,11 @@ require("notify").setup({
 
 vim.api.nvim_set_hl(0, "NotifySUCCESS", { fg = "#00ff00", bg = "#000000" }) -- Green for success
 
+
+
+local neogit = require('neogit')
+neogit.setup {}
+
+
+vim.o.clipboard = "unnamedplus"
 

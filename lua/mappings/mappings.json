@@ -123,7 +123,12 @@
         "commands": [
             {
                 "lhs": "b",
-                "rhs": "<cmd>:GitBlameToggle<CR>",
+                "rhs": "<cmd>:Fugit2Blame<CR>",
+                "desc": "Toogle blamme"
+            },
+            {
+                "lhs": "e",
+                "rhs": "<cmd>:Fugit2<CR>",
                 "desc": "Toogle blamme"
             },
             {

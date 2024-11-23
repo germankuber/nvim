@@ -8,11 +8,40 @@ return {
             vim.g.gitblame_delay = 50
         end
     }, {
-        'sindrets/diffview.nvim',
+        "NeogitOrg/neogit",
         lazy = false,
-
-        dependencies = 'nvim-lua/plenary.nvim',
-        config = function() require('diffview').setup() end
-    }, {"tpope/vim-fugitive", lazy = false}
-
+        dependencies = {
+            "nvim-lua/plenary.nvim", -- required
+            "sindrets/diffview.nvim", -- optional - Diff integration
+            -- Only one of these is needed.
+            "nvim-telescope/telescope.nvim", -- optional
+            "ibhagwan/fzf-lua", -- optional
+            "echasnovski/mini.pick" -- optional
+        },
+        config = true
+    }, {
+        'SuperBo/fugit2.nvim',
+        lazy = false,
+        opts = {width = 100},
+        dependencies = {
+            'MunifTanjim/nui.nvim', 'nvim-tree/nvim-web-devicons',
+            'nvim-lua/plenary.nvim', 'sindrets/diffview.nvim', -- Aquí agregamos diffview.nvim
+            {
+                'chrisgrieser/nvim-tinygit', -- Opcional: para vista de PRs en GitHub
+                dependencies = {'stevearc/dressing.nvim'}
+            }
+        },
+        cmd = {'Fugit2', 'Fugit2Diff', 'Fugit2Graph'},
+        keys = {{'<leader>F', mode = 'n', '<cmd>Fugit2<cr>'}}
+    }, {
+        'sindrets/diffview.nvim',
+        dependencies = {'nvim-lua/plenary.nvim'},
+        opts = {
+            enhanced_diff_hl = true -- Opcional: mejora el resaltado del diff
+        },
+        cmd = {
+            'DiffviewOpen', 'DiffviewClose', 'DiffviewToggleFiles',
+            'DiffviewFocusFiles'
+        }
+    }
 }
