@@ -1,5 +1,17 @@
 return {
     {
+        "rmagatti/auto-session",
+        lazy = false,
+        config = function()
+            require("auto-session").setup {
+                log_level = "error",
+                auto_session_enable_last_session = true, -- Carga la última sesión automáticamente
+                auto_save_enabled = true,               -- Guarda la sesión automáticamente al salir
+                auto_restore_enabled = true,            -- Restaura automáticamente al abrir
+            }
+        end,
+    },
+    {
         "MunifTanjim/nui.nvim",
         lazy = false
     },

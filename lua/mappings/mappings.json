@@ -69,6 +69,11 @@
                 "desc": "Force quit current window"
             },
             {
+                "lhs": "c",
+                "rhs": "<cmd>qa<CR>",
+                "desc": "Close nvim"
+            },
+            {
                 "lhs": "a",
                 "rhs": "<cmd>qa!<CR>",
                 "desc": "Force quit all windows"

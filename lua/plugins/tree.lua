@@ -113,6 +113,7 @@ return {
                     update_root = false, -- Evita cambiar el directorio raíz del treeview
                     ignore_list = {} -- No ignores ningún archivo
                 },
+                hijack_cursor = false, -- Evita que el cursor se mueva al TreeView
                 git = {enable = true, ignore = false, timeout = 500},
                 filters = {
                     dotfiles = false,
@@ -139,6 +140,44 @@ return {
                         quit_on_open = false -- Keep NvimTree open after opening a file
                     }
                 }
+            })
+            vim.api.nvim_create_autocmd("VimEnter", {
+                callback = function()
+                    -- Retrasar la ejecución hasta que NvimTree haya terminado de inicializar
+                    vim.defer_fn(function()
+                        for _, win in ipairs(vim.api.nvim_list_wins()) do
+                            local buf = vim.api.nvim_win_get_buf(win)
+                            local ft = vim.api.nvim_buf_get_option(buf, "filetype")
+                            if ft ~= "NvimTree" then
+                                vim.api.nvim_set_current_win(win) -- Mover el foco al buffer
+                                break
+                            end
+                        end
+                    end, 100) -- Retraso suficiente para garantizar que NvimTree cargó
+                end,
+            })
+            -- Autocomando para mover el foco al buffer abierto
+            vim.api.nvim_create_autocmd("BufWinEnter", {
+                callback = function()
+                    local tree_win = nil
+                    local normal_win = nil
+            
+                    -- Encuentra el buffer del TreeView y otro buffer abierto
+                    for _, win in ipairs(vim.api.nvim_list_wins()) do
+                        local buf = vim.api.nvim_win_get_buf(win)
+                        local ft = vim.api.nvim_buf_get_option(buf, "filetype")
+                        if ft == "NvimTree" then
+                            tree_win = win
+                        else
+                            normal_win = win
+                        end
+                    end
+            
+                    -- Si existe un buffer abierto y el TreeView está activo, mueve el foco
+                    if tree_win and normal_win then
+                        vim.api.nvim_set_current_win(normal_win) -- Cambia el foco al buffer no-tree
+                    end
+                end,
             })
         end
     }
