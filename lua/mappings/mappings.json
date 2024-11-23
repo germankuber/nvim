@@ -201,18 +201,24 @@
         ]
     },
     {
-        "title": "Project Commands",
+        "title": "Panels Commands",
         "base_lhs": "<Leader>p",
         "commands": [
             {
-                "lhs": "c",
-                "rhs": "<cmd>lua require('config.terminal').toggle()<CR>",
-                "desc": "Open console (terminal)"
-            },
-            {
-                "lhs": "m",
-                "rhs": "<cmd>lua require('config.terminal').minimize()<CR>",
-                "desc": "Open console (terminal)"
+                "title": "Terminal Commands",
+                "base_lhs": "t",
+                "commands": [
+                    {
+                        "lhs": "r",
+                        "rhs": "<cmd>lua require('config.terminal').toggle()<CR>",
+                        "desc": "Restore"
+                    },
+                    {
+                        "lhs": "n",
+                        "rhs": "<cmd>lua require('config.terminal').new_terminal()<CR>",
+                        "desc": "New"
+                    }
+                ]
             },
             {
                 "lhs": "s",
