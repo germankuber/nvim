@@ -31,47 +31,22 @@ return {
                 }
             }
         end
-    },  {
-      "folke/which-key.nvim",
-      config = function()
-        local which_key = require("which-key")
-  
-        which_key.setup {
-          window = {
-            border = "none",   -- Desactiva los bordes de WhichKey predeterminado
-            padding = { 0, 0, 0, 0 }, -- Sin relleno adicional
-          },
-        }
-  
-        -- Usamos `nui.nvim` para crear un popup flotante
-        local NuiPopup = require("nui.popup")
-  
-        -- Crear un popup flotante para WhichKey
-        local popup = NuiPopup({
-          position = "50%", -- Centrado vertical y horizontalmente
-          size = {
-            width = 60,  -- Ajusta según prefieras
-            height = 15, -- Ajusta según prefieras
-          },
-          border = {
-            style = "rounded", -- Bordes redondeados
-          },
-        })
-  
-        -- Vinculamos el popup a WhichKey
-        vim.api.nvim_create_autocmd("User", {
-          pattern = "WhichKey",
-          callback = function()
-            popup:mount()
-          end,
-        })
-  
-        vim.api.nvim_create_autocmd("User", {
-          pattern = "WhichKeyLeave",
-          callback = function()
-            popup:unmount()
-          end,
-        })
-      end,
-    },
+    }, {
+        "folke/which-key.nvim",
+        config = function()
+            require("which-key").setup {
+                window = {
+                    border = "rounded", -- Bordes redondeados
+                    position = "center", -- Forzar que aparezca centrado
+                    margin = {1, 1, 1, 1}, -- Márgenes alrededor de la ventana
+                    padding = {2, 2, 2, 2}, -- Espaciado dentro de la ventana
+                    winblend = 10 -- Transparencia para un efecto flotante
+                },
+                layout = {
+                    spacing = 6, -- Espaciado entre columnas
+                    align = "center" -- Centrar las teclas
+                }
+            }
+        end
+    }
 }
