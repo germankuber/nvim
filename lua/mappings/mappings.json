@@ -5,6 +5,24 @@
         "filetype": "NvimTree",
         "commands": [
             {
+                "title": "Search",
+                "base_lhs": "s",
+                "commands": [
+                    {
+                        "lhs": "s",
+                        "rhs": "<cmd>lua require('nvim-tree.api').live_filter.start()<CR>",
+                        "desc": "Search",
+                        "filetype": "NvimTree"
+                    },
+                    {
+                        "lhs": "c",
+                        "rhs": "<cmd>lua require('nvim-tree.api').live_filter.clear()<CR>",
+                        "desc": "Clear",
+                        "filetype": "NvimTree"
+                    }
+                ]
+            },
+            {
                 "title": "Files",
                 "base_lhs": "f",
                 "commands": [
@@ -12,6 +30,42 @@
                         "lhs": "n",
                         "rhs": "<cmd>lua require('nvim-tree.api').fs.create()<CR>",
                         "desc": "Create a new file",
+                        "filetype": "NvimTree"
+                    },
+                    {
+                        "lhs": "d",
+                        "rhs": "<cmd>lua require('nvim-tree.api').fs.remove()<CR>",
+                        "desc": "Delete a file",
+                        "filetype": "NvimTree"
+                    },
+                    {
+                        "lhs": "m",
+                        "rhs": "<cmd>lua require('nvim-tree.api').fs.cut()<CR>",
+                        "desc": "Move a file",
+                        "filetype": "NvimTree"
+                    },
+                    {
+                        "lhs": "r",
+                        "rhs": "<cmd>lua require('nvim-tree.api').fs.rename()<CR>",
+                        "desc": "Rename a file",
+                        "filetype": "NvimTree"
+                    }
+                ]
+            },
+            {
+                "title": "Directory",
+                "base_lhs": "d",
+                "commands": [
+                    {
+                        "lhs": "e",
+                        "rhs": "<cmd>lua  require('nvim-tree.api').tree.expand_all()<CR>",
+                        "desc": "Expand all",
+                        "filetype": "NvimTree"
+                    },
+                    {
+                        "lhs": "c",
+                        "rhs": "<cmd>lua require('nvim-tree.api').tree.collapse_all()<CR>",
+                        "desc": "Collapse all",
                         "filetype": "NvimTree"
                     }
                 ]
@@ -59,31 +113,37 @@
     {
         "title": "Comments",
         "base_lhs": "<Leader>c",
+        "filetype": "__codeFileType__",
         "commands": [
             {
                 "title": "Todo",
                 "base_lhs": "t",
+                "filetype": "__codeFileType__",
                 "commands": [
                     {
                         "lhs": "l",
                         "rhs": "<cmd>:TodoTelescope<CR>",
-                        "desc": "list"
+                        "desc": "list",
+                        "filetype": "__codeFileType__"
                     }
                 ]
             },
             {
                 "title": "Comments",
                 "base_lhs": "c",
+                "filetype": "__codeFileType__",
                 "commands": [
                     {
                         "lhs": "l",
                         "rhs": "<cmd>lua require('Comment.api').toggle.linewise.current()<CR>",
-                        "desc": "Comment/uncomment the current line"
+                        "desc": "Comment/uncomment the current line",
+                        "filetype": "__codeFileType__"
                     },
                     {
                         "lhs": "v",
                         "rhs": "<cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>",
-                        "desc": "Comment/uncomment the selected lines"
+                        "desc": "Comment/uncomment the selected lines",
+                        "filetype": "__codeFileType__"
                     }
                 ]
             }
@@ -190,6 +250,7 @@
             {
                 "title": "History",
                 "base_lhs": "h",
+                "filetype": "__codeFileType__",
                 "commands": [
                     {
                         "title": "File history",
@@ -233,47 +294,56 @@
     {
         "title": "UFO Folding",
         "base_lhs": "<leader>u",
+        "filetype": "__codeFileType__",
         "commands": [
             {
                 "lhs": "o",
                 "rhs": "<cmd>lua require('ufo').goPreviousStartFold:()<CR>",
-                "desc": "Open all folds"
+                "desc": "Open all folds",
+                "filetype": "__codeFileType__"
             },
             {
                 "lhs": "c",
                 "rhs": "<cmd>lua require('ufo').closeAllFolds()<CR>",
-                "desc": "Close all folds"
+                "desc": "Close all folds",
+                "filetype": "__codeFileType__"
             },
             {
                 "lhs": "j",
                 "rhs": "<cmd>lua require('ufo').openFoldsExceptKinds()<CR>",
-                "desc": "Reduce fold level"
+                "desc": "Reduce fold level",
+                "filetype": "__codeFileType__"
             },
             {
                 "lhs": "k",
                 "rhs": "<cmd>lua require('ufo').closeFoldsWith()<CR>",
-                "desc": "Increase fold level"
+                "desc": "Increase fold level",
+                "filetype": "__codeFileType__"
             },
             {
                 "lhs": "p",
                 "rhs": "<cmd>lua require('ufo').peekFoldedLinesUnderCursor()<CR>",
-                "desc": "Preview folded code"
+                "desc": "Preview folded code",
+                "filetype": "__codeFileType__"
             }
         ]
     },
     {
         "title": "Bookmarks Mappings",
         "base_lhs": "",
+        "filetype": "__codeFileType__",
         "commands": [
             {
                 "lhs": "<C-;>",
                 "rhs": "<cmd>lua require('config.bookmarks').next_global_bookmark()<CR>",
-                "desc": "Jump to next global bookmark"
+                "desc": "Jump to next global bookmark",
+                "filetype": "__codeFileType__"
             },
             {
                 "lhs": "<C-g>",
                 "rhs": "<cmd>lua require('config.bookmarks').prev_global_bookmark()<CR>",
-                "desc": "Jump to previous global bookmark"
+                "desc": "Jump to previous global bookmark",
+                "filetype": "__codeFileType__"
             },
             {
                 "title": "Bookmarks Mappings",
@@ -282,32 +352,38 @@
                     {
                         "lhs": "t",
                         "rhs": "<cmd>lua require('bookmarks').bookmark_toggle()<CR>",
-                        "desc": "Toggle bookmarks"
+                        "desc": "Toggle bookmarks",
+                        "filetype": "__codeFileType__"
                     },
                     {
                         "lhs": "a",
                         "rhs": "<cmd>lua require('bookmarks').bookmark_ann()<CR>",
-                        "desc": "Add a bookmark"
+                        "desc": "Add a bookmark",
+                        "filetype": "__codeFileType__"
                     },
                     {
                         "lhs": "n",
                         "rhs": "<cmd>lua require('config.bookmarks').next_global_bookmark()<CR>",
-                        "desc": "Jump next"
+                        "desc": "Jump next",
+                        "filetype": "__codeFileType__"
                     },
                     {
                         "lhs": "p",
                         "rhs": "<cmd>lua require('config.bookmarks').prev_global_bookmark()<CR>",
-                        "desc": "Jump prev"
+                        "desc": "Jump prev",
+                        "filetype": "__codeFileType__"
                     },
                     {
                         "lhs": "C",
                         "rhs": "<cmd>lua require('bookmarks').bookmark_clear_all()<CR>|<cmd>lua require('bookmarks').bookmark_clean()<CR>",
-                        "desc": "Clear all"
+                        "desc": "Clear all",
+                        "filetype": "__codeFileType__"
                     },
                     {
                         "lhs": "s",
                         "rhs": "<cmd>lua require('telescope').extensions.bookmarks.list()<CR>",
-                        "desc": "Show marked files in quickfix window"
+                        "desc": "Show marked files in quickfix window",
+                        "filetype": "__codeFileType__"
                     }
                 ]
             }
@@ -486,55 +562,55 @@
     {
         "title": "Debugger commands",
         "base_lhs": "<Leader>d",
-        "filetype": "rust",
+        "filetype": "__codeFileType__",
         "commands": [
             {
                 "lhs": "l",
                 "rhs": "<cmd>lua require'dap'.step_into()<CR>",
                 "desc": "Debugger step into",
-                "filetype": "rust"
+                "filetype": "__codeFileType__"
             },
             {
                 "lhs": "j",
                 "rhs": "<cmd>lua require'dap'.step_over()<CR>",
                 "desc": "Debugger step over",
-                "filetype": "rust"
+                "filetype": "__codeFileType__"
             },
             {
                 "lhs": "k",
                 "rhs": "<cmd>lua require'dap'.step_out()<CR>",
                 "desc": "Debugger step out",
-                "filetype": "rust"
+                "filetype": "__codeFileType__"
             },
             {
                 "lhs": "c",
                 "rhs": "<cmd>lua require'dap'.continue()<CR>",
                 "desc": "Debugger continue",
-                "filetype": "rust"
+                "filetype": "__codeFileType__"
             },
             {
                 "lhs": "b",
                 "rhs": "<cmd>lua require'dap'.toggle_breakpoint()<CR>",
                 "desc": "Debugger toggle breakpoint",
-                "filetype": "rust"
+                "filetype": "__codeFileType__"
             },
             {
                 "lhs": "d",
                 "rhs": "<cmd>lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>",
                 "desc": "Debugger set conditional breakpoint",
-                "filetype": "rust"
+                "filetype": "__codeFileType__"
             },
             {
                 "lhs": "e",
                 "rhs": "<cmd>lua require'dap'.terminate()<CR>",
                 "desc": "Debugger reset",
-                "filetype": "rust"
+                "filetype": "__codeFileType__"
             },
             {
                 "lhs": "r",
                 "rhs": "<cmd>lua require'dap'.run_last()<CR>",
                 "desc": "Debugger run last",
-                "filetype": "rust"
+                "filetype": "__codeFileType__"
             }
         ]
     },
