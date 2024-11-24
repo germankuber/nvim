@@ -1,5 +1,18 @@
 [
     {
+        "title": "Custom movement",
+        "base_lhs": "<Leader>K",
+        "commands": [
+    
+            {
+                "lhs": "c",
+                "rhs": "<cmd>lua require('config.custom_movement').toggle_custom_movement()<CR>",
+                "desc": "Toogle custom movement"
+            }
+          
+        ]
+    },
+    {
         "title": "Jump Commands",
         "base_lhs": "",
         "commands": [
