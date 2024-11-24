@@ -1,15 +1,32 @@
 [
     {
+        "title": "Tree view",
+        "base_lhs": "<Leader>t",
+        "filetype": "NvimTree",
+        "commands": [
+            {
+                "title": "Files",
+                "base_lhs": "f",
+                "commands": [
+                    {
+                        "lhs": "n",
+                        "rhs": "<cmd>lua require('nvim-tree.api').fs.create()<CR>",
+                        "desc": "Create a new file",
+                        "filetype": "NvimTree"
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "title": "Custom movement",
         "base_lhs": "<Leader>K",
         "commands": [
-    
             {
                 "lhs": "c",
                 "rhs": "<cmd>lua require('config.custom_movement').toggle_custom_movement()<CR>",
                 "desc": "Toogle custom movement"
             }
-          
         ]
     },
     {
@@ -187,25 +204,25 @@
                                 "lhs": "d",
                                 "rhs": "<cmd>lua require('telescope.actions').select_default()<CR>",
                                 "desc": "Open current file at commit in current buffer",
-                                "pattern": "TelescopePreviewerLoaded"
+                                "userEvent": "TelescopePreviewerLoaded"
                             },
                             {
                                 "lhs": "v",
                                 "rhs": "<cmd>lua require('telescope.actions').select_vertical()<CR>",
                                 "desc": "Open current file at commit in vertical split",
-                                "pattern": "TelescopePreviewerLoaded"
+                                "userEvent": "TelescopePreviewerLoaded"
                             },
                             {
                                 "lhs": "h",
                                 "rhs": "<cmd>lua require('telescope.actions').select_horizontal()<CR>",
                                 "desc": "Open current file at commit in horizontal split",
-                                "pattern": "TelescopePreviewerLoaded"
+                                "userEvent": "TelescopePreviewerLoaded"
                             },
                             {
                                 "lhs": "t",
                                 "rhs": "<cmd>lua require('telescope.actions').select_tab()<CR>",
                                 "desc": "Open current file at commit in new tab",
-                                "pattern": "TelescopePreviewerLoaded"
+                                "userEvent": "TelescopePreviewerLoaded"
                             }
                         ]
                     }
@@ -469,88 +486,105 @@
     {
         "title": "Debugger commands",
         "base_lhs": "<Leader>d",
+        "filetype": "rust",
         "commands": [
             {
                 "lhs": "l",
                 "rhs": "<cmd>lua require'dap'.step_into()<CR>",
-                "desc": "Debugger step into"
+                "desc": "Debugger step into",
+                "filetype": "rust"
             },
             {
                 "lhs": "j",
                 "rhs": "<cmd>lua require'dap'.step_over()<CR>",
-                "desc": "Debugger step over"
+                "desc": "Debugger step over",
+                "filetype": "rust"
             },
             {
                 "lhs": "k",
                 "rhs": "<cmd>lua require'dap'.step_out()<CR>",
-                "desc": "Debugger step out"
+                "desc": "Debugger step out",
+                "filetype": "rust"
             },
             {
                 "lhs": "c",
                 "rhs": "<cmd>lua require'dap'.continue()<CR>",
-                "desc": "Debugger continue"
+                "desc": "Debugger continue",
+                "filetype": "rust"
             },
             {
                 "lhs": "b",
                 "rhs": "<cmd>lua require'dap'.toggle_breakpoint()<CR>",
-                "desc": "Debugger toggle breakpoint"
+                "desc": "Debugger toggle breakpoint",
+                "filetype": "rust"
             },
             {
                 "lhs": "d",
                 "rhs": "<cmd>lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>",
-                "desc": "Debugger set conditional breakpoint"
+                "desc": "Debugger set conditional breakpoint",
+                "filetype": "rust"
             },
             {
                 "lhs": "e",
                 "rhs": "<cmd>lua require'dap'.terminate()<CR>",
-                "desc": "Debugger reset"
+                "desc": "Debugger reset",
+                "filetype": "rust"
             },
             {
                 "lhs": "r",
                 "rhs": "<cmd>lua require'dap'.run_last()<CR>",
-                "desc": "Debugger run last"
+                "desc": "Debugger run last",
+                "filetype": "rust"
             }
         ]
     },
     {
         "title": "LSP commands",
         "base_lhs": "<Leader>g",
+        "filetype": "rust",
         "commands": [
             {
                 "lhs": "d",
                 "rhs": "<cmd>lua vim.lsp.buf.definition()<CR>",
-                "desc": "Go to definition"
+                "desc": "Go to definition",
+                "filetype": "rust"
             },
             {
                 "lhs": "i",
                 "rhs": "<cmd>lua vim.lsp.buf.implementation()<CR>",
-                "desc": "Go to implementation"
+                "desc": "Go to implementation",
+                "filetype": "rust"
             },
             {
                 "lhs": "t",
                 "rhs": "<cmd>lua vim.lsp.buf.type_definition()<CR>",
-                "desc": "Go to type definition"
+                "desc": "Go to type definition",
+                "filetype": "rust"
             }
         ]
     },
     {
         "title": "Refactor commands",
         "base_lhs": "<Leader>r",
+        "filetype": "rust",
         "commands": [
             {
                 "lhs": "n",
                 "rhs": "<cmd>vim.lsp.buf.rename()<CR>",
-                "desc": "LSP Rename"
+                "desc": "LSP Rename",
+                "filetype": "rust"
             },
             {
                 "lhs": "a",
                 "rhs": "<cmd>vim.lsp.buf.code_action()<CR>",
-                "desc": "Code actions"
+                "desc": "Code actions",
+                "filetype": "rust"
             },
             {
                 "lhs": "g",
                 "rhs": "<cmd>vim.lsp.buf.code_action_group()<CR>",
-                "desc": "Code action group"
+                "desc": "Code action group",
+                "filetype": "rust"
             }
         ]
     }

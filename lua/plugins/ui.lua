@@ -66,7 +66,7 @@ return {
     }, {"MunifTanjim/nui.nvim", lazy = false}, {
         "akinsho/bufferline.nvim",
         version = "*",
-        keymaps = false,
+        -- keymaps = false,
         lazy = false,
         dependencies = "nvim-tree/nvim-web-devicons",
         config = function()

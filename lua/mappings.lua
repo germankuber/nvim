@@ -1,94 +1,126 @@
--- require "nvchad.mappings"
+-- File: lua/custom/mappings.lua
+-- Function to set key mappings
+local function set_keymap(mode, lhs, rhs, opts)
+    vim.keymap.set(mode, lhs, rhs, opts)
+end
 
-local function apply_mappings(group, parent_lhs, parent_pattern)
-  -- Si no hay comandos, no hacemos nada
-  if not group or not group.commands then
-    return
-  end
-
-  -- Hereda el prefijo y el patrón del padre
-  local base_lhs = (parent_lhs or "") .. (group.base_lhs or "")
-  local group_pattern = group.pattern or parent_pattern -- El grupo usa su patrón o hereda
-
-  -- Si el grupo tiene un título y un base_lhs, registrar el grupo (si no tiene patrón)
-  if group.title and group.title ~= "" and group.base_lhs and group.base_lhs ~= "" then
-    if not group_pattern then
-      -- Crear mapeo global si no hay patrón
-      local mode = group.mode or "n" -- Modo normal por defecto
-      local lhs = base_lhs
-      local rhs = "<Nop>"
-      local opts = {
-        desc = group.title,
-        noremap = true,
-        silent = true,
-      }
-      vim.api.nvim_set_keymap(mode, lhs, rhs, opts)
+-- Function to safely remove key mappings
+local function remove_keymap(mode, lhs, bufnr)
+    if vim.api.nvim_buf_is_valid(bufnr) then
+        pcall(vim.keymap.del, mode, lhs, {buffer = bufnr})
     end
-  end
+end
 
-  -- Procesar comandos y subgrupos
-  for _, command in ipairs(group.commands) do
-    local command_pattern = command.pattern or group_pattern -- El comando usa su patrón o hereda
+local function handle_user_event_mapping(command, base_lhs, mode, lhs, rhs, opts)
+    vim.api.nvim_create_autocmd("User", {
+        pattern = command.userEvent,
+        callback = function()
+            vim.schedule(function()
 
-    if command.commands then
-      -- Si hay comandos anidados, llama recursivamente
-      apply_mappings(command, base_lhs, command_pattern)
+                local bufnr = vim.api.nvim_get_current_buf()
+                opts.buffer = bufnr
+                set_keymap(mode, lhs, rhs, opts)
+
+                vim.api.nvim_create_autocmd({
+                    "BufLeave", "BufWinLeave", "WinClosed", "BufWipeout"
+                }, {
+                    buffer = bufnr,
+                    once = true,
+                    callback = function()
+                        remove_keymap(mode, lhs, bufnr)
+                    end
+                })
+            end)
+        end
+    })
+end
+
+-- Function to handle filetype mappings
+local function handle_filetype_mapping(command, base_lhs, mode, lhs, rhs, opts)
+    vim.api.nvim_create_autocmd("FileType", {
+        pattern = command.filetype,
+        callback = function(args)
+            local bufnr = args.buf
+            opts.buffer = bufnr
+            set_keymap(mode, lhs, rhs, opts)
+        end
+    })
+end
+
+-- Function to process individual commands
+local function process_command(command, base_lhs, parent_filetype,
+                               parent_userEvent)
+
+    local command_filetype = command.filetype or parent_filetype
+    local command_userEvent = command.userEvent or parent_userEvent
+    local mode = command.mode or "n"
+    local lhs = base_lhs .. (command.lhs or "")
+    local rhs = command.rhs or ""
+    local opts = {
+        desc = command.desc,
+        noremap = command.noremap ~= false,
+        silent = command.silent ~= false
+    }
+
+    if command_userEvent then
+
+        handle_user_event_mapping(command, base_lhs, mode, lhs, rhs, opts)
+    elseif command_filetype then
+        handle_filetype_mapping(command, base_lhs, mode, lhs, rhs, opts)
     else
-      -- Crear autocomando si hay un patrón
-      if command_pattern then
-        vim.api.nvim_create_autocmd("User", {
-          pattern = command_pattern,
-          callback = function()
-            local mode = command.mode or "n"
-            local lhs = base_lhs .. (command.lhs or "")
-            local rhs = command.rhs or ""
-            local opts = {
-              desc = command.desc,
-              noremap = command.noremap ~= false,
-              silent = command.silent ~= false,
-            }
-            vim.api.nvim_set_keymap(mode, lhs, rhs, opts)
-          end,
-        })
-      else
-        -- Crear mapeo normal si no hay patrón
-        local mode = command.mode or "n"
-        local lhs = base_lhs .. (command.lhs or "")
-        local rhs = command.rhs or ""
-        local opts = {
-          desc = command.desc,
-          noremap = command.noremap ~= false,
-          silent = command.silent ~= false,
-        }
-        vim.api.nvim_set_keymap(mode, lhs, rhs, opts)
-      end
+        set_keymap(mode, lhs, rhs, opts)
     end
-  end
 end
 
--- Función para cargar el archivo JSON y aplicar los mapeos
+-- Function to process a group of mappings
+local function apply_mappings(group, parent_lhs, parent_filetype,
+                              parent_userEvent)
+    if not group or not group.commands then return end
+
+    local base_lhs = (parent_lhs or "") .. (group.base_lhs or "")
+    local group_filetype = group.filetype or parent_filetype
+    local group_userEvent = group.userEvent or parent_userEvent
+
+    if group.title and group.title ~= "" and group.base_lhs and group.base_lhs ~=
+        "" then
+        if not group_filetype and not group_userEvent then
+            local mode = group.mode or "n"
+            local lhs = base_lhs
+            local rhs = "<Nop>"
+            local opts = {desc = group.title, noremap = true, silent = true}
+            set_keymap(mode, lhs, rhs, opts)
+        end
+    end
+
+    for _, command in ipairs(group.commands) do
+        if command.commands then
+            apply_mappings(command, base_lhs, group_filetype, group_userEvent)
+        else
+            process_command(command, base_lhs, group_filetype, group_userEvent)
+        end
+    end
+end
+
+-- Function to load the JSON file and apply mappings
 local function load_and_apply_mappings(filepath)
-  local mappings_file = vim.fn.stdpath "config" .. "/lua/" .. filepath
-  local ok, content = pcall(vim.fn.readfile, mappings_file)
-  if not ok then
-    vim.notify("Error reading mappings file: " .. mappings_file, vim.log.levels.ERROR)
-    return
-  end
+    local mappings_file = vim.fn.stdpath("config") .. "/lua/" .. filepath
+    local ok, content = pcall(vim.fn.readfile, mappings_file)
+    if not ok then
+        vim.notify("Error reading mappings file: " .. mappings_file,
+                   vim.log.levels.ERROR)
+        return
+    end
 
-  -- Concatenar las líneas en una sola cadena
-  local json_content = table.concat(content, "\n")
-  local mappings = vim.fn.json_decode(json_content)
-  if not mappings then
-    vim.notify("Invalid JSON format in mappings file: " .. mappings_file, vim.log.levels.ERROR)
-    return
-  end
+    local json_content = table.concat(content, "\n")
+    local mappings = vim.fn.json_decode(json_content)
+    if not mappings then
+        vim.notify("Invalid JSON format in mappings file: " .. mappings_file,
+                   vim.log.levels.ERROR)
+        return
+    end
 
-  -- Procesa cada grupo de mapeos
-  for _, group in ipairs(mappings) do
-    apply_mappings(group)
-  end
+    for _, group in ipairs(mappings) do apply_mappings(group) end
 end
 
--- Llama a la función con la ruta correcta
-load_and_apply_mappings "mappings/mappings.json"
- 
+-- Call the function with the correct path
+load_and_apply_mappings("mappings/mappings.json")

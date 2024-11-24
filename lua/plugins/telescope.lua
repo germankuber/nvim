@@ -72,11 +72,7 @@ return {
                             path = vim.fn.stdpath("config") ..
                                 "/lua/colorscheme.lua"
                         },
-                        mappings = {
-                            down = "<C-n>",
-                            up = "<C-p>",
-                            accept = "<C-y>"
-                        }
+                  
                     }
                 }
             })

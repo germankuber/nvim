@@ -6,7 +6,6 @@ require("config.sessions")
 require('config.jump_config')
 require('config.sound')
 
-
 -- vim.opt.clipboard = "unnamedplus"
 
 -- require "plugins.init"
