@@ -14,9 +14,7 @@ return {
                     relative = 'editor',
                     prefer_width = 40,
                     prefer_height = 10,
-                    win_options = {
-                        winblend = 0,
-                    },
+                    win_options = {winblend = 0},
                     override = function(conf)
                         conf.col = math.floor((vim.o.columns - conf.width) / 2)
                         conf.row = math.floor(
@@ -110,21 +108,49 @@ return {
         config = function()
             require('lualine').setup({
                 options = {
-                    theme = 'tokyonight' -- Or another theme
+                    theme = 'tokyonight', -- You can change to 'gruvbox', 'dracula', etc.
+                    component_separators = {left = '', right = ''},
+                    section_separators = {left = '', right = ''},
+                    disabled_filetypes = {'NvimTree', 'dashboard', 'packer'}
                 },
                 sections = {
                     lualine_a = {
                         {
                             'mode',
                             fmt = function(mode)
-                                if mode == "INSERT" then
-                                    return "INSERT MODE 🚀"
-                                end
-                                return mode
+                                local modes = {
+                                    INSERT = "INSERT 🚀",
+                                    NORMAL = "NORMAL 🌟",
+                                    VISUAL = "VISUAL ✍️",
+                                    REPLACE = "REPLACE 🔄"
+                                }
+                                return modes[mode] or mode
                             end
                         }
-                    }
-                }
+                    },
+                    lualine_b = {'branch', 'diff'},
+                    lualine_c = {'filename'},
+                    lualine_x = {'encoding', 'fileformat', 'filetype'},
+                    lualine_y = {
+                        {
+                            function()
+                                local jump_config =
+                                    require('config.jump_config')
+                                return "Jump: " .. jump_config.line_jump
+                            end
+                        }
+                    },
+                    lualine_z = {'location'}
+                },
+                inactive_sections = {
+                    lualine_a = {},
+                    lualine_b = {},
+                    lualine_c = {'filename'},
+                    lualine_x = {'location'},
+                    lualine_y = {},
+                    lualine_z = {}
+                },
+                extensions = {'quickfix', 'fugitive'}
             })
         end
     }, {
