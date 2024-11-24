@@ -4,7 +4,7 @@ require("config.telescope_buffers")
 require("config.terminal")
 require("config.sessions")
 require('config.jump_config')
-
+require('config.sound')
 
 
 -- vim.opt.clipboard = "unnamedplus"
