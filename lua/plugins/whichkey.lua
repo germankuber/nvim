@@ -11,7 +11,14 @@ return {
         dependencies = {"MunifTanjim/nui.nvim", "rcarriga/nvim-notify"},
         config = function()
             require("noice").setup {
-                -- Configuración para ventanas flotantes globales
+                lsp = {
+                    override = {
+                        ["K"] = false, -- Deshabilitar el mapeo de K en noice.nvim
+                    },
+                    hover = {
+                        enabled = false, -- Deshabilitar la funcionalidad hover de LSP en Noice
+                    },
+                },
                 presets = {
                     bottom_search = false, -- Desactiva búsquedas abajo
                     command_palette = true, -- Usa un panel flotante para comandos
@@ -36,6 +43,7 @@ return {
                     }
                 }
             }
+             
         end
     }, {
         "folke/which-key.nvim",

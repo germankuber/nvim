@@ -23,7 +23,6 @@ return {
                             silent = true,
                             buffer = bufnr
                         }
-                        vim.keymap.set("n", "K", vim.lsp.buf.hover, opts) -- Show hover documentation
                     end,
                     settings = {
                         ["rust-analyzer"] = {

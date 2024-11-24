@@ -3,6 +3,7 @@ require("config.bookmarks")
 require("config.telescope_buffers")
 require("config.terminal")
 require("config.sessions")
+require('config.jump_config')
 
 
 

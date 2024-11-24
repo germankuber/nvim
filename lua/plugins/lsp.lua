@@ -4,11 +4,8 @@ return {
         config = function()
             require("lspconfig").rust_analyzer.setup({
                 on_attach = function(client, bufnr)
-                    -- Keymap for hover documentation
-                    vim.keymap.set("n", "K", vim.lsp.buf.hover,
-                                   {buffer = bufnr, silent = true})
+         
 
-                    -- Enable inlay hints
                     if client.server_capabilities.inlayHintProvider then
                         vim.lsp.buf.inlay_hint(bufnr, true)
                     end

@@ -1,5 +1,32 @@
 return {
     {
+        'stevearc/dressing.nvim',
+        lazy = false,
+        config = function()
+            require('dressing').setup({
+                input = {
+                    enabled = true,
+                    default_prompt = 'Input:',
+                    prompt_align = 'center',
+                    insert_only = false,
+                    anchor = 'SW',
+                    border = 'rounded',
+                    relative = 'editor',
+                    prefer_width = 40,
+                    prefer_height = 10,
+                    win_options = {
+                        winblend = 0,
+                    },
+                    override = function(conf)
+                        conf.col = math.floor((vim.o.columns - conf.width) / 2)
+                        conf.row = math.floor(
+                                       (vim.o.lines - conf.height) / 2 - 1)
+                        return conf
+                    end
+                }
+            })
+        end
+    }, {
         'glepnir/dashboard-nvim',
         event = 'VimEnter',
         lazy = false,

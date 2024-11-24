@@ -1,5 +1,3 @@
--- require "nvchad.options"
-
 vim.cmd("let g:netrw_liststyle = 3")
 
 local opt = vim.opt
@@ -47,3 +45,4 @@ opt.swapfile = false
 -- })
 
 vim.lsp.inlay_hint.enable(true)
+
