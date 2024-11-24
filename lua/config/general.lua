@@ -255,6 +255,9 @@ end
 -- Variable to store the desired column when moving vertically
 local desired_col = nil
 
+-- Variable to track if the cursor is at the end of a line
+local is_at_line_end = false
+
 -- Function to set the desired column before moving vertically
 local function set_desired_col()
   desired_col = vim.fn.col('.')
@@ -275,9 +278,12 @@ local function restore_col(line)
       -- If the desired column is within the line's bounds, move to the desired column
       vim.fn.cursor(vim.fn.line('.'), desired_col)
   end
+  
+  -- Update the line end status
+  is_at_line_end = (vim.fn.col('.') == last_col)
 end
 
--- Custom function for the 'h' key (move left)
+-- Custom function for the 'h' key (move left or jump to the end of the previous non-blank line)
 local function custom_h()
   local line = vim.fn.getline('.')
   local first_non_ws = get_first_non_ws_col(line)
@@ -287,31 +293,36 @@ local function custom_h()
       -- Move cursor one position to the left if it's beyond the first non-whitespace character
       vim.cmd('normal! h')
   elseif current_col == first_non_ws then
-      -- If at the first non-whitespace character, jump to the end of the next non-blank line
-      local target_line = vim.fn.line('.') + 1  -- Start checking from the next line
+      -- If at the first non-whitespace character, jump to the end of the previous non-blank line
+      local target_line = vim.fn.line('.') - 1  -- Start checking from the previous line
       
-      -- Loop to find the next non-blank line
-      while target_line <= vim.fn.line('$') do
+      -- Loop to find the previous non-blank line
+      while target_line >= 1 do
           local line_content = vim.fn.getline(target_line)
           if not line_content:match("^%s*$") then
-              -- Found a non-blank line
-              break
+              break  -- Found a non-blank line
           end
-          target_line = target_line + 1
+          target_line = target_line - 1
       end
       
-      if target_line <= vim.fn.line('$') then
+      if target_line >= 1 then
           local target_line_content = vim.fn.getline(target_line)
-          local target_line_length = get_last_col(target_line_content)
-          vim.fn.cursor(target_line, target_line_length)  -- Move to the last character of the target line
-          desired_col = target_line_length  -- Update desired_col to the new position
+          local target_last_col = get_last_col(target_line_content)
+          vim.fn.cursor(target_line, target_last_col)  -- Move to the last character of the target line
+          desired_col = target_last_col  -- Update desired_col to the new position
+          is_at_line_end = true  -- Set the state to end of line
       end
       -- If no non-blank line is found, do nothing
   end
-  -- If the cursor is before the first non-whitespace character, do nothing
+  
+  -- Update the line end status
+  local new_line = vim.fn.getline('.')
+  local new_last_col = get_last_col(new_line)
+  local new_col = vim.fn.col('.')
+  is_at_line_end = (new_col == new_last_col)
 end
 
--- Custom function for the 'l' key (move right)
+-- Custom function for the 'l' key (move right or jump to the beginning of the next non-blank line)
 local function custom_l()
   local line = vim.fn.getline('.')
   local last_col = get_last_col(line)
@@ -328,8 +339,7 @@ local function custom_l()
       while target_line <= vim.fn.line('$') do
           local line_content = vim.fn.getline(target_line)
           if not line_content:match("^%s*$") then
-              -- Found a non-blank line
-              break
+              break  -- Found a non-blank line
           end
           target_line = target_line + 1
       end
@@ -339,10 +349,16 @@ local function custom_l()
           local first_non_ws = get_first_non_ws_col(target_line_content)
           vim.fn.cursor(target_line, first_non_ws)  -- Move to the first non-whitespace character of the target line
           desired_col = first_non_ws  -- Update desired_col to the new position
+          is_at_line_end = (first_non_ws == get_last_col(target_line_content))  -- Update state
       end
       -- If no non-blank line is found, do nothing
   end
-  -- If the cursor is after the last character (shouldn't happen), do nothing
+  
+  -- Update the line end status
+  local new_line = vim.fn.getline('.')
+  local new_last_col = get_last_col(new_line)
+  local new_col = vim.fn.col('.')
+  is_at_line_end = (new_col == new_last_col)
 end
 
 -- Custom function for the 'j' key (move down, skipping blank lines)
@@ -350,25 +366,42 @@ local function custom_j()
   set_desired_col()  -- Store the current column before moving
   local target_line = vim.fn.line('.') + 1  -- Start checking from the next line
   
-  -- Loop to find the next non-blank line
-  while target_line <= vim.fn.line('$') do
-      local line_content = vim.fn.getline(target_line)
-      if not line_content:match("^%s*$") then
-          -- Found a non-blank line
-          break
+  if is_at_line_end then
+      -- If currently at the end of a line, jump to the end of the next non-blank line
+      while target_line <= vim.fn.line('$') do
+          local line_content = vim.fn.getline(target_line)
+          if not line_content:match("^%s*$") then
+              break  -- Found a non-blank line
+          end
+          target_line = target_line + 1
       end
-      target_line = target_line + 1
+      
+      if target_line <= vim.fn.line('$') then
+          local target_line_content = vim.fn.getline(target_line)
+          local target_last_col = get_last_col(target_line_content)
+          vim.fn.cursor(target_line, target_last_col)  -- Move to the last character of the target line
+          desired_col = target_last_col  -- Update desired_col to the new position
+          is_at_line_end = true  -- Remain in end-of-line mode
+      end
+      -- If no non-blank line is found, do nothing
+  else
+      -- If not at the end of a line, perform standard vertical movement
+      -- Loop to find the next non-blank line
+      while target_line <= vim.fn.line('$') do
+          local line_content = vim.fn.getline(target_line)
+          if not line_content:match("^%s*$") then
+              break  -- Found a non-blank line
+          end
+          target_line = target_line + 1
+      end
+      
+      if target_line <= vim.fn.line('$') then
+          -- Move to the target line
+          vim.fn.cursor(target_line, 1)  -- Move to the first character (will be adjusted)
+          local line = vim.fn.getline('.')
+          restore_col(line)  -- Adjust the column based on the new line
+      end
   end
-  
-  if target_line > vim.fn.line('$') then
-      -- Reached the end of the file without finding a non-blank line
-      return
-  end
-  
-  -- Move to the target line
-  vim.fn.cursor(target_line, 1)  -- Move to the first character (will be adjusted)
-  local line = vim.fn.getline('.')
-  restore_col(line)  -- Adjust the column based on the new line
 end
 
 -- Custom function for the 'k' key (move up, skipping blank lines)
@@ -376,25 +409,42 @@ local function custom_k()
   set_desired_col()  -- Store the current column before moving
   local target_line = vim.fn.line('.') - 1  -- Start checking from the previous line
   
-  -- Loop to find the previous non-blank line
-  while target_line >= 1 do
-      local line_content = vim.fn.getline(target_line)
-      if not line_content:match("^%s*$") then
-          -- Found a non-blank line
-          break
+  if is_at_line_end then
+      -- If currently at the end of a line, jump to the end of the previous non-blank line
+      while target_line >= 1 do
+          local line_content = vim.fn.getline(target_line)
+          if not line_content:match("^%s*$") then
+              break  -- Found a non-blank line
+          end
+          target_line = target_line - 1
       end
-      target_line = target_line - 1
+      
+      if target_line >= 1 then
+          local target_line_content = vim.fn.getline(target_line)
+          local target_last_col = get_last_col(target_line_content)
+          vim.fn.cursor(target_line, target_last_col)  -- Move to the last character of the target line
+          desired_col = target_last_col  -- Update desired_col to the new position
+          is_at_line_end = true  -- Remain in end-of-line mode
+      end
+      -- If no non-blank line is found, do nothing
+  else
+      -- If not at the end of a line, perform standard vertical movement
+      -- Loop to find the previous non-blank line
+      while target_line >= 1 do
+          local line_content = vim.fn.getline(target_line)
+          if not line_content:match("^%s*$") then
+              break  -- Found a non-blank line
+          end
+          target_line = target_line - 1
+      end
+      
+      if target_line >= 1 then
+          -- Move to the target line
+          vim.fn.cursor(target_line, 1)  -- Move to the first character (will be adjusted)
+          local line = vim.fn.getline('.')
+          restore_col(line)  -- Adjust the column based on the new line
+      end
   end
-  
-  if target_line < 1 then
-      -- Reached the beginning of the file without finding a non-blank line
-      return
-  end
-  
-  -- Move to the target line
-  vim.fn.cursor(target_line, 1)  -- Move to the first character (will be adjusted)
-  local line = vim.fn.getline('.')
-  restore_col(line)  -- Adjust the column based on the new line
 end
 
 -- Map the movement keys to the custom functions in normal mode
