@@ -84,7 +84,7 @@ require('config.sound')
 --     end
 -- })
 
-vim.opt.cursorline = true
+
 
 -- local wk = require("which-key")
 
@@ -176,30 +176,34 @@ vim.opt.cursorline = true
 --         }
 --     }
 -- })
-
+-- Context lines around the cursor
 vim.o.scrolloff = 5 -- Keep some context lines above/below the cursor
 vim.o.sidescrolloff = 5 -- Keep some context lines to the left/right
+
+-- Redrawing and cursor enhancements
 vim.o.lazyredraw = false -- Ensure no delay in screen redrawing
-
-vim.cmd([[
-  augroup InsertModeEnhancements
-    autocmd!
-    " Highlight cursorline in Insert mode with a specific color
-    autocmd InsertEnter * hi CursorLine guibg=#3e4451
-    autocmd InsertLeave * hi CursorLine guibg=#1e1e2e
-    " Keep cursorline visible in all modes
-    autocmd InsertEnter * set cursorline
-    autocmd InsertLeave * set cursorline
-  augroup END
-]])
-
-vim.o.cursorline = true -- Ensure cursorline is always enabled
+vim.o.cursorline = true -- Highlight the current line
+vim.o.cursorcolumn = true -- Highlight the current column
 
 -- Cursor appearance based on mode
 vim.o.guicursor = "n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50"
 
+-- Dynamic cursorline and cursorcolumn highlighting
 vim.cmd([[
-  " Change background when entering Insert mode
+  augroup CursorLineColumnEnhancements
+    autocmd!
+    " Highlight cursorline and cursorcolumn with specific colors in Insert mode
+    autocmd InsertEnter * hi CursorLine guibg=#3e4451
+    autocmd InsertEnter * hi CursorColumn guibg=#3e4451
+    autocmd InsertLeave * hi CursorLine guibg=#1e1e2e
+    autocmd InsertLeave * hi CursorColumn guibg=#1e1e2e
+    " Ensure cursorline and cursorcolumn stay enabled in all modes
+    autocmd InsertEnter,InsertLeave * set cursorline cursorcolumn
+  augroup END
+]])
+
+-- Background color adjustment in Insert mode
+vim.cmd([[
   hi InsertModeBg guibg=#282c34
   augroup InsertModeBackground
     autocmd!
@@ -208,11 +212,12 @@ vim.cmd([[
   augroup END
 ]])
 
--- -- Configuración básica para nvim-ufo
+-- Basic configuration for nvim-ufo
 vim.o.foldcolumn = '1'
 vim.o.foldlevel = 99
 vim.o.foldlevelstart = 99
 vim.o.foldenable = true
+
 
 -- -- Configuración de nvim-ufo
 -- require('ufo').setup({

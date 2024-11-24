@@ -196,5 +196,6 @@ return {
             vim.api.nvim_set_hl(0, "FidgetTask",
                                 {bg = "none", blend = 0, fg = "#FFFFFF"}) -- Tarea con transparencia
         end
-    }
+    },
+    
 }
