@@ -118,11 +118,8 @@ return {
                 filters = {
                     dotfiles = false,
                     custom = {
-                        "^.cargo$", "^.git$", -- Filter out .git directory
-                        "^.github$", -- Filter out .github directory
-                        "^.idea$", -- Filter out .idea directory
-                        "^target$", -- Filter out target directory
-                        "^.DS_Store$" -- Filter out .DS_Store file
+                        "^.cargo$", "^.git$", "^.github$", "^.idea$",
+                        "^target$", "^.DS_Store$"
                     }
                 },
                 view = {
@@ -136,7 +133,7 @@ return {
                 },
                 actions = {
                     open_file = {
-                        resize_window = true, -- Adjust tree window size if needed
+                        resize_window = false, -- Adjust tree window size if needed
                         quit_on_open = false -- Keep NvimTree open after opening a file
                     }
                 }
@@ -147,38 +144,48 @@ return {
                     vim.defer_fn(function()
                         for _, win in ipairs(vim.api.nvim_list_wins()) do
                             local buf = vim.api.nvim_win_get_buf(win)
-                            local ft = vim.api.nvim_buf_get_option(buf, "filetype")
+                            local ft = vim.api.nvim_buf_get_option(buf,
+                                                                   "filetype")
                             if ft ~= "NvimTree" then
                                 vim.api.nvim_set_current_win(win) -- Mover el foco al buffer
                                 break
                             end
                         end
                     end, 100) -- Retraso suficiente para garantizar que NvimTree cargó
-                end,
+                end
             })
-            -- Autocomando para mover el foco al buffer abierto
+            -- Autocommand to ensure focus switches from NvimTree to another buffer
+            -- and force the tree width to stay consistent
             vim.api.nvim_create_autocmd("BufWinEnter", {
                 callback = function()
                     local tree_win = nil
                     local normal_win = nil
-            
-                    -- Encuentra el buffer del TreeView y otro buffer abierto
+
+                    -- Iterate through all open windows
                     for _, win in ipairs(vim.api.nvim_list_wins()) do
                         local buf = vim.api.nvim_win_get_buf(win)
                         local ft = vim.api.nvim_buf_get_option(buf, "filetype")
+
                         if ft == "NvimTree" then
+                            -- Identify the NvimTree window
                             tree_win = win
-                        else
-                            normal_win = win
+                            break
                         end
                     end
-            
-                    -- Si existe un buffer abierto y el TreeView está activo, mueve el foco
+
+                    -- If both NvimTree and a normal window are open, focus the normal window
                     if tree_win and normal_win then
-                        vim.api.nvim_set_current_win(normal_win) -- Cambia el foco al buffer no-tree
+                        print(tree_win)
+                        vim.api.nvim_set_current_win(normal_win) -- Switch focus to the normal window
                     end
-                end,
+
+                    -- Force the width of the NvimTree window
+                    if tree_win then
+                        vim.api.nvim_win_set_width(tree_win, 40) -- Set the width to your desired value
+                    end
+                end
             })
+
             vim.cmd([[autocmd VimEnter * NvimTreeOpen]])
         end
     }
