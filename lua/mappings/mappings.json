@@ -162,9 +162,39 @@
                 "base_lhs": "h",
                 "commands": [
                     {
-                        "lhs": "f",
-                        "rhs": "<cmd>lua require('telescope').extensions.git_file_history.git_file_history()<CR>",
-                        "desc": "Show file history"
+                        "title": "File history",
+                        "base_lhs": "f",
+                        "commands": [
+                            {
+                                "lhs": "s",
+                                "rhs": "<cmd>lua require('telescope').extensions.git_file_history.git_file_history()<CR>",
+                                "desc": "Show"
+                            },
+                            {
+                                "lhs": "d",
+                                "rhs": "<cmd>lua require('telescope.actions').select_default()<CR>",
+                                "desc": "Open current file at commit in current buffer",
+                                "pattern": "TelescopePreviewerLoaded"
+                            },
+                            {
+                                "lhs": "v",
+                                "rhs": "<cmd>lua require('telescope.actions').select_vertical()<CR>",
+                                "desc": "Open current file at commit in vertical split",
+                                "pattern": "TelescopePreviewerLoaded"
+                            },
+                            {
+                                "lhs": "h",
+                                "rhs": "<cmd>lua require('telescope.actions').select_horizontal()<CR>",
+                                "desc": "Open current file at commit in horizontal split",
+                                "pattern": "TelescopePreviewerLoaded"
+                            },
+                            {
+                                "lhs": "t",
+                                "rhs": "<cmd>lua require('telescope.actions').select_tab()<CR>",
+                                "desc": "Open current file at commit in new tab",
+                                "pattern": "TelescopePreviewerLoaded"
+                            }
+                        ]
                     }
                 ]
             }

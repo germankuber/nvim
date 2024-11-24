@@ -1,44 +1,67 @@
 -- require "nvchad.mappings"
 
-local function apply_mappings(group, parent_lhs)
+local function apply_mappings(group, parent_lhs, parent_pattern)
   -- Si no hay comandos, no hacemos nada
   if not group or not group.commands then
     return
   end
 
-  -- Hereda el prefijo padre
+  -- Hereda el prefijo y el patrón del padre
   local base_lhs = (parent_lhs or "") .. (group.base_lhs or "")
+  local group_pattern = group.pattern or parent_pattern -- El grupo usa su patrón o hereda
 
-  -- Si el grupo tiene título y base_lhs, registramos el grupo
+  -- Si el grupo tiene un título y un base_lhs, registrar el grupo (si no tiene patrón)
   if group.title and group.title ~= "" and group.base_lhs and group.base_lhs ~= "" then
-    -- Aplicamos un mapping sin acción, solo para la descripción
-    local mode = group.mode or "n" -- Modo normal por defecto
-    local lhs = base_lhs
-    local rhs = "<Nop>"
-    local opts = {
-      desc = group.title,
-      noremap = true,
-      silent = true,
-    }
-    vim.api.nvim_set_keymap(mode, lhs, rhs, opts)
-  end
-
-  -- Procesa los comandos del grupo actual
-  for _, command in ipairs(group.commands) do
-    if command.commands then
-      -- Si hay comandos anidados, llama recursivamente
-      apply_mappings(command, base_lhs)
-    else
-      -- Si es un comando normal, aplica el mapeo
-      local mode = command.mode or "n" -- Modo normal por defecto
-      local lhs = base_lhs .. (command.lhs or "")
-      local rhs = command.rhs or ""
+    if not group_pattern then
+      -- Crear mapeo global si no hay patrón
+      local mode = group.mode or "n" -- Modo normal por defecto
+      local lhs = base_lhs
+      local rhs = "<Nop>"
       local opts = {
-        desc = command.desc,
-        noremap = command.noremap ~= false,
-        silent = command.silent ~= false,
+        desc = group.title,
+        noremap = true,
+        silent = true,
       }
       vim.api.nvim_set_keymap(mode, lhs, rhs, opts)
+    end
+  end
+
+  -- Procesar comandos y subgrupos
+  for _, command in ipairs(group.commands) do
+    local command_pattern = command.pattern or group_pattern -- El comando usa su patrón o hereda
+
+    if command.commands then
+      -- Si hay comandos anidados, llama recursivamente
+      apply_mappings(command, base_lhs, command_pattern)
+    else
+      -- Crear autocomando si hay un patrón
+      if command_pattern then
+        vim.api.nvim_create_autocmd("User", {
+          pattern = command_pattern,
+          callback = function()
+            local mode = command.mode or "n"
+            local lhs = base_lhs .. (command.lhs or "")
+            local rhs = command.rhs or ""
+            local opts = {
+              desc = command.desc,
+              noremap = command.noremap ~= false,
+              silent = command.silent ~= false,
+            }
+            vim.api.nvim_set_keymap(mode, lhs, rhs, opts)
+          end,
+        })
+      else
+        -- Crear mapeo normal si no hay patrón
+        local mode = command.mode or "n"
+        local lhs = base_lhs .. (command.lhs or "")
+        local rhs = command.rhs or ""
+        local opts = {
+          desc = command.desc,
+          noremap = command.noremap ~= false,
+          silent = command.silent ~= false,
+        }
+        vim.api.nvim_set_keymap(mode, lhs, rhs, opts)
+      end
     end
   end
 end

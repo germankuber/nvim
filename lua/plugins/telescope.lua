@@ -1,9 +1,10 @@
 return {
-    {
+    {"tpope/vim-fugitive", event = "VeryLazy"}, {
         "nvim-telescope/telescope.nvim",
         dependencies = {
-            "olimorris/persisted.nvim", 
-            "nvim-lua/plenary.nvim",
+            "nvim-lua/plenary.nvim", "tpope/vim-fugitive",
+            "olimorris/persisted.nvim", "nvim-lua/plenary.nvim",
+            "isak102/telescope-git-file-history.nvim",
             "nvim-tree/nvim-web-devicons", {
                 "nvim-telescope/telescope-fzf-native.nvim",
                 build = "make",
@@ -28,6 +29,10 @@ return {
                     selection_caret = " "
                 },
                 extensions = {
+                    git_file_history = {
+                        open_command = "edit", -- Aseguramos el uso de :edit
+                        mappings = {}
+                    },
                     -- copilot_chat = {
                     --     open = function(prompt_bufnr)
                     --         actions.close(prompt_bufnr)
@@ -81,6 +86,7 @@ return {
             require("telescope").load_extension("fzf")
             require("telescope").load_extension("themes")
             require("telescope").load_extension("persisted")
+            require("telescope").load_extension("git_file_history")
         end
     }
 
