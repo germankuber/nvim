@@ -5,7 +5,7 @@ return {
             "nvim-lua/plenary.nvim", "tpope/vim-fugitive",
             "olimorris/persisted.nvim", "nvim-lua/plenary.nvim",
             "isak102/telescope-git-file-history.nvim",
-            "nvim-tree/nvim-web-devicons", {
+             "nvim-tree/nvim-web-devicons", {
                 "nvim-telescope/telescope-fzf-native.nvim",
                 build = "make",
                 cond = vim.fn.executable("make") == 1

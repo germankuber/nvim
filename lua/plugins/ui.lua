@@ -132,7 +132,20 @@ return {
                     lualine_c = {'filename'},
                     lualine_x = {'encoding', 'fileformat', 'filetype'},
                     lualine_y = {
+                        -- 🔥 Indicator for Custom Movement Mode
                         {
+                            function()
+                                local cm = require('config.custom_movement')
+                                if cm.is_enabled() then
+                                    return "🔥"
+                                else
+                                    return "🥶"
+                                end
+                            end,
+                            color = {fg = '#FF4500'}, -- Optional: Set color for the 🔥 icon
+                            padding = {left = 1, right = 1} -- Optional: Adjust padding
+                            -- Optional: Add an icon or text before/after the 🔥
+                        }, {
                             function()
                                 local jump_config =
                                     require('config.jump_config')
@@ -196,6 +209,6 @@ return {
             vim.api.nvim_set_hl(0, "FidgetTask",
                                 {bg = "none", blend = 0, fg = "#FFFFFF"}) -- Tarea con transparencia
         end
-    },
-    
+    }
+
 }

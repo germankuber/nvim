@@ -208,7 +208,7 @@ local function custom_k()
         end
     end
 end
-
+function M.is_enabled() return custom_movement_enabled end
 -- Function to toggle custom movement mode
 function M.toggle_custom_movement()
     if not custom_movement_enabled then
