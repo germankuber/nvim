@@ -16,48 +16,64 @@ function UtilsFunctions.get_comma_to_remove(param, parameter_position)
     return nil
 end
 function UtilsFunctions.remove_parameter(current_symbol_node, bufnr)
+    symbols_to_remove = UtilsFunctions.get_symbols_to_remove(current_symbol_node, bufnr)
+
+    UtilsFunctions.delete_nodes(symbols_to_remove, bufnr)
+end
+function UtilsFunctions.get_symbols_to_remove(current_symbol_node, bufnr)
     if current_symbol_node:parent():type() ~= "parameter" then
         print("This command only works with a parameter.")
     end
-    function_symbol = current_symbol_node:parent():parent():parent()
-    parameter_symbol = current_symbol_node:parent()
-    parameter_position = UtilsFunctions.get_param_position(parameter_symbol, function_symbol)
+    local function_symbol = current_symbol_node:parent():parent():parent()
+    local parameter_symbol = current_symbol_node:parent()
+    local parameter_position = UtilsFunctions.get_param_position(parameter_symbol, function_symbol)
 
-    params_to_remove = {}
-    declarations = {}
+    local params_to_remove = {}
+    local declarations = {}
     UtilsFunctions.insertUniqueNode(params_to_remove, parameter_symbol)
-    comma = UtilsFunctions.get_comma_to_remove(parameter_symbol, parameter_position)
+    local comma = UtilsFunctions.get_comma_to_remove(parameter_symbol, parameter_position)
     if comma then
         UtilsFunctions.insertUniqueNode(params_to_remove, comma)
     end
     for _, function_symbol_to_remove in ipairs(UtilsFunctions.get_references_lsp(function_symbol, bufnr)) do
-    
-        param = UtilsFunctions.get_param_from_function(function_symbol_to_remove:parent(), parameter_position)
-        
+        local param = UtilsFunctions.get_param_from_function(function_symbol_to_remove:parent(), parameter_position)
+
         for _, declaration in ipairs(UtilsFunctions.get_declaration_lsp(param, bufnr)) do
             UtilsFunctions.insertUniqueNode(declarations, declaration:parent())
         end
-        comma = UtilsFunctions.get_comma_to_remove(param, parameter_position)
+        local comma = UtilsFunctions.get_comma_to_remove(param, parameter_position)
         if comma then
             UtilsFunctions.insertUniqueNode(params_to_remove, comma, bufnr)
         end
-     
+
         UtilsFunctions.insertUniqueNode(params_to_remove, param, bufnr)
     end
 
     for _, node in pairs(UtilsFunctions.clean_unused_symbols(declarations, params_to_remove, bufnr)) do
-        position = UtilsFunctions.get_param_position_from_param(node)
+        local position = UtilsFunctions.get_param_position_from_param(node)
         if position ~= nil then
-            comma = UtilsFunctions.get_comma_to_remove(node:parent(), position)
+            local comma = UtilsFunctions.get_comma_to_remove(node:parent(), position)
             if comma then
                 UtilsFunctions.insertUniqueNode(params_to_remove, comma)
             end
         end
-
+        for _, child_to_remove in pairs(
+            UtilsFunctions.get_symbols_to_remove(UtilsFunctions.get_identifier_from_parameter(node), bufnr)
+        ) do
+            UtilsFunctions.insertUniqueNode(params_to_remove, child_to_remove)
+        end
         UtilsFunctions.insertUniqueNode(params_to_remove, node, bufnr)
     end
 
-    UtilsFunctions.delete_nodes(params_to_remove, bufnr)
+    return params_to_remove
+end
+function UtilsFunctions.get_identifier_from_parameter(parameter_node)
+    for child in parameter_node:iter_children() do
+        if child:type() == "identifier" or child:type() == "name" then
+            return child
+        end
+    end
+    return nil
 end
 
 function UtilsFunctions.get_param_position_from_param(param_node)
