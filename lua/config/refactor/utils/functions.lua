@@ -110,9 +110,6 @@ function UtilsFunctions.clean_unused_symbols(declarations, to_check, bufnr)
 
         if #references <= 1 then
             UtilsFunctions.insertUniqueNode(to_return, declaration, bufnr)
-            for _, node in pairs(to_return) do
-                UtilsFunctions.print_node_info(node)
-            end
         end
     end
 
