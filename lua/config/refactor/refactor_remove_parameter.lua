@@ -81,7 +81,6 @@ function RemoveParameter.setup()
     )
 end
 
--- Declare a command to get references from the cursor position excluding the current one
 vim.api.nvim_create_user_command(
     "GetReferences2",
     function()

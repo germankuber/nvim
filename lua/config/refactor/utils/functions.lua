@@ -57,11 +57,14 @@ function UtilsFunctions.get_symbols_to_remove(current_symbol_node, bufnr)
                 UtilsFunctions.insertUniqueNode(params_to_remove, comma)
             end
         end
-        for _, child_to_remove in pairs(
-            UtilsFunctions.get_symbols_to_remove(UtilsFunctions.get_identifier_from_parameter(node), bufnr)
-        ) do
-            UtilsFunctions.insertUniqueNode(params_to_remove, child_to_remove)
+        if node:type() == "parameter" then
+            for _, child_to_remove in pairs(
+                UtilsFunctions.get_symbols_to_remove(UtilsFunctions.get_identifier_from_parameter(node), bufnr)
+            ) do
+                UtilsFunctions.insertUniqueNode(params_to_remove, child_to_remove)
+            end
         end
+
         UtilsFunctions.insertUniqueNode(params_to_remove, node, bufnr)
     end
 
