@@ -31,8 +31,9 @@ function UtilsFunctions.remove_parameter(current_symbol_node, bufnr)
         UtilsFunctions.insertUniqueNode(params_to_remove, comma)
     end
     for _, function_symbol_to_remove in ipairs(UtilsFunctions.get_references_lsp(function_symbol, bufnr)) do
+    
         param = UtilsFunctions.get_param_from_function(function_symbol_to_remove:parent(), parameter_position)
-
+        
         for _, declaration in ipairs(UtilsFunctions.get_declaration_lsp(param, bufnr)) do
             UtilsFunctions.insertUniqueNode(declarations, declaration:parent())
         end
@@ -40,6 +41,7 @@ function UtilsFunctions.remove_parameter(current_symbol_node, bufnr)
         if comma then
             UtilsFunctions.insertUniqueNode(params_to_remove, comma, bufnr)
         end
+     
         UtilsFunctions.insertUniqueNode(params_to_remove, param, bufnr)
     end
 
@@ -54,9 +56,7 @@ function UtilsFunctions.remove_parameter(current_symbol_node, bufnr)
 
         UtilsFunctions.insertUniqueNode(params_to_remove, node, bufnr)
     end
-    -- for _, node in pairs(params_to_remove) do
-    --     UtilsFunctions.print_node_info(node)
-    -- end
+
     UtilsFunctions.delete_nodes(params_to_remove, bufnr)
 end
 
@@ -90,7 +90,6 @@ function UtilsFunctions.clean_unused_symbols(declarations, to_check, bufnr)
         )
 
         if #references <= 1 then
-
             UtilsFunctions.insertUniqueNode(to_return, declaration, bufnr)
             for _, node in pairs(to_return) do
                 UtilsFunctions.print_node_info(node)
@@ -346,19 +345,12 @@ function UtilsFunctions.get_function_name(node)
     end
     return nil
 end
-
 function UtilsFunctions.get_param_from_function(function_node, position)
-    local_position = 1
     for child in function_node:iter_children() do
         if child:type() == "arguments" then
-            for param in child:iter_children() do
-                if param:type() == "identifier" then
-                    if local_position == position then
-                        return param
-                    end
-                    local_position = local_position + 1
-                end
-            end
+            -- Access the named child at the given position (zero-based indexing)
+            local arg_node = child:named_child(position - 1)
+            return arg_node
         end
     end
     return nil
