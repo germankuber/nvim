@@ -1,0 +1,1130 @@
+[
+  {
+    "title": "Tools commands",
+    "base_lhs": "<Leader>T",
+    "commands": [
+      {
+        "title": "Convert",
+        "base_lhs": "c",
+        "commands": [
+          {
+            "title": "Numbers",
+            "base_lhs": "n",
+            "commands": [
+              {
+                "lhs": "c",
+                "rhs": "<cmd>:ConvertNumberMenu<CR>",
+                "desc": "Convert"
+              },
+              {
+                "lhs": "t",
+                "rhs": "<cmd>:ConvertNumberToggle<CR>",
+                "desc": "Toogle"
+              }
+            ]
+          },
+          {
+            "title": "Weth",
+            "base_lhs": "w",
+            "commands": [
+              {
+                "lhs": "c",
+                "rhs": "<cmd>:ConvertWethMenu<CR>",
+                "desc": "Convert"
+              },
+              {
+                "lhs": "t",
+                "rhs": "<cmd>:ConvertWethToggle<CR>",
+                "desc": "Toogle"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "CharGPT commands",
+    "base_lhs": "<Leader>G",
+    "commands": [
+      {
+        "lhs": "q",
+        "rhs": "<cmd>:ChatGPT<CR>",
+        "desc": "Questions"
+      },
+      {
+        "title": "Code",
+        "base_lhs": "c",
+        "filetype": "rust",
+        "commands": [
+          {
+            "lhs": "o",
+            "rhs": "<cmd>:ChatGPTRun optimize_code<CR>",
+            "desc": "Optimize",
+            "mode": "v"
+          },
+          {
+            "lhs": "e",
+            "rhs": "<cmd>:ChatGPTRun explain_code<CR>",
+            "desc": "Explain",
+            "mode": "v"
+          },
+          {
+            "lhs": "c",
+            "rhs": "<cmd>:ChatGPTCompleteCode<CR>",
+            "desc": "Complete",
+            "mode": "v"
+          },
+          {
+            "lhs": "f",
+            "rhs": "<cmd>:ChatGPTRun fix_bugs<CR>",
+            "desc": "Fix Bug",
+            "mode": "v"
+          },
+          {
+            "lhs": "t",
+            "rhs": "<cmd>:ChatGPTRun add_tests<CR>",
+            "desc": "Add test",
+            "mode": "v"
+          }
+        ]
+      },
+      {
+        "lhs": "f",
+        "rhs": "<cmd>:ChatGPTRun grammar_correction<CR>",
+        "desc": "Fix gramma",
+        "mode": "v"
+      },
+      {
+        "lhs": "r",
+        "rhs": "<cmd>:ChatGPTEditWithInstructions<CR>",
+        "desc": "Refactoring",
+        "mode": "v"
+      }
+    ]
+  },
+  {
+    "title": "Refactor commands",
+    "base_lhs": "<Leader>r",
+    "commands": [
+
+      
+      {
+        "lhs": "s",
+        "rhs": "<cmd>:Telescope luasnip<CR>",
+        "desc": "Snippets"
+      },
+      {
+        "lhs": "p",
+        "rhs": "<cmd>:RemoveParameter<CR>",
+        "desc": "Remove parameter"
+      },
+      {
+        "lhs": "a",
+        "rhs": "<cmd>:CodeActionsWithCustomRename<CR>",
+        "desc": "Actions",
+        "mode": "v"
+      },
+      {
+        "lhs": "f",
+        "rhs": "<cmd>lua vim.lsp.buf.format()<CR>",
+        "desc": "Format"
+      },
+      {
+        "title": "Refactor commands",
+        "base_lhs": "n",
+        "desc": "Name",
+        "commands": [
+          {
+            "lhs": "n",
+            "rhs": "<cmd>lua vim.lsp.buf.rename()<CR>",
+            "desc": "Rename",
+            "filetype": "rust"
+          },
+          {
+            "lhs": "u",
+            "rhs": "<cmd>:RefactorToUpper<CR>",
+            "desc": "UpperCase",
+            "filetype": "rust"
+          },
+          {
+            "lhs": "c",
+            "rhs": "<cmd>:RefactorToCamel<CR>",
+            "desc": "LowerCase",
+            "filetype": "rust"
+          },
+          {
+            "lhs": "s",
+            "rhs": "<cmd>:RefactorToSnake<CR>",
+            "desc": "SnakeCase",
+            "filetype": "rust"
+          }
+        ]
+      },
+      {
+        "lhs": "g",
+        "rhs": "<cmd>lua vim.lsp.buf.code_action_group()<CR>",
+        "desc": "Code action group",
+        "filetype": "rust"
+      }
+    ]
+  },
+  {
+    "title": "Funny Copy",
+    "base_lhs": "",
+    "commands": [
+      {
+        "lhs": "<C-.>",
+        "rhs": "<cmd>FunnyClipboardWithCategoryCopy<CR>",
+        "desc": "Copy with category",
+        "mode": "v"
+      },
+      {
+        "title": "Funny Copy",
+        "base_lhs": "<Leader>v",
+        "commands": [
+          {
+            "title": "Paste",
+            "base_lhs": "p",
+            "commands": [
+              {
+                "lhs": "c",
+                "rhs": "<cmd>FunnyClipboardWithCategoryPaste<CR>",
+                "desc": "Category"
+              },
+              {
+                "lhs": "e",
+                "rhs": "<cmd>FunnyClipboardPaste<CR>",
+                "desc": "Entry"
+              }
+            ]
+          },
+          {
+            "title": "Delete",
+            "base_lhs": "d",
+            "commands": [
+              {
+                "lhs": "c",
+                "rhs": "<cmd>FunnyClipboardWithCategoryDeleteCategory<CR>",
+                "desc": "Category"
+              },
+              {
+                "lhs": "e",
+                "rhs": "<cmd>FunnyClipboardWithCategoryDeleteEntry<CR>",
+                "desc": "Entry"
+              },
+              {
+                "lhs": "a",
+                "rhs": "<cmd>FunnyClipboardWithCategoryDeleteAll<CR>",
+                "desc": "All"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Map",
+    "base_lhs": "<Leader>m",
+    "commands": [
+      {
+        "lhs": "t",
+        "rhs": "<cmd>Neominimap toggle<CR>",
+        "desc": "Toggle"
+      },
+      {
+        "lhs": "f",
+        "rhs": "<cmd>Neominimap toggleFocus<CR>",
+        "desc": "Focus"
+      }
+    ]
+  },
+  {
+    "title": "Expand movement",
+    "base_lhs": "",
+    "commands": [
+      {
+        "lhs": "<C-l>",
+        "rhs": "<cmd>lua require('nvim-treesitter.incremental_selection').node_incremental()<CR>",
+        "desc": "Increment selection",
+        "mode": "v"
+      },
+      {
+        "lhs": "<C-h>",
+        "rhs": "<cmd>lua require('nvim-treesitter.incremental_selection').node_decremental()<CR>",
+        "desc": "Decrement selection",
+        "mode": "v"
+      },
+      {
+        "lhs": "<C-k>",
+        "rhs": "<cmd>lua require('nvim-treesitter.incremental_selection').scope_incremental()<CR>",
+        "desc": "Increment scope selection",
+        "mode": "v"
+      }
+    ]
+  },
+  {
+    "title": "Tree view",
+    "base_lhs": "<Leader>t",
+    "filetype": "NvimTree",
+    "commands": [
+      {
+        "title": "Search",
+        "base_lhs": "s",
+        "commands": [
+          {
+            "lhs": "s",
+            "rhs": "<cmd>lua require('nvim-tree.api').live_filter.start()<CR>",
+            "desc": "Search",
+            "filetype": "NvimTree"
+          },
+          {
+            "lhs": "c",
+            "rhs": "<cmd>lua require('nvim-tree.api').live_filter.clear()<CR>",
+            "desc": "Clear",
+            "filetype": "NvimTree"
+          }
+        ]
+      },
+      {
+        "title": "Files",
+        "base_lhs": "f",
+        "commands": [
+          {
+            "lhs": "n",
+            "rhs": "<cmd>lua require('nvim-tree.api').fs.create()<CR>",
+            "desc": "Create a new file",
+            "filetype": "NvimTree"
+          },
+          {
+            "lhs": "d",
+            "rhs": "<cmd>lua require('nvim-tree.api').fs.remove()<CR>",
+            "desc": "Delete a file",
+            "filetype": "NvimTree"
+          },
+          {
+            "lhs": "m",
+            "rhs": "<cmd>lua require('nvim-tree.api').fs.cut()<CR>",
+            "desc": "Move a file",
+            "filetype": "NvimTree"
+          },
+          {
+            "lhs": "r",
+            "rhs": "<cmd>lua require('nvim-tree.api').fs.rename()<CR>",
+            "desc": "Rename a file",
+            "filetype": "NvimTree"
+          }
+        ]
+      },
+      {
+        "title": "Directory",
+        "base_lhs": "d",
+        "commands": [
+          {
+            "lhs": "e",
+            "rhs": "<cmd>lua  require('nvim-tree.api').tree.expand_all()<CR>",
+            "desc": "Expand all",
+            "filetype": "NvimTree"
+          },
+          {
+            "lhs": "c",
+            "rhs": "<cmd>lua require('nvim-tree.api').tree.collapse_all()<CR>",
+            "desc": "Collapse all",
+            "filetype": "NvimTree"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Custom movement",
+    "base_lhs": "<Leader>k",
+    "commands": [
+      {
+        "lhs": "g",
+        "rhs": "<cmd>ShowGasPrices<CR>",
+        "desc": "Eth gas price"
+      },
+      {
+        "lhs": "c",
+        "rhs": "<cmd>lua require('config.custom_movement').toggle_custom_movement()<CR>",
+        "desc": "Toogle custom movement"
+      },
+      {
+        "lhs": "u",
+        "rhs": "<cmd>Telescope undo<CR>",
+        "desc": "Undo history"
+      }
+    ]
+  },
+  {
+    "title": "Jump Commands",
+    "base_lhs": "",
+    "commands": [
+      {
+        "title": "Jump Commands",
+        "base_lhs": "<Leader>j",
+        "commands": [
+          {
+            "lhs": "s",
+            "rhs": "<cmd>lua require('config.jump_config').set_jump_input()<CR>",
+            "desc": "Set size (J/K)(Up/Down)"
+          }
+        ]
+      },
+      {
+        "lhs": "J",
+        "rhs": "<cmd>lua require('config.jump_config').jump('j')<CR>",
+        "desc": "Move down by jump size"
+      },
+      {
+        "lhs": "K",
+        "rhs": "<cmd>lua require('config.jump_config').jump('k')<CR>",
+        "desc": "Move up by jump size"
+      }
+    ]
+  },
+  {
+    "title": "Comments",
+    "base_lhs": "<Leader>c",
+    "filetype": "__codeFileType__",
+    "commands": [
+      {
+        "title": "Todo",
+        "base_lhs": "t",
+        "filetype": "__codeFileType__",
+        "commands": [
+          {
+            "lhs": "l",
+            "rhs": "<cmd>:TodoTelescope<CR>",
+            "desc": "list",
+            "filetype": "__codeFileType__"
+          }
+        ]
+      },
+      {
+        "title": "Comments",
+        "base_lhs": "c",
+        "filetype": "__codeFileType__",
+        "move": "v",
+        "commands": [
+          {
+            "lhs": "l",
+            "rhs": "<cmd>lua require('Comment.api').toggle.linewise.current()<CR>",
+            "desc": "Comment/uncomment the current line",
+            "move": "v",
+            "filetype": "__codeFileType__"
+          },
+          {
+            "lhs": "v",
+            "rhs": "<cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>",
+            "desc": "Comment/uncomment the selected lines",
+            "move": "v",
+            "filetype": "__codeFileType__"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Session Management",
+    "base_lhs": "<Leader>s",
+    "commands": [
+      {
+        "lhs": "s",
+        "rhs": "<cmd>lua require('config.sessions').save_session()<CR>",
+        "desc": "Save session with a name"
+      },
+      {
+        "lhs": "l",
+        "rhs": "<cmd>:Telescope persisted<CR>",
+        "desc": "Load sessions"
+      },
+      {
+        "lhs": "o",
+        "rhs": "<cmd>lua require('config.sessions').overwrite_current_session()<CR>",
+        "desc": "Overwrite the current session"
+      },
+      {
+        "lhs": "d",
+        "rhs": "<cmd>lua require('config.sessions').list_and_delete_sessions()<CR>",
+        "desc": "Delete a session"
+      }
+    ]
+  },
+  {
+    "title": "Quick Quit Commands",
+    "base_lhs": "<Leader>q",
+    "commands": [
+      {
+        "lhs": "q",
+        "rhs": "<cmd>q!<CR>",
+        "desc": "Force quit current window"
+      },
+      {
+        "lhs": "c",
+        "rhs": "<cmd>qa<CR>",
+        "desc": "Close nvim"
+      },
+      {
+        "lhs": "a",
+        "rhs": "<cmd>qa!<CR>",
+        "desc": "Force quit all windows"
+      },
+      {
+        "lhs": "m",
+        "rhs": "<cmd>stop<CR>",
+        "desc": "Minimize Neovim"
+      },
+      {
+        "title": "Write",
+        "base_lhs": "w",
+        "commands": [
+          {
+            "lhs": "w",
+            "rhs": "<cmd>w!<CR>",
+            "desc": "Force"
+          },
+          {
+            "lhs": "q",
+            "rhs": "<cmd>wq!<CR>",
+            "desc": "Force and quit all windows"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Lazy",
+    "base_lhs": "<leader>Z",
+    "commands": [
+      {
+        "lhs": "s",
+        "rhs": "<cmd>Lazy sync<CR>",
+        "desc": "Sync"
+      },
+      {
+        "lhs": "u",
+        "rhs": "<cmd>Lazy update<CR>",
+        "desc": "Update"
+      },
+      {
+        "lhs": "c",
+        "rhs": "<cmd>Lazy clean<CR>",
+        "desc": "Clean"
+      },
+      {
+        "lhs": "C",
+        "rhs": "<cmd>Lazy clear<CR>",
+        "desc": "Clear"
+      }
+    ]
+  },
+  {
+    "title": "Git version",
+    "base_lhs": "<leader>V",
+    "commands": [
+      {
+        "lhs": "b",
+        "rhs": "<cmd>:BlameToggle<CR>",
+        "desc": "Toogle blamme"
+      },
+      {
+        "lhs": "g",
+        "rhs": "<cmd>:Fugit2Graph<CR>",
+        "desc": "Graph"
+      },
+      {
+        "lhs": "e",
+        "rhs": "<cmd>:Fugit2<CR>",
+        "desc": "Engine"
+      },
+      {
+        "title": "History",
+        "base_lhs": "h",
+        "commands": [
+          {
+            "title": "File history",
+            "base_lhs": "f",
+            "commands": [
+              {
+                "lhs": "s",
+                "rhs": "<cmd>lua require('telescope').extensions.git_file_history.git_file_history()<CR>",
+                "desc": "Show"
+              },
+              {
+                "lhs": "d",
+                "rhs": "<cmd>lua require('telescope.actions').select_default()<CR>",
+                "desc": "Open current file at commit in current buffer",
+                "userEvent": "TelescopePreviewerLoaded"
+              },
+              {
+                "lhs": "v",
+                "rhs": "<cmd>lua require('telescope.actions').select_vertical()<CR>",
+                "desc": "Open current file at commit in vertical split",
+                "userEvent": "TelescopePreviewerLoaded"
+              },
+              {
+                "lhs": "h",
+                "rhs": "<cmd>lua require('telescope.actions').select_horizontal()<CR>",
+                "desc": "Open current file at commit in horizontal split",
+                "userEvent": "TelescopePreviewerLoaded"
+              },
+              {
+                "lhs": "t",
+                "rhs": "<cmd>lua require('telescope.actions').select_tab()<CR>",
+                "desc": "Open current file at commit in new tab",
+                "userEvent": "TelescopePreviewerLoaded"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Local history",
+        "base_lhs": "l",
+        "commands": [
+          {
+            "lhs": "l",
+            "rhs": "<cmd>LocalVersionList<CR>",
+            "desc": "List local versions"
+          },
+          {
+            "lhs": "r",
+            "rhs": "<cmd>LocalVersionReplace<CR>",
+            "desc": "Replace with local version",
+            "userEvent": "LocalVersioningTelescope"
+          },
+          {
+            "lhs": "d",
+            "rhs": "<cmd>LocalVersionDiff<CR>",
+            "desc": "Conpare differences",
+            "userEvent": "LocalVersioningTelescope"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Folding",
+    "base_lhs": "<leader>z",
+    "filetype": "__codeFileType__",
+    "commands": [
+      {
+        "lhs": "l",
+        "rhs": "zj",
+        "desc": "Close fold recursively",
+        "filetype": "__codeFileType__"
+      },
+      {
+        "lhs": "k",
+        "rhs": "zC",
+        "desc": "Close fold recursively",
+        "filetype": "__codeFileType__"
+      },
+      {
+        "lhs": "j",
+        "rhs": "zO",
+        "desc": "Open fold recursively",
+        "filetype": "__codeFileType__"
+      },
+      {
+        "lhs": "l",
+        "rhs": "zo",
+        "desc": "Open current fold",
+        "filetype": "__codeFileType__"
+      },
+      {
+        "lhs": "h",
+        "rhs": "zc",
+        "desc": "Close current fold",
+        "filetype": "__codeFileType__"
+      },
+      {
+        "lhs": "p",
+        "rhs": "<cmd>:UfoFoldPreview<CR>",
+        "desc": "Preview folded code",
+        "filetype": "__codeFileType__"
+      },
+      {
+        "lhs": "d",
+        "rhs": "zD",
+        "desc": "Delete current fold",
+        "filetype": "__codeFileType__"
+      }
+    ]
+  },
+  {
+    "title": "Bookmarks Mappings",
+    "base_lhs": "",
+    "filetype": "__codeFileType__",
+    "commands": [
+      {
+        "lhs": "<C-;>",
+        "rhs": "<cmd>lua require('config.bookmarks').next_global_bookmark()<CR>",
+        "desc": "Jump to next global bookmark",
+        "filetype": "__codeFileType__"
+      },
+      {
+        "lhs": "<C-g>",
+        "rhs": "<cmd>lua require('config.bookmarks').prev_global_bookmark()<CR>",
+        "desc": "Jump to previous global bookmark",
+        "filetype": "__codeFileType__"
+      },
+      {
+        "title": "Bookmarks Mappings",
+        "base_lhs": "<leader>b",
+        "commands": [
+          {
+            "lhs": "t",
+            "rhs": "<cmd>lua require('bookmarks').bookmark_toggle()<CR>",
+            "desc": "Toggle bookmarks",
+            "filetype": "__codeFileType__"
+          },
+          {
+            "lhs": "a",
+            "rhs": "<cmd>lua require('bookmarks').bookmark_ann()<CR>",
+            "desc": "Add a bookmark",
+            "filetype": "__codeFileType__"
+          },
+          {
+            "lhs": "n",
+            "rhs": "<cmd>lua require('config.bookmarks').next_global_bookmark()<CR>",
+            "desc": "Jump next",
+            "filetype": "__codeFileType__"
+          },
+          {
+            "lhs": "p",
+            "rhs": "<cmd>lua require('config.bookmarks').prev_global_bookmark()<CR>",
+            "desc": "Jump prev",
+            "filetype": "__codeFileType__"
+          },
+          {
+            "lhs": "C",
+            "rhs": "<cmd>lua require('bookmarks').bookmark_clear_all()<CR>|<cmd>lua require('bookmarks').bookmark_clean()<CR>",
+            "desc": "Clear all",
+            "filetype": "__codeFileType__"
+          },
+          {
+            "lhs": "s",
+            "rhs": "<cmd>lua require('telescope').extensions.bookmarks.list()<CR>",
+            "desc": "Show marked files in quickfix window",
+            "filetype": "__codeFileType__"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "NvimTree Mappings",
+    "buffer_specific": true,
+    "base_lhs": "",
+    "commands": [
+      {
+        "lhs": "H",
+        "rhs": "<cmd>bprevious<CR>",
+        "desc": "Previous"
+      },
+      {
+        "lhs": "L",
+        "rhs": "<cmd>bnext<CR>",
+        "desc": "Next"
+      },
+      {
+        "lhs": "<CR>",
+        "rhs": "<cmd>lua require('nvim-tree.api').node.open.edit()<CR>",
+        "desc": "Abrir nodo"
+      },
+      {
+        "lhs": "<C-e>",
+        "rhs": "<cmd>lua require('nvim-tree.api').node.navigate.parent_close()<CR>",
+        "desc": "Colapsar carpeta del archivo"
+      }
+    ]
+  },
+  {
+    "title": "Panels",
+    "base_lhs": "",
+    "commands": [
+      {
+        "lhs": "N",
+        "rhs": "<cmd>:BufferPrevious<CR>",
+        "desc": "Prev tab"
+      },
+      {
+        "lhs": "M",
+        "rhs": "<cmd>:BufferNext<CR>",
+        "desc": "Next tab"
+      },
+      {
+        "lhs": "Q",
+        "rhs": "<cmd>:BufferCloseOrDashboard<CR>",
+        "desc": "Close tab"
+      },
+      {
+        "title": "Panels Commands",
+        "base_lhs": "<Leader>p",
+        "commands": [
+          {
+            "title": "Terminal Commands",
+            "base_lhs": "t",
+            "commands": [
+              {
+                "lhs": "n",
+                "rhs": "<cmd>:TerminalCreate<CR>",
+                "desc": "Create a new terminal"
+              },
+              {
+                "lhs": "l",
+                "rhs": "<cmd>:TerminalList<CR>",
+                "desc": "List and select a terminal"
+              },
+              {
+                "lhs": "x",
+                "rhs": "<cmd>:TerminalClose<CR>",
+                "desc": "Close a terminal"
+              },
+              {
+                "lhs": "a",
+                "rhs": "<cmd>:TerminalCloseAll<CR>",
+                "desc": "Close all terminals"
+              },
+              {
+                "lhs": "h",
+                "rhs": "<cmd>:TerminalHide<CR>",
+                "desc": "Hide a terminal"
+              }
+            ]
+          },
+          {
+            "title": "Panel",
+            "base_lhs": "p",
+            "commands": [
+              {
+                "title": "Split",
+                "base_lhs": "s",
+                "commands": [
+                  {
+                    "lhs": "v",
+                    "rhs": "<cmd>vsplit | edit %<CR>",
+                    "desc": "Split window vertically"
+                  },
+                  {
+                    "lhs": "h",
+                    "rhs": "<cmd>split | edit %<CR>",
+                    "desc": "Split window horizontally"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "lhs": "l",
+            "rhs": "<cmd>Telescope buffers<CR>",
+            "desc": "Navigate each panel"
+          },
+          {
+            "lhs": "s",
+            "rhs": "<cmd>NvimTreeToggle<CR>",
+            "desc": "Toggle Tree View"
+          }
+        ]
+      },
+      {
+        "title": "Resize",
+        "base_lhs": "",
+        "commands": [
+          {
+            "lhs": "<A-h>",
+            "rhs": "<cmd>lua require('smart-splits').resize_left()<CR>",
+            "desc": "Resize split to the left"
+          },
+          {
+            "lhs": "<A-j>",
+            "rhs": "<cmd>lua require('smart-splits').resize_down()<CR>",
+            "desc": "Resize split downward"
+          },
+          {
+            "lhs": "<A-k>",
+            "rhs": "<cmd>lua require('smart-splits').resize_up()<CR>",
+            "desc": "Resize split upward"
+          },
+          {
+            "lhs": "<A-l>",
+            "rhs": "<cmd>lua require('smart-splits').resize_right()<CR>",
+            "desc": "Resize split to the right"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Find commands",
+    "base_lhs": "<Leader>f",
+    "commands": [
+      {
+        "lhs": "f",
+        "rhs": "<cmd>Telescope find_files<CR>",
+        "desc": "Find a file"
+      },
+      {
+        "lhs": "g",
+        "rhs": "<cmd>Telescope live_grep<CR>",
+        "desc": "Search text in all files"
+      },
+      {
+        "lhs": "l",
+        "rhs": "<cmd>Telescope current_buffer_fuzzy_find<CR>",
+        "desc": "Search text in local files"
+      },
+      {
+        "title": "Find Code",
+        "base_lhs": "c",
+        "commands": [
+          {
+            "lhs": "f",
+            "rhs": "<cmd>lua require('telescope.builtin').treesitter({ default_text = 'function',initial_mode = 'normal' })<CR>",
+            "desc": "Functions"
+          },
+          {
+            "lhs": "i",
+            "rhs": "<cmd>lua require('telescope.builtin').treesitter({ default_text = 'import',initial_mode = 'normal' })<CR>",
+            "desc": "Imports"
+          },
+          {
+            "title": "Variables",
+            "base_lhs": "v",
+            "commands": [
+              {
+                "lhs": "l",
+                "rhs": "<cmd>:LocalVars<CR>",
+                "desc": "Local variables"
+              },
+              {
+                "lhs": "g",
+                "rhs": "<cmd>lua require('telescope.builtin').treesitter({ default_text = 'var',initial_mode = 'normal' })<CR>",
+                "desc": "Variables"
+              }
+            ]
+          },
+          {
+            "title": "Self",
+            "base_lhs": "s",
+            "commands": [
+              {
+                "lhs": "l",
+                "rhs": "<cmd>:SelfRefs<CR>",
+                "desc": "Local"
+              },
+              {
+                "lhs": "g",
+                "rhs": "<cmd>:FileSelfRefs<CR>",
+                "desc": "Global"
+              }
+            ]
+          },
+          {
+            "lhs": "a",
+            "rhs": "<cmd>lua require('telescope.builtin').treesitter()<CR>",
+            "desc": "All"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Code navigation",
+    "commands": [
+      {
+        "lhs": "<C-h>",
+        "rhs": "^h",
+        "desc": "Move to first character"
+      },
+      {
+        "lhs": "<C-l>",
+        "rhs": "g_",
+        "desc": "Move last character"
+      }
+    ]
+  },
+  {
+    "title": "Debugger commands",
+    "base_lhs": "<Leader>D",
+    "filetype": "__codeFileType__",
+    "commands": [
+      {
+        "lhs": "l",
+        "rhs": "<cmd>lua require'dap'.step_into()<CR>",
+        "desc": "Debugger step into",
+        "filetype": "__codeFileType__"
+      },
+      {
+        "lhs": "j",
+        "rhs": "<cmd>lua require'dap'.step_over()<CR>",
+        "desc": "Debugger step over",
+        "filetype": "__codeFileType__"
+      },
+      {
+        "lhs": "k",
+        "rhs": "<cmd>lua require'dap'.step_out()<CR>",
+        "desc": "Debugger step out",
+        "filetype": "__codeFileType__"
+      },
+      {
+        "lhs": "c",
+        "rhs": "<cmd>lua require'dap'.continue()<CR>",
+        "desc": "Debugger continue",
+        "filetype": "__codeFileType__"
+      },
+      {
+        "lhs": "b",
+        "rhs": "<cmd>lua require'dap'.toggle_breakpoint()<CR>",
+        "desc": "Debugger toggle breakpoint",
+        "filetype": "__codeFileType__"
+      },
+      {
+        "lhs": "d",
+        "rhs": "<cmd>lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>",
+        "desc": "Debugger set conditional breakpoint",
+        "filetype": "__codeFileType__"
+      },
+      {
+        "lhs": "e",
+        "rhs": "<cmd>lua require'dap'.terminate()<CR>",
+        "desc": "Debugger reset",
+        "filetype": "__codeFileType__"
+      },
+      {
+        "lhs": "r",
+        "rhs": "<cmd>lua require'dap'.run_last()<CR>",
+        "desc": "Debugger run last",
+        "filetype": "__codeFileType__"
+      }
+    ]
+  },
+  {
+    "title": "Diagnostic commands",
+    "base_lhs": "<Leader>d",
+    "commands": [
+      {
+        "lhs": "l",
+        "rhs": "<cmd>lua require('telescope.builtin').diagnostics({ bufnr = 3, initial_mode = 'normal' })<CR>",
+        "desc": "List"
+      },
+      {
+        "lhs": "L",
+        "rhs": "<cmd>:Trouble diagnostics toggle focus=true<CR>",
+        "desc": "List"
+      },
+      {
+        "title": "Error",
+        "base_lhs": "e",
+        "commands": [
+          {
+            "lhs": "n",
+            "rhs": "<cmd>:GotoNextError<CR>",
+            "desc": "Next"
+          },
+          {
+            "lhs": "p",
+            "rhs": "<cmd>:GotoPrevError<CR>",
+            "desc": "Previous"
+          }
+        ]
+      },
+      {
+        "title": "Hint",
+        "base_lhs": "h",
+        "filetype": "__codeFileType__",
+        "commands": [
+          {
+            "lhs": "n",
+            "rhs": "<cmd>:GotoNextHint<CR>",
+            "desc": "Next"
+          },
+          {
+            "lhs": "p",
+            "rhs": "<cmd>:GotoPrevHint<CR>",
+            "desc": "Previous"
+          }
+        ]
+      },
+      {
+        "title": "Warning",
+        "base_lhs": "w",
+        "filetype": "__codeFileType__",
+        "commands": [
+          {
+            "lhs": "n",
+            "rhs": "<cmd>:GotoNextWarning<CR>",
+            "desc": "Next",
+            "filetype": "__codeFileType__"
+          },
+          {
+            "lhs": "p",
+            "rhs": "<cmd>:GotoPrevWarning<CR>",
+            "desc": "Previous",
+            "filetype": "__codeFileType__"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "LSP commands",
+    "base_lhs": "<Leader>g",
+    "filetype": "rust",
+    "commands": [
+      {
+        "lhs": "d",
+        "rhs": "<cmd>Telescope lsp_definitions<CR>",
+        "desc": "Go to definition",
+        "filetype": "rust"
+      },
+      {
+        "lhs": "i",
+        "rhs": "<cmd>Telescope lsp_implementations<CR>",
+        "desc": "Go to implementation",
+        "filetype": "rust"
+      },
+      {
+        "lhs": "r",
+        "rhs": "<cmd>Telescope lsp_references<CR>",
+        "desc": "Go to references",
+        "filetype": "rust"
+      },
+      {
+        "title": "Go to preview",
+        "base_lhs": "p",
+        "filetype": "rust",
+        "commands": [
+          {
+            "lhs": "d",
+            "rhs": "<cmd>lua require('goto-preview').goto_preview_definition()<CR>",
+            "desc": "Go to definition (Preview)",
+            "filetype": "rust"
+          },
+          {
+            "lhs": "i",
+            "rhs": "<cmd>lua require('goto-preview').goto_preview_implementation()<CR>",
+            "desc": "Go to implementation (Preview)",
+            "filetype": "rust"
+          },
+          {
+            "lhs": "r",
+            "rhs": "<cmd>lua require('goto-preview').goto_preview_declaration()<CR>",
+            "desc": "Go to declaration (Preview)",
+            "filetype": "rust"
+          },
+          {
+            "lhs": "c",
+            "rhs": "<cmd>lua require('goto-preview').close_all_win()<CR>",
+            "desc": "Clear preview windows",
+            "filetype": "rust"
+          }
+        ]
+      }
+    ]
+  }
+]
