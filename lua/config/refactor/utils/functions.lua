@@ -35,12 +35,26 @@ function UtilsFunctions.get_symbols_to_remove(current_symbol_node, bufnr)
     if comma then
         UtilsFunctions.insertUniqueNode(params_to_remove, comma)
     end
-    for _, function_symbol_to_remove in ipairs(UtilsFunctions.get_references_lsp(function_symbol, bufnr)) do
-        local param = UtilsFunctions.get_param_from_function(function_symbol_to_remove:parent(), parameter_position)
 
+
+    local function get_call_expression(node)
+        if node:type() == "call_expression" then
+            return node
+        end
+        return get_call_expression(node:parent())
+    end
+    for _, function_symbol_to_remove in ipairs(UtilsFunctions.get_references_lsp(function_symbol, bufnr)) do
+
+
+        call_expression = get_call_expression(function_symbol_to_remove)
+        print(call_expression:type())
+        -- print(function_symbol_to_remove:parent():parent():type())
+        -- print(function_symbol_to_remove:parent():parent():parent():type())
+        local param = UtilsFunctions.get_param_from_function(call_expression, parameter_position)
         for _, declaration in ipairs(UtilsFunctions.get_declaration_lsp(param, bufnr)) do
             UtilsFunctions.insertUniqueNode(declarations, declaration:parent())
         end
+        
         local comma = UtilsFunctions.get_comma_to_remove(param, parameter_position)
         if comma then
             UtilsFunctions.insertUniqueNode(params_to_remove, comma, bufnr)

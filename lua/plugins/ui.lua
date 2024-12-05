@@ -1,8 +1,23 @@
 return {
     {
+        "xiyaowong/transparent.nvim",
+        config = function()
+            require("transparent").setup(
+                {
+                    enable = true,
+                    extra_groups = {
+                        "NormalFloat",
+                        "NvimTreeNormal"
+                    },
+                    exclude = {}
+                }
+            )
+        end
+    },
+    {
         "j-hui/fidget.nvim",
         opts = {}
-    }, 
+    },
     {
         "windwp/nvim-autopairs",
         event = "InsertEnter",
