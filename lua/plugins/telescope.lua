@@ -28,7 +28,7 @@ return {
                         }
                     },
                     sorting_strategy = "ascending",
-                    winblend = 10,
+                    winblend = 0,
                     prompt_prefix = "🔍 ",
                     selection_caret = "➡️ "
                 },

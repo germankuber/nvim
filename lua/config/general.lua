@@ -45,13 +45,6 @@ vim.o.guicursor = "n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50"
 
 vim.opt.virtualedit = "onemore" -- Allow cursor one more position past EOL, but we handle this with mappings
 
--- vim.fn.sign_define("LightBulbSign",
---                    {text = "💡", texthl = "DiagnosticSignInfo"})
--- vim.fn.sign_define("CodeActionSign",
---                    {text = "💡", texthl = "DiagnosticSignInfo"})
--- vim.fn.sign_define("DiagnosticSignHint",
---                    {text = "💡", texthl = "DiagnosticSignHint"})
-
 vim.api.nvim_set_keymap(
     "n",
     "<C-s>",

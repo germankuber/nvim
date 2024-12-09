@@ -362,6 +362,11 @@
     "base_lhs": "<Leader>k",
     "commands": [
       {
+        "lhs": "k",
+        "rhs": "<cmd>lua require('config.jump_config').set_jump_input()<CR>",
+        "desc": "Set size (J/K)(Up/Down)"
+      },
+      {
         "lhs": "g",
         "rhs": "<cmd>ShowGasPrices<CR>",
         "desc": "Eth gas price"
@@ -387,17 +392,6 @@
     "title": "Jump Commands",
     "base_lhs": "",
     "commands": [
-      {
-        "title": "Jump Commands",
-        "base_lhs": "<Leader>j",
-        "commands": [
-          {
-            "lhs": "s",
-            "rhs": "<cmd>lua require('config.jump_config').set_jump_input()<CR>",
-            "desc": "Set size (J/K)(Up/Down)"
-          }
-        ]
-      },
       {
         "lhs": "J",
         "rhs": "<cmd>lua require('config.jump_config').jump('j')<CR>",

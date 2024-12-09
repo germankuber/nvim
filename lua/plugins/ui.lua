@@ -43,7 +43,7 @@ return {
         config = function()
             require("goto-preview").setup(
                 {
-                    opacity = 80,
+                    
                     width = 120, -- Width of the floating window
                     height = 25 -- Height of the floating window
                     -- :

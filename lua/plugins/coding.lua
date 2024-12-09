@@ -4,11 +4,11 @@ return {
         config = function()
             require("lspsaga").setup(
                 {
-                    ui = {
-                        sign = false,
-                        enable = false,
-                        virtual_text = false
-                    }
+                    lightbulb = {
+                        enable = true,
+                        sign = true,
+                        virtual_text = false,
+                    },
                 }
             )
         end,
