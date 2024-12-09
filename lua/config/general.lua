@@ -177,3 +177,47 @@ vim.api.nvim_create_user_command(
 )
 vim.api.nvim_set_hl(0, "CursorLine", {bg = "#3b4261", underline = false, default = false})
 vim.api.nvim_set_hl(0, "CursorColumn", {bg = "#3b4261", underline = false, default = false})
+
+local function close_non_file_buffers()
+    for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+        if vim.api.nvim_buf_is_loaded(buf) then
+            local buf_type = vim.api.nvim_buf_get_option(buf, "buftype")
+            local filetype = vim.api.nvim_buf_get_option(buf, "filetype")
+
+            -- Definir los tipos de buffers que consideramos como no archivos
+            local non_file_buftypes = {
+                "nofile",
+                "prompt",
+                "help",
+                "quickfix",
+                "terminal",
+                "acwrite"
+            }
+
+            -- Definir filetypes específicos de plugins que deseas cerrar
+            local non_file_filetypes = {
+                "NvimTree",
+                "TelescopePrompt",
+                "packer"
+                -- Añade otros filetypes según tus plugins
+            }
+
+            -- Verificar si el buffer es de un tipo no archivo
+            local is_non_file_buftype = vim.tbl_contains(non_file_buftypes, buf_type)
+            local is_non_file_filetype = vim.tbl_contains(non_file_filetypes, filetype)
+
+            if is_non_file_buftype or is_non_file_filetype then
+                -- Cerrar el buffer de manera forzada
+                vim.api.nvim_buf_delete(buf, {force = true})
+            end
+        end
+    end
+end
+
+-- Crear un autocmd que ejecuta la función antes de salir de Neovim
+vim.api.nvim_create_autocmd(
+    "VimLeavePre",
+    {
+        callback = close_non_file_buffers
+    }
+)

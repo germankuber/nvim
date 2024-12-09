@@ -885,6 +885,12 @@
             "desc": "Functions"
           },
           {
+            "lhs": "c",
+            "rhs": "<cmd>:RustLsp openCargo<CR>",
+            "desc": "Cargo"
+          },
+          
+          {
             "lhs": "i",
             "rhs": "<cmd>lua require('telescope.builtin').treesitter({ default_text = 'import',initial_mode = 'normal' })<CR>",
             "desc": "Imports"
