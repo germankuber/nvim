@@ -107,8 +107,6 @@
     "title": "Refactor commands",
     "base_lhs": "<Leader>r",
     "commands": [
-
-      
       {
         "lhs": "s",
         "rhs": "<cmd>:Telescope luasnip<CR>",
@@ -355,6 +353,11 @@
         "lhs": "u",
         "rhs": "<cmd>Telescope undo<CR>",
         "desc": "Undo history"
+      },
+      {
+        "lhs": "d",
+        "rhs": "<cmd>:OpenTransactionAddressDetail<CR>",
+        "desc": "Transaction/Contract detail"
       }
     ]
   },
@@ -1000,6 +1003,31 @@
         "rhs": "<cmd>lua require'dap'.run_last()<CR>",
         "desc": "Debugger run last",
         "filetype": "__codeFileType__"
+      },
+      {
+        "title": "Panels",
+        "base_lhs": "p",
+        "filetype": "__codeFileType__",
+        "commands": [
+          {
+            "lhs": "s",
+            "rhs": "<cmd>lua require('dapui').float_element('scopes')<CR>",
+            "desc": "Scope in debug",
+            "filetype": "__codeFileType__"
+          },
+          {
+            "lhs": "b",
+            "rhs": "<cmd>lua require('dapui').float_element('breakpoints')<CR>",
+            "desc": "Breakpoint",
+            "filetype": "__codeFileType__"
+          },
+          {
+            "lhs": "p",
+            "rhs": "<cmd>lua require('dapui').toggle()<CR>",
+            "desc": "Panels",
+            "filetype": "__codeFileType__"
+          }
+        ]
       }
     ]
   },
@@ -1089,10 +1117,29 @@
         "filetype": "rust"
       },
       {
-        "lhs": "r",
-        "rhs": "<cmd>Telescope lsp_references<CR>",
-        "desc": "Go to references",
-        "filetype": "rust"
+        "title": "References",
+        "base_lhs": "r",
+        "filetype": "rust",
+        "commands": [
+          {
+            "lhs": "l",
+            "rhs": "<cmd>Telescope lsp_references<CR>",
+            "desc": "List of references",
+            "filetype": "rust"
+          },
+          {
+            "lhs": "n",
+            "rhs": "<cmd>:lua require('illuminate').goto_next_reference(wrap)<CR>",
+            "desc": "Next reference",
+            "filetype": "rust"
+          },
+          {
+            "lhs": "p",
+            "rhs": "<cmd>:lua require('illuminate').goto_prev_reference(wrap)<CR>",
+            "desc": "Prev reference",
+            "filetype": "rust"
+          }
+        ]
       },
       {
         "title": "Go to preview",

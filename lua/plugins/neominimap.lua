@@ -8,7 +8,6 @@ return {
         init = function()
             vim.opt.wrap = false
             vim.opt.sidescrolloff = 36 -- Set a large value
-            ---@type Neominimap.UserConfig
             vim.g.neominimap = {
                 auto_enable = true,
                 mark = {
@@ -19,6 +18,7 @@ return {
                     show_builtins = false ---@type boolean -- shows the builtin marks like [ ] < >
                 }
             }
+            require("neominimap").off()
         end
     }
 }

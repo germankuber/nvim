@@ -1,29 +1,72 @@
 return {
     {
         "mrcjkb/rustaceanvim",
-        version = "*", -- Usa siempre la última versión
-        dependencies = {"nvim-lua/plenary.nvim", "mfussenegger/nvim-dap"},
-        ["rust-analyzer"] = {cargo = {allFeatures = true}}
-        -- config = function() require("rustaceanvim").setup({}) end
-    },{
+        version = "^5",
+        dependencies = {"nvim-lua/plenary.nvim", "mfussenegger/nvim-dap"}, 
+        ["rust-analyzer"] = {
+            server = { 
+                default_settings = {
+                    ["rust-analyzer"] = {
+                        assist = {
+                            importGranularity = "module",
+                            importPrefix = "by_self"
+                        },
+                        cargo = {
+                            loadOutDirsFromCheck = true
+                        }, 
+                        procMacro = {
+                            enable = true
+                        },
+                        lens = {
+                            enable = true
+                        },
+                        diagnostics = {
+                            enable = true,
+                            disabled = {},
+                            enableExperimental = true
+                        },
+                        inlayHints = {
+                            enable = true,
+                            typeHints = {
+                                enable = true,
+                                showParameterHints = true,
+                                parameterHintsPrefix = "<- ",
+                                otherHintsPrefix = "=> "
+                            },
+                            -- lifetimeElisionHints = {
+                            --     enable = "always"
+                            -- },
+                            chainingHints = true,
+                            maxLength = 25
+                        },
+                        codeLens = {
+                            enable = true
+                        }
+                    }
+                }
+            },
+            cargo = {allFeatures = true}
+        }
+    },
+    {
         "kosayoda/nvim-lightbulb",
         config = function()
-            require("nvim-lightbulb").setup({
-                autocmd = {enabled = true}, -- Automatically updates light bulb
-                sign = {enabled = true, priority = 10}, -- Show light bulb as a sign
-                virtual_text = {
-                    enabled = false,
-                    text = "\u{f0626}", -- Unicode for the icon
-                    lens_text = "🔎", -- Optional lens text
-                    hl = "LightBulbFloatWin", -- Custom highlight group
-                    win_opts = {
-                        focusable = true,
+            require("nvim-lightbulb").setup(
+                {
+                    autocmd = {enabled = true},
+                    sign = {enabled = true, priority = 10},
+                    virtual_text = {
+                        enabled = false,
+                        text = "\u{f0626}",
+                        lens_text = "🔎",
+                        hl = "LightBulbFloatWin",
+                        win_opts = {
+                            focusable = true
+                        }
                     },
-                },
-                -- virtual_text = {enabled = false}, -- Disable virtual text
-                status_text = {enabled = false} -- Disable status text
-            })
-    
+                    status_text = {enabled = false}
+                }
+            )
         end
     }
     -- {

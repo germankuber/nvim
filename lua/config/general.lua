@@ -6,13 +6,21 @@ require("config.diagnostic")
 require("config.sessions")
 require("config.preview")
 require("config.refactoring").setup()
-require("config.refactor.refactor_remove_parameter").setup()
+require("config.refactor.refactor")
 require("config.jump_config")
 require("config.sound")
 require("config.trouble")
 require("config.funny_clipboard")
 require("config.convert_number").setup()
+require("config.transaction_detail").setup(
+    {
+        transaction_detail_url = "https://etherscan.io/tx/",
+        contract_detail_url = "https://etherscan.io/address/"
+    }
+)
 require("config.convert_weth").setup()
+require("config.debug")
+-- require('config.my_illuminate').setup()
 require("config.mappings").setup(
     {
         codeFileType = {"rust", "python", "xml", "json", "toml"},
@@ -146,37 +154,8 @@ vim.keymap.set(
         desc = "Code action"
     }
 )
+vim.lsp.inlay_hint.enable(true)
 
-vim.g.rustaceanvim = {
-    server = {
-        default_settings = {
-            ["rust-analyzer"] = {
-                assist = {
-                    importGranularity = "module",
-                    importPrefix = "by_self"
-                },
-                cargo = {
-                    loadOutDirsFromCheck = true
-                },
-                procMacro = {
-                    enable = true
-                },
-                lens = {
-                    enable = true -- Habilita CodeLens
-                },
-                diagnostics = {
-                    enable = true,
-                    disabled = {},
-                    enableExperimental = true
-                },
-                -- Asegúrate de que las acciones de código están habilitadas
-                codeLens = {
-                    enable = true
-                }
-            }
-        }
-    }
-}
 -- Function to close the current buffer and show the dashboard if no buffers remain
 function CloseBufferOrShowDashboard()
     local buffers =
@@ -203,5 +182,5 @@ vim.api.nvim_create_user_command(
         desc = "Close buffer or show dashboard if no buffers remain"
     }
 )
-
-    
+vim.api.nvim_set_hl(0, "CursorLine", {bg = "#3b4261", underline = false, default = false})
+vim.api.nvim_set_hl(0, "CursorColumn", {bg = "#3b4261", underline = false, default = false})

@@ -1,6 +1,36 @@
 local ts_utils = require("nvim-treesitter.ts_utils")
 local UtilsFunctions = {}
 
+function UtilsFunctions.get_all_files(dir, file_list, extensions)
+    file_list = file_list or {}
+    extensions = extensions or {"rs"}
+    local handle, err = vim.loop.fs_scandir(dir)
+
+    if not handle then
+        return file_list
+    end
+
+    while true do
+        local name, type = vim.loop.fs_scandir_next(handle)
+        if not name then
+            break
+        end
+        local path = dir .. "/" .. name
+
+        if type == "directory" and name ~= ".git" then
+            UtilsFunctions.get_all_files(path, file_list, extensions)
+        elseif type == "file" then
+            local ext = vim.fn.fnamemodify(name, ":e")
+
+            if vim.tbl_contains(extensions, ext) then
+                table.insert(file_list, path)
+            end
+        end
+    end
+
+    return file_list
+end
+
 function UtilsFunctions.get_comma_to_remove(param, parameter_position)
     if parameter_position > 1 then
         comma = param:prev_sibling()
@@ -16,7 +46,15 @@ function UtilsFunctions.get_comma_to_remove(param, parameter_position)
     return nil
 end
 function UtilsFunctions.remove_parameter(current_symbol_node, bufnr)
+    -- print("TYPEEEE : ", current_symbol_node:type())
+
+    -- for _, file in pairs(all_files) do
+    local bufnr = vim.fn.bufadd("/Users/GermanKuber/Documents/Repositories/nvim_test/src/main.rs")
+    vim.fn.bufload(bufnr)
+    -- print(file)
     symbols_to_remove = UtilsFunctions.get_symbols_to_remove(current_symbol_node, bufnr)
+    -- end
+    -- symbols_to_remove = UtilsFunctions.get_symbols_to_remove(current_symbol_node, bufnr)
 
     UtilsFunctions.delete_nodes(symbols_to_remove, bufnr)
 end
@@ -36,31 +74,46 @@ function UtilsFunctions.get_symbols_to_remove(current_symbol_node, bufnr)
         UtilsFunctions.insertUniqueNode(params_to_remove, comma)
     end
 
-
     local function get_call_expression(node)
+        if node == nil then
+            return nil
+        end
         if node:type() == "call_expression" then
             return node
         end
         return get_call_expression(node:parent())
     end
-    for _, function_symbol_to_remove in ipairs(UtilsFunctions.get_references_lsp(function_symbol, bufnr)) do
 
+    local function get_function_item(node)
+        if node:type() == "function_item" then
+            return node
+        else
+            for function_symbol in node:iter_children() do
+                if function_symbol:type() == "function_item" then
+                    return function_symbol
+                end
+            end
+        end
+        return nil
+    end
+    for _, function_symbol_to_remove in ipairs(UtilsFunctions.get_references_lsp(function_symbol, bufnr)) do
+        -- UtilsFunctions.print_node_info(function_symbol_to_remove)
 
         call_expression = get_call_expression(function_symbol_to_remove)
-        print(call_expression:type())
-        -- print(function_symbol_to_remove:parent():parent():type())
-        -- print(function_symbol_to_remove:parent():parent():parent():type())
-        local param = UtilsFunctions.get_param_from_function(call_expression, parameter_position)
-        for _, declaration in ipairs(UtilsFunctions.get_declaration_lsp(param, bufnr)) do
-            UtilsFunctions.insertUniqueNode(declarations, declaration:parent())
-        end
-        
-        local comma = UtilsFunctions.get_comma_to_remove(param, parameter_position)
-        if comma then
-            UtilsFunctions.insertUniqueNode(params_to_remove, comma, bufnr)
-        end
 
-        UtilsFunctions.insertUniqueNode(params_to_remove, param, bufnr)
+        if call_expression ~= nil then
+            local param = UtilsFunctions.get_param_from_function(call_expression, parameter_position)
+            for _, declaration in ipairs(UtilsFunctions.get_declaration_lsp(param, bufnr)) do
+                UtilsFunctions.insertUniqueNode(declarations, declaration:parent())
+            end
+
+            local comma = UtilsFunctions.get_comma_to_remove(param, parameter_position)
+            if comma then
+                UtilsFunctions.insertUniqueNode(params_to_remove, comma, bufnr)
+            end
+
+            UtilsFunctions.insertUniqueNode(params_to_remove, param, bufnr)
+        end
     end
 
     for _, node in pairs(UtilsFunctions.clean_unused_symbols(declarations, params_to_remove, bufnr)) do
@@ -133,10 +186,10 @@ end
 function UtilsFunctions.print_node_info(node_symbol)
     local start_line1, start_col1, end_line1, end_col1 = node_symbol:range()
 
-    name = UtilsFunctions.get_symbol_name(node_symbol)
+    -- name = UtilsFunctions.get_symbol_name(node_symbol)
     print(
-        "Name: ",
-        name,
+        -- "Name: ",
+        -- name,
         "(",
         node_symbol:type(),
         ")",
@@ -159,8 +212,34 @@ function UtilsFunctions.are_same_symbol(symbol_node1, symbol_node2)
 end
 
 function UtilsFunctions.get_references_lsp(node_symbol, bufnr)
+    local function ensure_filetype_and_attach_lsp(bufnr)
+        local function is_filetype_set(bufnr)
+            -- Check if the buffer's filetype is set
+            local filetype = vim.bo[bufnr].filetype
+            return filetype ~= "" -- Returns true if a filetype is set
+        end
+        -- Check if the filetype is already set
+        if not is_filetype_set(bufnr) then
+            -- Trigger BufRead autocommands to set the filetype
+            vim.api.nvim_exec_autocmds("BufRead", {buffer = bufnr})
+
+            -- If still not set, assign a default filetype
+            if vim.bo[bufnr].filetype == "" then
+                vim.bo[bufnr].filetype = "plaintext"
+            end
+        end
+
+        -- Attach LSP to the buffer if it's not already attached
+        local lsp_clients = vim.lsp.get_active_clients()
+        for _, client in ipairs(lsp_clients) do
+            if client.supports_method("textDocument/didOpen") then
+                vim.lsp.buf_attach_client(bufnr, client.id)
+            end
+        end
+    end
+
     local function get_node_at_range(bufnr_inner, range)
-        local parser = vim.treesitter.get_parser(bufnr_inner)
+        local parser = vim.treesitter.get_parser(ensure_filetype_and_attach_lsp(bufnr_inner))
         if not parser then
             return nil
         end
@@ -208,9 +287,13 @@ function UtilsFunctions.get_references_lsp(node_symbol, bufnr)
     }
 
     local timeout_ms = 1000
-    local response = vim.lsp.buf_request_sync(bufnr, "textDocument/references", params, timeout_ms)
-
     local references = {}
+    -- local project_root = vim.fn.getcwd()
+    -- local all_files = UtilsFunctions.get_all_files(project_root)
+    -- for _, file in pairs(all_files) do
+    --     local bufnr = vim.fn.bufadd(file)
+    --     vim.fn.bufload(bufnr)
+    local response = vim.lsp.buf_request_sync(bufnr, "textDocument/references", params, timeout_ms)
 
     if response and response[1] and response[1].result then
         for _, ref in ipairs(response[1].result) do
@@ -219,13 +302,14 @@ function UtilsFunctions.get_references_lsp(node_symbol, bufnr)
             local ref_bufnr = vim.uri_to_bufnr(uri)
             local node = get_node_at_range(ref_bufnr, range)
             if node then
-                -- Exclude the current node by comparing buffer number and range
                 if not (ref_bufnr == bufnr and range.start.line == start_row and range.start.character == start_col) then
+                    print(UtilsFunctions.print_node_info(node))
                     table.insert(references, node)
                 end
             end
-        end
+        end 
     end
+    -- end
 
     return references
 end
@@ -392,7 +476,7 @@ function UtilsFunctions.delete_nodes(nodes, bufnr)
         return
     end
 
-    bufnr = bufnr or vim.api.nvim_get_current_buf()
+    -- bufnr = bufnr or vim.api.nvim_get_current_buf()
 
     -- Collect nodes into an array for sorting
     local node_list = {}
@@ -419,6 +503,7 @@ function UtilsFunctions.delete_nodes(nodes, bufnr)
     -- Delete each node
     for _, node in ipairs(node_list) do
         if node then
+            UtilsFunctions.print_node_info(node) 
             local start_row, start_col, end_row, end_col = node:range()
             vim.api.nvim_buf_set_text(bufnr, start_row, start_col, end_row, end_col, {})
         end

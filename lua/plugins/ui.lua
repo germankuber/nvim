@@ -1,19 +1,19 @@
 return {
-    {
-        "xiyaowong/transparent.nvim",
-        config = function()
-            require("transparent").setup(
-                {
-                    enable = true,
-                    extra_groups = {
-                        "NormalFloat",
-                        "NvimTreeNormal"
-                    },
-                    exclude = {}
-                }
-            )
-        end
-    },
+    -- {
+    --     "xiyaowong/transparent.nvim",
+    --     config = function()
+    --         require("transparent").setup(
+    --             {
+    --                 enable = true,
+    --                 extra_groups = {
+    --                     "NormalFloat",
+    --                     "NvimTreeNormal"
+    --                 },
+    --                 exclude = {}
+    --             }
+    --         )
+    --     end
+    -- },
     {
         "j-hui/fidget.nvim",
         opts = {}
@@ -161,7 +161,8 @@ return {
             require("lualine").setup(
                 {
                     options = {
-                        -- :theme = 'tokyonight', -- You can change to 'gruvbox', 'dracula', etc.
+
+                        theme = 'sonokai', -- You can change to 'gruvbox', 'dracula', etc.
                         component_separators = {left = "", right = ""},
                         section_separators = {left = "", right = ""},
                         disabled_filetypes = {"NvimTree", "dashboard", "packer"}
