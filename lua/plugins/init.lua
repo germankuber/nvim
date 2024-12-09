@@ -1,5 +1,6 @@
 return {
   require "plugins.persistence",
+  require "plugins.comments",
   require "plugins.telescope",
   require "plugins.ui",
   require "plugins.git",
@@ -8,6 +9,7 @@ return {
   require "plugins.theme",
   require "plugins.snippets",
   require "plugins.lsp",
+  require "plugins.coding",
   require "plugins.cmp",
   require "plugins.diagnostic",
   require "plugins.refactoring",

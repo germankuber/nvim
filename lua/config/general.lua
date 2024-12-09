@@ -144,16 +144,16 @@ vim.diagnostic.config(
     }
 )
 
-vim.keymap.set(
-    "n",
-    "<leader>ra",
-    vim.lsp.buf.code_action,
-    {
-        noremap = true,
-        silent = true,
-        desc = "Code action"
-    }
-)
+-- vim.keymap.set(
+--     "n",
+--     "<leader>ra",
+--     vim.lsp.buf.code_action,
+--     {
+--         noremap = true,
+--         silent = true,
+--         desc = "Code action"
+--     }
+-- )
 vim.lsp.inlay_hint.enable(true)
 
 -- Function to close the current buffer and show the dashboard if no buffers remain

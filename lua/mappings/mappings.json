@@ -104,6 +104,28 @@
     ]
   },
   {
+    "title": "Code",
+    "base_lhs": "<Leader>c",
+    "filetype": "__codeFileType__",
+    "commands": [
+      {
+        "lhs": "a",
+        "rhs": "<cmd>:Lspsaga code_action<CR>",
+        "desc": "Code actions"
+      },
+      {
+        "lhs": "t",
+        "rhs": "<cmd>:Lspsaga peek_definition<CR>",
+        "desc": "Type definition"
+      },
+      {
+        "lhs": "d",
+        "rhs": "<cmd>:Lspsaga hover_doc<CR>",
+        "desc": "Documentation"
+      }
+    ]
+  },
+  {
     "title": "Refactor commands",
     "base_lhs": "<Leader>r",
     "commands": [
@@ -118,7 +140,7 @@
         "desc": "Remove parameter"
       },
       {
-        "lhs": "a",
+        "lhs": "c",
         "rhs": "<cmd>:CodeActionsWithCustomRename<CR>",
         "desc": "Actions",
         "mode": "v"
@@ -390,7 +412,7 @@
   },
   {
     "title": "Comments",
-    "base_lhs": "<Leader>c",
+    "base_lhs": "<Leader>C",
     "filetype": "__codeFileType__",
     "commands": [
       {
@@ -402,28 +424,6 @@
             "lhs": "l",
             "rhs": "<cmd>:TodoTelescope<CR>",
             "desc": "list",
-            "filetype": "__codeFileType__"
-          }
-        ]
-      },
-      {
-        "title": "Comments",
-        "base_lhs": "c",
-        "filetype": "__codeFileType__",
-        "move": "v",
-        "commands": [
-          {
-            "lhs": "l",
-            "rhs": "<cmd>lua require('Comment.api').toggle.linewise.current()<CR>",
-            "desc": "Comment/uncomment the current line",
-            "move": "v",
-            "filetype": "__codeFileType__"
-          },
-          {
-            "lhs": "v",
-            "rhs": "<cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>",
-            "desc": "Comment/uncomment the selected lines",
-            "move": "v",
             "filetype": "__codeFileType__"
           }
         ]
