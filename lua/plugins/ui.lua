@@ -242,7 +242,7 @@ return {
             require("lualine").setup(
                 {
                     options = {
-                        theme = "sonokai", -- You can change to 'gruvbox', 'dracula', etc.
+                        theme = "sonokai", 
                         component_separators = {left = "", right = ""},
                         section_separators = {left = "", right = ""},
                         disabled_filetypes = {"NvimTree", "dashboard", "packer"}
@@ -264,16 +264,18 @@ return {
                         },
                         lualine_b = {"branch", "diff"},
                         lualine_c = {"filename"},
-                        lualine_x = {"encoding", "fileformat", "filetype"},
+                        -- lualine_x = {"encoding", "fileformat", "filetype"},
+                        lualine_x = { "filetype"},
                         lualine_y = {
                             {
                                 function()
                                     return "⛽️" .. require("config.gas_lualine").gas_value()
                                 end,
-                                color = require("config.gas_lualine").gas_color(),
-                                padding = {left = 1, right = 1} -- Optional: Adjust padding
-                                -- color = {
-                                --     fg = require('config.gas_lualine').gas_color()
+                                -- color = require("config.gas_lualine").gas_color(),
+                                padding = {left = 1, right = 1},
+                                -- separator = {
+                                --     left = "",
+                                --     color = require("config.gas_lualine").gas_color()
                                 -- }
                             },
                             {
@@ -285,8 +287,12 @@ return {
                                         return "🥶"
                                     end
                                 end,
-                                color = {fg = "#FF4500"},
-                                padding = {left = 1, right = 1}
+                                -- color = {fg = "#FF4500"},
+                                padding = {left = 1, right = 1},
+                                -- separator = {
+                                --     left = "",
+                                --     color = {bg = "#000000", fg = "#FFFFFF"}
+                                -- }
                             },
                             {
                                 function()

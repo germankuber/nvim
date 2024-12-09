@@ -17,7 +17,7 @@ return {
   require "plugins.fold",
   require "plugins.format",
   require "plugins.schemastore",
-  -- require "plugins.copilot",
+  require "plugins.copilot",
   require "plugins.dap",
   require "plugins.ai",
   require "plugins.bookmarks",
