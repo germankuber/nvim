@@ -360,22 +360,22 @@
     "title": "Custom movement",
     "base_lhs": "<Leader>k",
     "commands": [
-{
-    "title": "Gas prices",
-    "base_lhs": "g",
-    "commands": [
       {
-        "lhs": "g",
-        "rhs": "<cmd>ShowGasPrices<CR>",
-        "desc": "Show"
+        "title": "Gas prices",
+        "base_lhs": "g",
+        "commands": [
+          {
+            "lhs": "g",
+            "rhs": "<cmd>ShowGasPrices<CR>",
+            "desc": "Show"
+          },
+          {
+            "lhs": "t",
+            "rhs": "<cmd>:ToogleGasPrices<CR>",
+            "desc": "Toogle"
+          }
+        ]
       },
-      {
-        "lhs": "t",
-        "rhs": "<cmd>:ToogleGasPrices<CR>",
-        "desc": "Toogle"
-      }
-    ]
-  },
       {
         "lhs": "k",
         "rhs": "<cmd>lua require('config.jump_config').set_jump_input()<CR>",
@@ -904,7 +904,6 @@
             "rhs": "<cmd>:RustLsp openCargo<CR>",
             "desc": "Cargo"
           },
-          
           {
             "lhs": "i",
             "rhs": "<cmd>lua require('telescope.builtin').treesitter({ default_text = 'import',initial_mode = 'normal' })<CR>",
@@ -971,6 +970,12 @@
     "base_lhs": "<Leader>D",
     "filetype": "__codeFileType__",
     "commands": [
+      {
+        "lhs": "t",
+        "rhs": "<cmd>:TelescopeTests<CR>",
+        "desc": "Tests",
+        "filetype": "__codeFileType__"
+      },
       {
         "lhs": "l",
         "rhs": "<cmd>lua require'dap'.step_into()<CR>",

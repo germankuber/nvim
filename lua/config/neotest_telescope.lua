@@ -6,7 +6,6 @@ local sorters = require("telescope.sorters")
 local actions = require("telescope.actions")
 local action_state = require("telescope.actions.state")
 local previewers = require("telescope.previewers")
-local utils = require("telescope.utils")
 
 local M = {}
 local tests = {}
@@ -38,10 +37,6 @@ function M.get_all_tests()
     end
 
     scan_dir(root_dir, rs_files, false)
-    print("Found .rs files:")
-    for _, file in ipairs(rs_files) do
-        print(file)
-    end
     return rs_files
 end
 
@@ -54,7 +49,7 @@ function M.collect_tests_from_file(filepath, callback)
     vim.lsp.buf_request(
         bufnr,
         "textDocument/codeLens",
-        { textDocument = { uri = uri } },
+        {textDocument = {uri = uri}},
         function(err, result)
             if err then
                 print("LSP request error for " .. filepath .. ":", err)
@@ -66,10 +61,6 @@ function M.collect_tests_from_file(filepath, callback)
                         table.insert(tests, command)
                     end
                 end
-            end
-            print("Tests in " .. filepath .. ":")
-            for _, test in ipairs(tests) do
-                print(vim.inspect(test))
             end
             callback(tests)
         end
@@ -84,19 +75,13 @@ function M.show_tests_in_telescope(tests)
         local label = test.arguments[1].label or "Unnamed Test"
         if not label:match("^test%-mod") then
             label = label:gsub("^test%s+", "")
-            table.insert(entries, { display = label, test = test, filepath = filepath })
+            table.insert(entries, {display = label, test = test, filepath = filepath})
         end
     end
 
-    print("Entries for Telescope:")
-    for _, entry in ipairs(entries) do
-        print(vim.inspect(entry))
-    end
-    print("=====")
-
     pickers.new(
         {
-            initial_mode = "normal",
+            initial_mode = "normal"
         },
         {
             prompt_title = "Rust Tests",
@@ -107,7 +92,7 @@ function M.show_tests_in_telescope(tests)
                         value = entry.test,
                         display = entry.display,
                         ordinal = entry.display,
-                        filepath = entry.filepath,
+                        filepath = entry.filepath
                     }
                 end
             },
@@ -125,34 +110,57 @@ function M.show_tests_in_telescope(tests)
                         vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, false, content)
                         vim.api.nvim_buf_set_option(self.state.bufnr, "filetype", "rust")
 
-                        local line = entry.value.arguments[1].position and entry.value.arguments[1].position.line or 0
-                        vim.schedule(function()
-                            vim.api.nvim_win_call(status.preview_win, function()
-                                vim.api.nvim_win_set_cursor(status.preview_win, {line + 1, 0})
-                                vim.cmd("normal! zz")
-                            end)
-                            vim.api.nvim_buf_add_highlight(self.state.bufnr, -1, "Search", line, 0, -1)
-                        end)
+                        local line = entry.value.arguments[1].location.targetSelectionRange.start.line
+                        local start_column = entry.value.arguments[1].location.targetSelectionRange.start.character
+                        local end_column = entry.value.arguments[1].location.targetSelectionRange["end"].character
+                        vim.schedule(
+                            function()
+                                vim.api.nvim_win_call(
+                                    status.preview_win,
+                                    function()
+                                        vim.api.nvim_win_set_cursor(status.preview_win, {line + 1, 0})
+                                        vim.cmd("normal! zz")
+                                    end
+                                )
+                                vim.api.nvim_buf_add_highlight(
+                                    self.state.bufnr,
+                                    -1,
+                                    "Search",
+                                    line,
+                                    start_column,
+                                    end_column
+                                )
+                            end
+                        )
                     else
                         vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, false, {"Unable to read file"})
                     end
                 end
             },
             attach_mappings = function(prompt_bufnr, map)
-                actions.select_default:replace(function()
-                    actions.close(prompt_bufnr)
-                    local selection = action_state.get_selected_entry()
+                actions.select_default:replace(
+                    function()
+                        actions.close(prompt_bufnr)
+                        local selection = action_state.get_selected_entry()
 
-                    local test = selection.value
-                    local filepath = selection.filepath
-                    local line = test.arguments[1].position and test.arguments[1].position.line or 0
+                        local test = selection.value
+                        local filepath = selection.filepath
 
-                    -- Abrimos el archivo del test y movemos el cursor a la línea del test
-                    vim.cmd("edit " .. filepath)
-                    vim.api.nvim_win_set_cursor(0, {line + 1, 0})
-                    -- Ejecutamos el test con neotest usando DAP
-                    require("neotest").run.run({strategy = "dap"})
-                end)
+                        local line = test.arguments[1].location.targetSelectionRange.start.line
+                        local start_column = test.arguments[1].location.targetSelectionRange.start.character
+                        local end_column = test.arguments[1].location.targetSelectionRange["end"].character
+
+                        vim.cmd("edit " .. filepath)
+                        vim.defer_fn(
+                            function()
+                                vim.api.nvim_win_set_cursor(0, {line + 1, start_column})
+                            end,
+                            50
+                        )
+
+                        require("neotest").run.run({strategy = "dap"})
+                    end
+                )
                 return true
             end
         }
@@ -180,10 +188,6 @@ function M.print_all_test()
                 end
                 pending = pending - 1
                 if pending == 0 then
-                    print("All collected tests:")
-                    for _, test_entry in ipairs(test_to_iterate) do
-                        print(vim.inspect(test_entry))
-                    end
                     M.show_tests_in_telescope(test_to_iterate)
                 end
             end
@@ -191,12 +195,8 @@ function M.print_all_test()
     end
 end
 
-function M.run_test(test)
-    print("Running test:", vim.inspect(test))
-end
-
 function M.setup()
-    vim.api.nvim_create_user_command("TelescopeTests", M.print_all_test, { desc = "List and run tests using Telescope" })
+    vim.api.nvim_create_user_command("TelescopeTests", M.print_all_test, {desc = "List and run tests using Telescope"})
 end
 
 return M
