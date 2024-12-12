@@ -5,6 +5,8 @@ local finders = require("telescope.finders")
 local sorters = require("telescope.sorters")
 local actions = require("telescope.actions")
 local action_state = require("telescope.actions.state")
+local previewers = require("telescope.previewers")
+local utils = require("telescope.utils")
 
 local M = {}
 local tests = {}
@@ -14,7 +16,6 @@ function M.get_all_tests()
     local rs_files = {}
     local root_dir = vim.fn.getcwd()
 
-    -- Function to recursively scan directories for .rs files within 'test*' directories
     local function scan_dir(dir, file_list, in_test_dir)
         local handle = vim.loop.fs_scandir(dir)
         if handle then
@@ -36,27 +37,20 @@ function M.get_all_tests()
         end
     end
 
-    -- Start scanning from the root directory
     scan_dir(root_dir, rs_files, false)
-
-    -- Print the found .rs files
     print("Found .rs files:")
     for _, file in ipairs(rs_files) do
         print(file)
     end
-
     return rs_files
 end
 
 function M.collect_tests_from_file(filepath, callback)
     local tests = {}
-
-    -- Add and load the buffer for the given file path
     local bufnr = vim.fn.bufadd(filepath)
     vim.fn.bufload(bufnr)
     local uri = vim.uri_from_bufnr(bufnr)
 
-    -- Request codeLens from the LSP server
     vim.lsp.buf_request(
         bufnr,
         "textDocument/codeLens",
@@ -73,7 +67,6 @@ function M.collect_tests_from_file(filepath, callback)
                     end
                 end
             end
-            -- Print the tests found in the file
             print("Tests in " .. filepath .. ":")
             for _, test in ipairs(tests) do
                 print(vim.inspect(test))
@@ -83,21 +76,18 @@ function M.collect_tests_from_file(filepath, callback)
     )
 end
 
--- Function to display tests in Telescope and run the selected test
 function M.show_tests_in_telescope(tests)
     local entries = {}
-    for _, test in ipairs(tests) do
+    for _, test_entry in ipairs(tests) do
+        local test = test_entry.test
+        local filepath = test_entry.filepath
         local label = test.arguments[1].label or "Unnamed Test"
-
-        -- Exclude tests that are modules (e.g., names like "test-mod")
         if not label:match("^test%-mod") then
-            -- Remove the word "test" from the label if it exists
             label = label:gsub("^test%s+", "")
-            table.insert(entries, { display = label, test = test })
+            table.insert(entries, { display = label, test = test, filepath = filepath })
         end
     end
 
-    -- Print the entries that will be sent to Telescope
     print("Entries for Telescope:")
     for _, entry in ipairs(entries) do
         print(vim.inspect(entry))
@@ -106,7 +96,6 @@ function M.show_tests_in_telescope(tests)
 
     pickers.new(
         {
-            -- Set Telescope to open in normal mode
             initial_mode = "normal",
         },
         {
@@ -117,11 +106,38 @@ function M.show_tests_in_telescope(tests)
                     return {
                         value = entry.test,
                         display = entry.display,
-                        ordinal = entry.display
+                        ordinal = entry.display,
+                        filepath = entry.filepath,
                     }
                 end
             },
             sorter = sorters.get_generic_fuzzy_sorter(),
+            previewer = previewers.new_buffer_previewer {
+                define_preview = function(self, entry, status)
+                    local filepath = entry.filepath
+                    if not filepath then
+                        vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, false, {"No file path available"})
+                        return
+                    end
+                    local ok, content = pcall(vim.fn.readfile, filepath)
+                    if ok and #content > 0 then
+                        vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, false, content)
+                        vim.api.nvim_buf_set_option(self.state.bufnr, "filetype", "rust")
+
+                        local line = entry.value.arguments[1].position and entry.value.arguments[1].position.line or 0
+
+                        vim.schedule(function()
+                            vim.api.nvim_win_set_cursor(status.preview_win, {line + 1, 0})
+                            vim.api.nvim_buf_add_highlight(self.state.bufnr, -1, "Search", line, 0, -1)
+                            vim.api.nvim_win_call(status.preview_win, function()
+                                vim.cmd("normal! zz")
+                            end)
+                        end)
+                    else
+                        vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, false, {"Unable to read file"})
+                    end
+                end
+            },
             attach_mappings = function(prompt_bufnr, map)
                 actions.select_default:replace(
                     function()
@@ -140,7 +156,6 @@ function M.print_all_test()
     local test_to_iterate = {}
     local rs_files = M.get_all_tests()
 
-    -- Counter to handle asynchronous calls
     local pending = #rs_files
     if pending == 0 then
         print("No .rs files found.")
@@ -153,15 +168,14 @@ function M.print_all_test()
             function(tests)
                 if tests then
                     for _, test in ipairs(tests) do
-                        table.insert(test_to_iterate, test)
+                        table.insert(test_to_iterate, {test = test, filepath = path})
                     end
                 end
                 pending = pending - 1
                 if pending == 0 then
-                    -- Print all collected tests
                     print("All collected tests:")
-                    for _, test in ipairs(test_to_iterate) do
-                        print(vim.inspect(test))
+                    for _, test_entry in ipairs(test_to_iterate) do
+                        print(vim.inspect(test_entry))
                     end
                     M.show_tests_in_telescope(test_to_iterate)
                 end
@@ -170,15 +184,10 @@ function M.print_all_test()
     end
 end
 
--- Function to run the selected test
 function M.run_test(test)
-    -- Implement the logic to run the test here
     print("Running test:", vim.inspect(test))
-    -- For example, you could use neotest to run the test
-    -- neotest.run.run(vim.inspect(test))
 end
 
--- Setup function to define the command
 function M.setup()
     vim.api.nvim_create_user_command("TelescopeTests", M.print_all_test, { desc = "List and run tests using Telescope" })
 end
