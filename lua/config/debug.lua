@@ -9,7 +9,6 @@ dapui.setup(
         elements = {
           {id = "scopes", size = 0.50},
           {id = "breakpoints", size = 0.25},
-          -- {id = "stacks", size = 0.25},
           {id = "watches", size = 0.25}
         },
         size = 40,
@@ -34,15 +33,12 @@ dapui.setup(
 dap.listeners.after.event_initialized["dapui_config"] = function()
   dapui.open()
   local current_win = vim.api.nvim_get_current_win()
-  local wins = vim.api.nvim_tabpage_list_wins(0) -- Obtiene todas las ventanas del tab actual
+  local wins = vim.api.nvim_tabpage_list_wins(0)
 
   for _, win in ipairs(wins) do
-    print(win)
     local config = vim.api.nvim_win_get_config(win)
-    print(config)
-    if config.relative ~= "" then -- Esto detecta si la ventana es flotante
-      vim.api.nvim_set_current_win(win) -- Cambia el foco a la ventana flotante
-      print("Focused on floating window!")
+    if config.relative ~= "" then
+      vim.api.nvim_set_current_win(win)
       return
     end
   end

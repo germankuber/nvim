@@ -1,7 +1,7 @@
 [
   {
     "title": "Tools commands",
-    "base_lhs": "<Leader>T",
+    "base_lhs": "<Leader>j",
     "commands": [
       {
         "title": "Convert",
@@ -966,16 +966,66 @@
     ]
   },
   {
+    "title": "Test commands",
+    "base_lhs": "<Leader>T",
+    "filetype": "__codeFileType__",
+    "commands": [
+      {
+        "title": "run",
+        "base_lhs": "r",
+        "filetype": "__codeFileType__",
+        "commands": [
+          {
+            "lhs": "l",
+            "rhs": "<cmd>:TelescopeTests<CR>",
+            "desc": "Tests list",
+            "filetype": "__codeFileType__"
+          },
+          {
+            "lhs": "l",
+            "rhs": "<cmd> lua require('neotest').run.run_last({ strategy = 'dap' })<CR>",
+            "desc": "Last",
+            "filetype": "__codeFileType__"
+          },
+          {
+            "lhs": "c",
+            "rhs": "<cmd>lua require('neotest').run.run({strategy = 'dap'})<CR>",
+            "desc": "Current test",
+            "filetype": "__codeFileType__"
+          },
+          {
+            "lhs": "f",
+            "rhs": "<cmd>lua require('neotest').run.run(vim.fn.expand('%'))<CR>",
+            "desc": "Current file",
+            "filetype": "__codeFileType__"
+          },
+          {
+            "lhs": "s",
+            "rhs": "<cmd>lua require('neotest').run.stop()<CR>",
+            "desc": "Stop",
+            "filetype": "__codeFileType__"
+          }
+        ]
+      },
+      {
+        "lhs": "s",
+        "rhs": "<cmd>lua lua require('neotest').summary.toggle()<CR>",
+        "desc": "Summary",
+        "filetype": "__codeFileType__"
+      },
+      {
+        "lhs": "o",
+        "rhs": "<cmd>lua require('neotest').output_panel.toggle()<CR>",
+        "desc": "Summary",
+        "filetype": "__codeFileType__"
+      }
+    ]
+  },
+  {
     "title": "Debugger commands",
     "base_lhs": "<Leader>D",
     "filetype": "__codeFileType__",
     "commands": [
-      {
-        "lhs": "t",
-        "rhs": "<cmd>:TelescopeTests<CR>",
-        "desc": "Tests",
-        "filetype": "__codeFileType__"
-      },
       {
         "lhs": "l",
         "rhs": "<cmd>lua require'dap'.step_into()<CR>",
