@@ -11,6 +11,7 @@ return {
   require "plugins.lsp",
   require "plugins.coding",
   require "plugins.test",
+  require "plugins.compare",
   require "plugins.cmp",
   require "plugins.diagnostic",
   require "plugins.refactoring",

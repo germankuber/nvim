@@ -1,6 +1,5 @@
 require("config.lazy")
 require("config.bookmarks")
--- require("config.telescope:_buffers")
 require("config.terminal")
 require("config.diagnostic")
 require("config.sessions")
@@ -8,6 +7,7 @@ require("config.preview")
 require("config.refactoring").setup()
 require("config.refactor.refactor")
 require("config.jump_config")
+require("config.compare_files")
 require("config.sound")
 require("config.trouble")
 require("config.funny_clipboard")
@@ -22,7 +22,7 @@ require("config.transaction_detail").setup(
 )
 require("config.convert_weth").setup()
 require("config.debug")
--- require('config.my_illuminate').setup()
+
 require("config.mappings").setup(
     {
         codeFileType = {"rust", "python", "xml", "json", "toml"},
@@ -32,7 +32,7 @@ require("config.mappings").setup(
 
 require("config.telescope_preview_match").setup(
     {
-        fg = "#00FF00", -- Green foreground
+        fg = "#00FF00",
         bg = "NONE",
         bold = true,
         underline = true
@@ -45,7 +45,7 @@ require("config.gas_lualine").setup {
 }
 vim.o.guicursor = "n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50"
 
-vim.opt.virtualedit = "onemore" -- Allow cursor one more position past EOL, but we handle this with mappings
+vim.opt.virtualedit = "onemore"
 
 vim.api.nvim_set_keymap(
     "n",
@@ -55,7 +55,7 @@ vim.api.nvim_set_keymap(
         noremap = true,
         silent = true
     }
-) -- Normal mode
+)
 vim.api.nvim_set_keymap(
     "i",
     "<C-s>",
@@ -64,7 +64,7 @@ vim.api.nvim_set_keymap(
         noremap = true,
         silent = true
     }
-) -- Insert mode
+)
 
 vim.api.nvim_set_hl(
     0,
@@ -73,7 +73,7 @@ vim.api.nvim_set_hl(
         fg = "#00ff00",
         bg = "#000000"
     }
-) -- Green for success
+)
 
 vim.cmd [[
   highlight DiagnosticVirtualTextError guifg=#FF5555 gui=bold
@@ -139,19 +139,8 @@ vim.diagnostic.config(
     }
 )
 
--- vim.keymap.set(
---     "n",
---     "<leader>ra",
---     vim.lsp.buf.code_action,
---     {
---         noremap = true,
---         silent = true,
---         desc = "Code action"
---     }
--- )
 vim.lsp.inlay_hint.enable(true)
 
--- Function to close the current buffer and show the dashboard if no buffers remain
 function CloseBufferOrShowDashboard()
     local buffers =
         vim.fn.getbufinfo(
@@ -160,16 +149,13 @@ function CloseBufferOrShowDashboard()
         }
     )
     if #buffers == 1 then
-        -- If only one buffer is left, load the dashboard
-        vim.cmd("BufferClose") -- Close the last buffer
-        vim.cmd("Dashboard") -- Replace this with the command to load your dashboard
+        vim.cmd("BufferClose")
+        vim.cmd("Dashboard")
     else
-        -- Otherwise, just close the buffer
         vim.cmd("BufferClose")
     end
 end
 
--- Create a custom command
 vim.api.nvim_create_user_command(
     "BufferCloseOrDashboard",
     CloseBufferOrShowDashboard,
@@ -186,7 +172,6 @@ local function close_non_file_buffers()
             local buf_type = vim.api.nvim_buf_get_option(buf, "buftype")
             local filetype = vim.api.nvim_buf_get_option(buf, "filetype")
 
-            -- Definir los tipos de buffers que consideramos como no archivos
             local non_file_buftypes = {
                 "nofile",
                 "prompt",
@@ -196,30 +181,34 @@ local function close_non_file_buffers()
                 "acwrite"
             }
 
-            -- Definir filetypes específicos de plugins que deseas cerrar
             local non_file_filetypes = {
                 "NvimTree",
                 "TelescopePrompt",
                 "packer"
-                -- Añade otros filetypes según tus plugins
             }
 
-            -- Verificar si el buffer es de un tipo no archivo
             local is_non_file_buftype = vim.tbl_contains(non_file_buftypes, buf_type)
             local is_non_file_filetype = vim.tbl_contains(non_file_filetypes, filetype)
 
             if is_non_file_buftype or is_non_file_filetype then
-                -- Cerrar el buffer de manera forzada
                 vim.api.nvim_buf_delete(buf, {force = true})
             end
         end
     end
 end
 
--- Crear un autocmd que ejecuta la función antes de salir de Neovim
 vim.api.nvim_create_autocmd(
     "VimLeavePre",
     {
         callback = close_non_file_buffers
     }
+)
+
+vim.api.nvim_create_user_command(
+    "DiffFiles",
+    function()
+        vim.cmd("vsplit")
+        vim.cmd("windo diffthis")
+    end,
+    {desc = "Compare two files"}
 )

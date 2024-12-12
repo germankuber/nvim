@@ -142,18 +142,43 @@ local function create_telescope_picker(bufnr, items, title, display_fn)
 
     local current_file = vim.api.nvim_buf_get_name(bufnr)
     pickers.new(
-        {},
+        {
+            initial_mode = "normal" -- Set the initial mode to 'normal'
+        },
         {
             prompt_title = title,
             finder = finders.new_table(
                 {
                     results = items,
                     entry_maker = function(entry)
+                        -- Find the 'identifier' node within the current node
+                        local identifier_node = nil
+                        for child in entry.node:iter_children() do
+                            if child:type():match("identifier") then
+                                identifier_node = child
+                                break
+                            end
+                        end
+
+                        -- Extract the position of the 'identifier' node
+                        local row, col, end_row, end_col = 0, 0, 0, 0
+                        if identifier_node then
+                            row, col, end_row, end_col = identifier_node:range()
+                            row = row + 1 -- Convert to 1-indexed for Vim
+                            col = col + 1 -- Convert to 1-indexed for Vim
+                        -- end_col remains 0-indexed up to but not including this column
+                        end
+
                         return {
                             path = current_file,
-                            value = entry,
+                            value = {
+                                row = row,
+                                col = col,
+                                end_col = end_col,
+                                node = entry.node
+                            },
                             display = display_fn(entry),
-                            ordinal = entry.name or string.format("Line %d", entry.row)
+                            ordinal = entry.name or string.format("Line %d", row)
                         }
                     end
                 }
@@ -166,16 +191,19 @@ local function create_telescope_picker(bufnr, items, title, display_fn)
                             return
                         end
 
+                        -- Get all lines from the original buffer
                         local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
                         vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, false, lines)
-                        vim.api.nvim_buf_set_option(self.state.bufnr, "filetype", "rust")
+                        vim.api.nvim_buf_set_option(self.state.bufnr, "filetype", "rust") -- Adjust for your language
 
+                        -- Create and clear the namespace for highlighting
                         local ns = vim.api.nvim_create_namespace("TelescopePreviewHighlight")
                         vim.api.nvim_buf_clear_namespace(self.state.bufnr, ns, 0, -1)
 
                         local var = entry.value
 
-                        for child in entry.value.node:iter_children() do
+                        -- Highlight all identifiers in the preview
+                        for child in var.node:iter_children() do
                             if child:type():match("identifier") then
                                 local start_row, start_col, end_row, end_col = child:range()
                                 vim.api.nvim_buf_add_highlight(
@@ -189,10 +217,11 @@ local function create_telescope_picker(bufnr, items, title, display_fn)
                             end
                         end
 
+                        -- Move the cursor to the exact identifier position in the preview
                         if type(self.state.winid) == "number" then
                             vim.schedule(
                                 function()
-                                    pcall(vim.api.nvim_win_set_cursor, self.state.winid, {var.row, 0})
+                                    pcall(vim.api.nvim_win_set_cursor, self.state.winid, {var.row, var.col - 1})
                                     pcall(
                                         vim.api.nvim_win_call,
                                         self.state.winid,
@@ -212,13 +241,10 @@ local function create_telescope_picker(bufnr, items, title, display_fn)
                         actions.close(prompt_bufnr)
                         local selection = action_state.get_selected_entry()
                         if selection and selection.value then
-                            vim.api.nvim_win_set_cursor(
-                                0,
-                                {
-                                    selection.value.row,
-                                    selection.value.col - 1
-                                }
-                            )
+                            -- Move the cursor to the exact identifier position
+                            vim.api.nvim_win_set_cursor(0, {selection.value.row, selection.value.col - 1})
+                            -- Center the view
+                            vim.cmd("normal! zz")
                         end
                     end
                 )

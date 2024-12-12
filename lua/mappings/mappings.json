@@ -284,6 +284,44 @@
     ]
   },
   {
+    "title": "Windows",
+    "base_lhs": "<Leader>w",
+    "commands": [
+      {
+        "title": "Split",
+        "base_lhs": "s",
+        "commands": [
+          {
+            "lhs": "v",
+            "rhs": "<cmd>:vsplit<CR>",
+            "desc": "Vertical"
+          },
+          {
+            "lhs": "h",
+            "rhs": "<cmd>:split<CR>",
+            "desc": "Horizontal"
+          }
+        ]
+      },
+      {
+        "title": "Split",
+        "base_lhs": "s",
+        "commands": [
+          {
+            "lhs": "v",
+            "rhs": "<cmd>:vsplit<CR>",
+            "desc": "Vertical"
+          },
+          {
+            "lhs": "h",
+            "rhs": "<cmd>:split<CR>",
+            "desc": "Horizontal"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "title": "Tree view",
     "base_lhs": "<Leader>t",
     "filetype": "NvimTree",
@@ -320,12 +358,6 @@
             "lhs": "d",
             "rhs": "<cmd>lua require('nvim-tree.api').fs.remove()<CR>",
             "desc": "Delete a file",
-            "filetype": "NvimTree"
-          },
-          {
-            "lhs": "m",
-            "rhs": "<cmd>lua require('nvim-tree.api').fs.cut()<CR>",
-            "desc": "Move a file",
             "filetype": "NvimTree"
           },
           {
@@ -866,6 +898,54 @@
             "lhs": "<A-l>",
             "rhs": "<cmd>lua require('smart-splits').resize_right()<CR>",
             "desc": "Resize split to the right"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "File commands",
+    "base_lhs": "<Leader>F",
+    "commands": [
+      {
+        "title": "New",
+        "base_lhs": "n",
+        "commands": [
+          {
+            "lhs": "e",
+            "rhs": "<cmd>:enew<CR>",
+            "desc": "Empty"
+          },
+          {
+            "lhs": "h",
+            "rhs": "<cmd>:new<CR>",
+            "desc": "Horizontal"
+          },
+          {
+            "lhs": "v ",
+            "rhs": "<cmd>:vnew<CR>",
+            "desc": "Vertical"
+          }
+        ]
+      },
+      {
+        "title": "Compare",
+        "base_lhs": "c",
+        "commands": [
+          {
+            "lhs": "u",
+            "rhs": "<cmd>:CompareCurrentFileWith<CR>",
+            "desc": "Current file"
+          }, 
+          {
+            "lhs": "o",
+            "rhs": "<cmd>:CompareFileAWithFileB<CR>",
+            "desc": "Others files"
+          },
+          {
+            "lhs": "c",
+            "rhs": "<cmd>:CompareFileClose<CR>",
+            "desc": "Close"
           }
         ]
       }
