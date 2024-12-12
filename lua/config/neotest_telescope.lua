@@ -119,19 +119,19 @@ function M.show_tests_in_telescope(tests)
                         vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, false, {"No file path available"})
                         return
                     end
+
                     local ok, content = pcall(vim.fn.readfile, filepath)
                     if ok and #content > 0 then
                         vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, false, content)
                         vim.api.nvim_buf_set_option(self.state.bufnr, "filetype", "rust")
 
                         local line = entry.value.arguments[1].position and entry.value.arguments[1].position.line or 0
-
                         vim.schedule(function()
-                            vim.api.nvim_win_set_cursor(status.preview_win, {line + 1, 0})
-                            vim.api.nvim_buf_add_highlight(self.state.bufnr, -1, "Search", line, 0, -1)
                             vim.api.nvim_win_call(status.preview_win, function()
+                                vim.api.nvim_win_set_cursor(status.preview_win, {line + 1, 0})
                                 vim.cmd("normal! zz")
                             end)
+                            vim.api.nvim_buf_add_highlight(self.state.bufnr, -1, "Search", line, 0, -1)
                         end)
                     else
                         vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, false, {"Unable to read file"})
@@ -139,13 +139,20 @@ function M.show_tests_in_telescope(tests)
                 end
             },
             attach_mappings = function(prompt_bufnr, map)
-                actions.select_default:replace(
-                    function()
-                        actions.close(prompt_bufnr)
-                        local selection = action_state.get_selected_entry()
-                        M.run_test(selection.value)
-                    end
-                )
+                actions.select_default:replace(function()
+                    actions.close(prompt_bufnr)
+                    local selection = action_state.get_selected_entry()
+
+                    local test = selection.value
+                    local filepath = selection.filepath
+                    local line = test.arguments[1].position and test.arguments[1].position.line or 0
+
+                    -- Abrimos el archivo del test y movemos el cursor a la línea del test
+                    vim.cmd("edit " .. filepath)
+                    vim.api.nvim_win_set_cursor(0, {line + 1, 0})
+                    -- Ejecutamos el test con neotest usando DAP
+                    require("neotest").run.run({strategy = "dap"})
+                end)
                 return true
             end
         }
