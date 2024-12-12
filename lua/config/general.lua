@@ -11,6 +11,8 @@ require("config.jump_config")
 require("config.sound")
 require("config.trouble")
 require("config.funny_clipboard")
+require("config.neotest_telescope").setup()
+
 require("config.convert_number").setup()
 require("config.transaction_detail").setup(
     {

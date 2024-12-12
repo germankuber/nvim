@@ -8,7 +8,7 @@ local action_state = require('telescope.actions.state')
 -- Default highlight configuration
 local default_highlight = {
     fg = "#FF4500", -- Orange-red foreground
-    bg = "NONE", -- No background
+    bg = "NONE",    -- No background
     bold = true,
     underline = true
 }
@@ -28,7 +28,7 @@ end
 -- Helper to get Treesitter parser
 local function get_parser(bufnr)
     local parser = vim.treesitter.get_parser(bufnr or
-                                                 vim.api.nvim_get_current_buf())
+        vim.api.nvim_get_current_buf())
     if not parser then
         print("No Treesitter parser found for this buffer")
         return nil
@@ -150,23 +150,30 @@ local function create_telescope_picker(bufnr, items, title, display_fn)
                     .nvim_buf_set_option(self.state.bufnr, 'filetype', 'rust')
 
                 local ns = vim.api.nvim_create_namespace(
-                               "TelescopePreviewHighlight")
+                    "TelescopePreviewHighlight")
                 vim.api.nvim_buf_clear_namespace(self.state.bufnr, ns, 0, -1)
 
                 local var = entry.value
-                vim.api.nvim_buf_add_highlight(self.state.bufnr, ns,
-                                               "TelescopePreviewMatch",
-                                               var.row - 1, var.col - 1,
-                                               var.end_col - 1)
+
+                for child in entry.value.node:iter_children() do
+                    if child:type():match("identifier") then
+                        print(child.value.col)
+                        vim.api.nvim_buf_add_highlight(self.state.bufnr, ns,
+                            "TelescopePreviewMatch",
+                            var.row - 1, child.col - 1,
+                            child.end_col - 1)
+                    end
+                end
+
 
                 if type(self.state.winid) == "number" then
                     vim.schedule(function()
                         pcall(vim.api.nvim_win_set_cursor, self.state.winid,
-                              {var.row, 0})
+                            { var.row, 0 })
                         pcall(vim.api.nvim_win_call, self.state.winid,
-                              function()
-                            vim.cmd("normal! zz")
-                        end)
+                            function()
+                                vim.cmd("normal! zz")
+                            end)
                     end)
                 end
             end
@@ -196,10 +203,10 @@ function M.register_commands()
 
         local variables = collect_local_variables(function_node, bufnr)
         create_telescope_picker(bufnr, variables, "Local Variables",
-                                function(entry)
-            return entry.name or string.format("Variable (Line %d)", entry.row)
-        end)
-    end, {desc = "List local variables in the current function with Telescope"})
+            function(entry)
+                return entry.name or string.format("Variable (Line %d)", entry.row)
+            end)
+    end, { desc = "List local variables in the current function with Telescope" })
 
     -- Command: SelfRefs
     vim.api.nvim_create_user_command("SelfRefs", function()
@@ -209,9 +216,9 @@ function M.register_commands()
 
         local self_refs = collect_self_references(function_node, bufnr)
         create_telescope_picker(bufnr, self_refs, "Self References (Function)",
-                                function(entry)
-            return string.format("self (Line %d)", entry.row)
-        end)
+            function(entry)
+                return string.format("self (Line %d)", entry.row)
+            end)
     end, {
         desc = "List references to 'self' in the current function with Telescope"
     })
@@ -225,9 +232,9 @@ function M.register_commands()
         local root = parser:parse()[1]:root()
         local self_refs = collect_self_references(root, bufnr)
         create_telescope_picker(bufnr, self_refs, "Self References (File)",
-                                function(entry)
-            return string.format("self (Line %d)", entry.row)
-        end)
+            function(entry)
+                return string.format("self (Line %d)", entry.row)
+            end)
     end, {
         desc = "List all references to 'self' in the current file with Telescope"
     })

@@ -148,7 +148,9 @@ return {
                     }
                 }
             }
-            vim.cmd("Dashboard")
+            if vim.fn.argc() == 0 or vim.fn.isdirectory(vim.fn.argv(0)) == 1 then
+                vim.cmd("Dashboard")
+            end
         end,
         dependencies = {"nvim-tree/nvim-web-devicons"}
     },

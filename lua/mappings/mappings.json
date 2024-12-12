@@ -106,7 +106,6 @@
   {
     "title": "Code",
     "base_lhs": "<Leader>c",
-    "filetype": "__codeFileType__",
     "commands": [
       {
         "lhs": "a",
@@ -361,6 +360,22 @@
     "title": "Custom movement",
     "base_lhs": "<Leader>k",
     "commands": [
+{
+    "title": "Gas prices",
+    "base_lhs": "g",
+    "commands": [
+      {
+        "lhs": "g",
+        "rhs": "<cmd>ShowGasPrices<CR>",
+        "desc": "Show"
+      },
+      {
+        "lhs": "t",
+        "rhs": "<cmd>:ToogleGasPrices<CR>",
+        "desc": "Toogle"
+      }
+    ]
+  },
       {
         "lhs": "k",
         "rhs": "<cmd>lua require('config.jump_config').set_jump_input()<CR>",
@@ -1119,25 +1134,21 @@
       {
         "title": "References",
         "base_lhs": "r",
-        "filetype": "rust",
         "commands": [
           {
             "lhs": "l",
             "rhs": "<cmd>Telescope lsp_references<CR>",
-            "desc": "List of references",
-            "filetype": "rust"
+            "desc": "List of references"
           },
           {
             "lhs": "n",
             "rhs": "<cmd>:lua require('illuminate').goto_next_reference(wrap)<CR>",
-            "desc": "Next reference",
-            "filetype": "rust"
+            "desc": "Next reference"
           },
           {
             "lhs": "p",
             "rhs": "<cmd>:lua require('illuminate').goto_prev_reference(wrap)<CR>",
-            "desc": "Prev reference",
-            "filetype": "rust"
+            "desc": "Prev reference"
           }
         ]
       },

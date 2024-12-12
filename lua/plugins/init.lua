@@ -1,5 +1,5 @@
 return {
-  require "plugins.persistence",
+  -- require "plugins.persistence",
   require "plugins.comments",
   require "plugins.telescope",
   require "plugins.ui",
@@ -10,6 +10,7 @@ return {
   require "plugins.snippets",
   require "plugins.lsp",
   require "plugins.coding",
+  require "plugins.test",
   require "plugins.cmp",
   require "plugins.diagnostic",
   require "plugins.refactoring",
