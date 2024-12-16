@@ -10,6 +10,7 @@ require("config.jump_config")
 require("config.compare_files")
 require("config.sound")
 require("config.trouble")
+require("config.jump_navigation").setup() 
 require("config.funny_clipboard")
 require("config.neotest_telescope").setup()
 
@@ -212,3 +213,5 @@ vim.api.nvim_create_user_command(
     end,
     {desc = "Compare two files"}
 )
+
+

@@ -1,10 +1,9 @@
 local M = {}
 
--- Generic function to navigate to the next diagnostic globally
 local function goto_next_global_diagnostic(severity)
   local diagnostics = vim.diagnostic.get(nil, {severity = severity})
   if #diagnostics == 0 then
-    print("No diagnostics found")
+    print("No se encontraron diagnósticos")
     return
   end
 
@@ -37,17 +36,18 @@ local function goto_next_global_diagnostic(severity)
     end
   end
 
+  -- Si no hay diagnósticos posteriores, ir al primero
   local first = diagnostics[1]
   vim.api.nvim_set_current_buf(first.bufnr)
   vim.api.nvim_win_set_cursor(0, {first.lnum + 1, first.col})
   return first
 end
 
--- Generic function to navigate to the previous diagnostic globally
+-- Función genérica para navegar al diagnóstico anterior globalmente
 local function goto_prev_global_diagnostic(severity)
   local diagnostics = vim.diagnostic.get(nil, {severity = severity})
   if #diagnostics == 0 then
-    print("No diagnostics found")
+    print("No se encontraron diagnósticos")
     return
   end
 
@@ -81,81 +81,70 @@ local function goto_prev_global_diagnostic(severity)
     end
   end
 
+  -- Si no hay diagnósticos anteriores, ir al último
   local last = diagnostics[#diagnostics]
   vim.api.nvim_set_current_buf(last.bufnr)
   vim.api.nvim_win_set_cursor(0, {last.lnum + 1, last.col})
   return last
 end
 
--- Generic wrapper to navigate diagnostics and render popup
-local function navigate_and_render(severity, direction)
-  local diagnostic
+-- Función genérica para navegar diagnósticos sin renderizar el popup
+local function navigate(severity, direction)
   if direction == "next" then
-    diagnostic = goto_next_global_diagnostic(severity)
+    return goto_next_global_diagnostic(severity)
   elseif direction == "prev" then
-    diagnostic = goto_prev_global_diagnostic(severity)
-  end
-  if diagnostic then
-    -- Use defer_fn to ensure the cursor movement is completed before opening the float
-    vim.defer_fn(
-      function()
-        vim.cmd("RustLsp renderDiagnostic current")
-      end,
-      10
-    )
+    return goto_prev_global_diagnostic(severity)
   end
 end
 
--- Specific functions for warnings, errors, and hints
+-- Función para renderizar el popup del diagnóstico actual
+local function render_current_diagnostic()
+  vim.cmd("RustLsp renderDiagnostic current")
+end
+
+-- Funciones específicas para warnings, errores y hints (solo navegación)
 function M.goto_next_warning()
-  navigate_and_render(vim.diagnostic.severity.WARN, "next")
-end
-function M.goto_prev_warning()
-  navigate_and_render(vim.diagnostic.severity.WARN, "prev")
-end
-function M.goto_next_error()
-  navigate_and_render(vim.diagnostic.severity.ERROR, "next")
-end
-function M.goto_prev_error()
-  navigate_and_render(vim.diagnostic.severity.ERROR, "prev")
-end
-function M.goto_next_hint()
-  navigate_and_render(vim.diagnostic.severity.HINT, "next")
-end
-function M.goto_prev_hint()
-  navigate_and_render(vim.diagnostic.severity.HINT, "prev")
+  navigate(vim.diagnostic.severity.WARN, "next")
 end
 
--- Register commands
+function M.goto_prev_warning()
+  navigate(vim.diagnostic.severity.WARN, "prev")
+end
+
+function M.goto_next_error()
+  navigate(vim.diagnostic.severity.ERROR, "next")
+end
+
+function M.goto_prev_error()
+  navigate(vim.diagnostic.severity.ERROR, "prev")
+end
+
+function M.goto_next_hint()
+  navigate(vim.diagnostic.severity.HINT, "next")
+end
+
+function M.goto_prev_hint()
+  navigate(vim.diagnostic.severity.HINT, "prev")
+end
+
+-- Función para mostrar el popup del diagnóstico actual
+function M.show_current_diagnostic()
+  render_current_diagnostic()
+end
+
+-- Registrar comandos de navegación
+vim.api.nvim_create_user_command("GotoNextWarning", M.goto_next_warning, {desc = "Ir al siguiente warning global"})
+vim.api.nvim_create_user_command("GotoPrevWarning", M.goto_prev_warning, {desc = "Ir al warning global anterior"})
+vim.api.nvim_create_user_command("GotoNextError", M.goto_next_error, {desc = "Ir al siguiente error global"})
+vim.api.nvim_create_user_command("GotoPrevError", M.goto_prev_error, {desc = "Ir al error global anterior"})
+vim.api.nvim_create_user_command("GotoNextHint", M.goto_next_hint, {desc = "Ir al siguiente hint global"})
+vim.api.nvim_create_user_command("GotoPrevHint", M.goto_prev_hint, {desc = "Ir al hint global anterior"})
+
+-- Registrar comando para mostrar el popup del diagnóstico actual
 vim.api.nvim_create_user_command(
-  "GotoNextWarning",
-  M.goto_next_warning,
-  {desc = "Go to next global warning and render Rust diagnostic popup"}
-)
-vim.api.nvim_create_user_command(
-  "GotoPrevWarning",
-  M.goto_prev_warning,
-  {desc = "Go to previous global warning and render Rust diagnostic popup"}
-)
-vim.api.nvim_create_user_command(
-  "GotoNextError",
-  M.goto_next_error,
-  {desc = "Go to next global error and render Rust diagnostic popup"}
-)
-vim.api.nvim_create_user_command(
-  "GotoPrevError",
-  M.goto_prev_error,
-  {desc = "Go to previous global error and render Rust diagnostic popup"}
-)
-vim.api.nvim_create_user_command(
-  "GotoNextHint",
-  M.goto_next_hint,
-  {desc = "Go to next global hint and render Rust diagnostic popup"}
-)
-vim.api.nvim_create_user_command(
-  "GotoPrevHint",
-  M.goto_prev_hint,
-  {desc = "Go to previous global hint and render Rust diagnostic popup"}
+  "ShowDiagnosticPopup",
+  M.show_current_diagnostic,
+  {desc = "Mostrar popup del diagnóstico actual"}
 )
 
 return M

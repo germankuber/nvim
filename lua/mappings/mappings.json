@@ -766,16 +766,6 @@
     "base_lhs": "",
     "commands": [
       {
-        "lhs": "H",
-        "rhs": "<cmd>bprevious<CR>",
-        "desc": "Previous"
-      },
-      {
-        "lhs": "L",
-        "rhs": "<cmd>bnext<CR>",
-        "desc": "Next"
-      },
-      {
         "lhs": "<CR>",
         "rhs": "<cmd>lua require('nvim-tree.api').node.open.edit()<CR>",
         "desc": "Abrir nodo"
@@ -936,7 +926,7 @@
             "lhs": "u",
             "rhs": "<cmd>:CompareCurrentFileWith<CR>",
             "desc": "Current file"
-          }, 
+          },
           {
             "lhs": "o",
             "rhs": "<cmd>:CompareFileAWithFileB<CR>",
@@ -1042,6 +1032,22 @@
         "lhs": "<C-l>",
         "rhs": "g_",
         "desc": "Move last character"
+      }
+    ]
+  },
+  {
+    "title": "Code navigation",
+    "base_lhs": "<Leader>n",
+    "commands": [
+      {
+        "lhs": "C",
+        "rhs": "<cmd>:clearjumps<CR>",
+        "desc": "Clear Jumps"
+      },
+      {
+        "lhs": "l",
+        "rhs": "<cmd>:JumplistTelescope<CR>",
+        "desc": "Jump list"
       }
     ]
   },
@@ -1196,16 +1202,21 @@
         "desc": "List"
       },
       {
+        "lhs": "s",
+        "rhs": "<cmd>:ShowDiagnosticPopup<CR>",
+        "desc": "Show"
+      },
+      {
         "title": "Error",
         "base_lhs": "e",
         "commands": [
           {
-            "lhs": "n",
+            "lhs": "l",
             "rhs": "<cmd>:GotoNextError<CR>",
             "desc": "Next"
           },
           {
-            "lhs": "p",
+            "lhs": "h",
             "rhs": "<cmd>:GotoPrevError<CR>",
             "desc": "Previous"
           }
@@ -1217,12 +1228,12 @@
         "filetype": "__codeFileType__",
         "commands": [
           {
-            "lhs": "n",
+            "lhs": "l",
             "rhs": "<cmd>:GotoNextHint<CR>",
             "desc": "Next"
           },
           {
-            "lhs": "p",
+            "lhs": "h",
             "rhs": "<cmd>:GotoPrevHint<CR>",
             "desc": "Previous"
           }
@@ -1234,13 +1245,13 @@
         "filetype": "__codeFileType__",
         "commands": [
           {
-            "lhs": "n",
+            "lhs": "l",
             "rhs": "<cmd>:GotoNextWarning<CR>",
             "desc": "Next",
             "filetype": "__codeFileType__"
           },
           {
-            "lhs": "p",
+            "lhs": "h",
             "rhs": "<cmd>:GotoPrevWarning<CR>",
             "desc": "Previous",
             "filetype": "__codeFileType__"
