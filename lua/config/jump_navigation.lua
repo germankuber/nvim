@@ -26,7 +26,12 @@ M.show_jumps = function()
         end
     end
 
-    -- Save current keymaps
+    if vim.tbl_isempty(results) then
+        vim.api.nvim_notify("There are no jumps available in the jump list.", vim.log.levels.WARN, {})
+        return
+    end
+
+    results = vim.fn.reverse(results)
     local function save_keymaps()
         local saved_maps = {}
         for _, key in ipairs({"<C-o>", "<C-i>"}) do
@@ -94,6 +99,7 @@ M.show_jumps = function()
                                 function()
                                     vim.api.nvim_win_set_cursor(status.preview_win, {line, start_column})
                                     vim.cmd("normal! zz")
+                                    vim.cmd("stopinsert")
                                 end
                             )
                             vim.api.nvim_buf_add_highlight(
