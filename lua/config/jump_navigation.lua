@@ -14,14 +14,24 @@ M.show_jumps = function()
     for _, j in ipairs(jumps) do
         if type(j) == "table" then
             for _, jump in ipairs(j) do
-                table.insert(
-                    results,
-                    {
-                        filepath = vim.api.nvim_buf_get_name(jump.bufnr),
-                        lnum = jump.lnum,
-                        col = jump.col or 1
-                    }
-                )
+                -- Check if the buffer number is valid
+                if vim.api.nvim_buf_is_valid(jump.bufnr) then
+                    table.insert(
+                        results,
+                        {
+                            filepath = vim.api.nvim_buf_get_name(jump.bufnr),
+                            lnum = jump.lnum,
+                            col = jump.col or 1
+                        }
+                    )
+                else
+                    -- Optionally handle invalid buffer IDs, e.g., skip or log
+                    vim.api.nvim_notify(
+                        string.format("Invalid buffer ID: %d. Skipping jump.", jump.bufnr),
+                        vim.log.levels.WARN,
+                        {}
+                    )
+                end
             end
         end
     end
