@@ -136,6 +136,18 @@ M.show_jumps = function()
 end
 
 function M.setup()
+    vim.api.nvim_create_autocmd("BufUnload", {
+        pattern = "*",  -- Match all buffers
+        callback = function()
+            -- Check if the buffer being closed is the dashboard
+            if vim.bo.filetype == "dashboard" then
+                -- Run what you want here
+                vim.cmd("echo 'Dashboard closed! Running my custom command...'")
+                -- Por ejemplo, limpiar jumps o abrir un archivo específico
+                vim.cmd("clearjumps")
+            end
+        end,
+    })
     vim.cmd("clearjumps")
     vim.keymap.set("n", "H", "<C-o>", {noremap = true, silent = true})
     vim.keymap.set("n", "L", "<C-i>", {noremap = true, silent = true})
