@@ -11,6 +11,7 @@ require("config.compare_files")
 require("config.sound")
 require("config.trouble")
 require("config.jump_navigation").setup() 
+require("config.selection").setup() 
 require("config.funny_clipboard")
 require("config.neotest_telescope").setup()
 

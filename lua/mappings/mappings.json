@@ -284,6 +284,17 @@
     ]
   },
   {
+    "title": "Selection",
+    "base_lhs": "<Leader>s",
+    "commands": [
+      {
+        "lhs": "e",
+        "rhs": "<cmd>:SelectEntity<CR>",
+        "desc": "Entity"
+      }
+    ]
+  },
+  {
     "title": "Windows",
     "base_lhs": "<Leader>w",
     "commands": [
@@ -473,7 +484,7 @@
   },
   {
     "title": "Session Management",
-    "base_lhs": "<Leader>s",
+    "base_lhs": "<Leader>S",
     "commands": [
       {
         "lhs": "s",
