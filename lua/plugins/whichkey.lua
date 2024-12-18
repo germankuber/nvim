@@ -52,7 +52,7 @@ return {
                 windows = {
                     border = "rounded", -- Bordes redondeados
                     position = "center", -- Forzar que aparezca centrado
-                    margin = {1, 1, 1, 1}, -- Márgenes alrededor de la ventana
+                    margin = {2, 2, 2, 2}, -- Márgenes alrededor de la ventana
                     padding = {2, 2, 2, 2}, -- Espaciado dentro de la ventana
                     winblend = 10 -- Transparencia para un efecto flotante
                 },
