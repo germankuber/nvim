@@ -148,9 +148,7 @@ return {
                     }
                 }
             }
-            if vim.fn.argc() == 0 or vim.fn.isdirectory(vim.fn.argv(0)) == 1 then
-                vim.cmd("Dashboard")
-            end
+
         end,
         dependencies = {"nvim-tree/nvim-web-devicons"}
     },
@@ -247,7 +245,8 @@ return {
                         theme = "sonokai", 
                         component_separators = {left = "", right = ""},
                         section_separators = {left = "", right = ""},
-                        disabled_filetypes = {"NvimTree", "dashboard", "packer"}
+                        disabled_filetypes = {"NvimTree", "dashboard", "packer"},
+                        globalstatus = true,
                     },
                     sections = {
                         lualine_a = {

@@ -165,6 +165,10 @@ vim.api.nvim_create_user_command(
         desc = "Close buffer or show dashboard if no buffers remain"
     }
 )
+vim.cmd [[
+  highlight CursorLineNr guifg=#ff9e64 gui=bold
+]]
+vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#ff9e64", bold = true })
 vim.api.nvim_set_hl(0, "CursorLine", {bg = "#3b4261", underline = false, default = false})
 vim.api.nvim_set_hl(0, "CursorColumn", {bg = "#3b4261", underline = false, default = false})
 
@@ -216,3 +220,10 @@ vim.api.nvim_create_user_command(
 )
 
 
+
+vim.api.nvim_create_autocmd("ColorScheme", {
+    pattern = "tokyonight",
+    callback = function()
+        vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#ff9e64", bold = true })
+    end
+})

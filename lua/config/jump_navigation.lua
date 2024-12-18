@@ -138,14 +138,14 @@ end
 
 
 function M.setup()
-    vim.api.nvim_create_autocmd("BufUnload", {
-        pattern = "*",  -- Match all buffers
-        callback = function()
-            if vim.bo.filetype == "dashboard" then
-                vim.cmd("clearjumps")
-            end
-        end,
-    })
+    -- vim.api.nvim_create_autocmd("BufUnload", {
+    --     pattern = "*",  -- Match all buffers
+    --     callback = function()
+    --         if vim.bo.filetype == "dashboard" then
+    --             vim.cmd("clearjumps")
+    --         end
+    --     end,
+    -- })
     vim.keymap.set("n", "H", "<C-o>", {noremap = true, silent = true})
     vim.keymap.set("n", "L", "<C-i>", {noremap = true, silent = true})
     vim.api.nvim_create_user_command("JumplistTelescope", M.show_jumps, {})

@@ -1,8 +1,8 @@
--- vim.cmd("let g:netrw_liststyle = 3")
 
 local opt = vim.opt
 
 opt.relativenumber = true
+vim.o.cursorline = true
 opt.number = true
 
 opt.tabstop = 4
@@ -16,7 +16,7 @@ opt.ignorecase = true
 opt.smartcase = true
 
 vim.o.lazyredraw = false
-vim.o.cursorline = true
+
 vim.opt.cursorlineopt = "line"
 vim.o.cursorcolumn = true
 
