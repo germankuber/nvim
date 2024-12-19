@@ -908,6 +908,7 @@
     "title": "File commands",
     "base_lhs": "<Leader>F",
     "commands": [
+      
       {
         "title": "New",
         "base_lhs": "n",
@@ -949,6 +950,11 @@
             "desc": "Close"
           }
         ]
+      },
+      {
+        "lhs": "S",
+        "rhs": "<cmd>:ToggleAutoSave<CR>",
+        "desc": "Auto Save"
       }
     ]
   },

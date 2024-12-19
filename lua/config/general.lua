@@ -5,13 +5,14 @@ require("config.diagnostic")
 require("config.sessions")
 require("config.preview")
 require("config.refactoring").setup()
+require("config.auto_save").setup()
 require("config.refactor.refactor")
 require("config.jump_config")
 require("config.compare_files")
 require("config.sound")
 require("config.trouble")
-require("config.jump_navigation").setup() 
-require("config.selection").setup() 
+require("config.jump_navigation").setup()
+require("config.selection").setup()
 require("config.funny_clipboard")
 require("config.neotest_telescope").setup()
 
@@ -219,6 +220,10 @@ vim.api.nvim_create_user_command(
     {desc = "Compare two files"}
 )
 
+-- -- Ajustar específicamente los floating windows de LSP
+-- vim.api.nvim_set_hl(0, 'NormalFloat', { bg = '#1f2335', fg = '#c0caf5' }) -- Fondo flotante general
+-- vim.api.nvim_set_hl(0, 'LspFloatWinNormal', { bg = '#1f2335', fg = '#c0caf5' }) -- Fondo para LSP
+-- vim.api.nvim_set_hl(0, 'FloatBorder', { bg = '#1f2335', fg = '#7dcfff' }) -- Bordes flotantes
 
 
 vim.api.nvim_create_autocmd("ColorScheme", {
@@ -227,3 +232,4 @@ vim.api.nvim_create_autocmd("ColorScheme", {
         vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#ff9e64", bold = true })
     end
 })
+

@@ -46,3 +46,7 @@ vim.o.timeout = true
 vim.o.timeoutlen = 50
 
 vim.opt.foldcolumn = "0"
+
+vim.schedule(function()
+    vim.opt.laststatus = 2
+  end)

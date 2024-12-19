@@ -38,11 +38,10 @@ function M.select_entity()
     while node do
         local node_type = node:type()
 
-        local is_function = node_type == "function_definition" or
-                            node_type == "method_declaration" or
-                            node_type == "function" or
-                            node_type == "method" or
-                            node_type == "function_item"
+        local is_function =
+            node_type == "function_definition" or node_type == "method_declaration" or node_type == "function" or
+            node_type == "method" or
+            node_type == "function_item"
 
         local is_struct = node_type == "struct_item"
 
