@@ -1046,22 +1046,7 @@
       }
     ]
   },
-  {
-    "title": "Code navigation",
-    "base_lhs": "<Leader>n",
-    "commands": [
-      {
-        "lhs": "C",
-        "rhs": "<cmd>:clearjumps<CR>",
-        "desc": "Clear Jumps"
-      },
-      {
-        "lhs": "l",
-        "rhs": "<cmd>:JumplistTelescope<CR>",
-        "desc": "Jump list"
-      }
-    ]
-  },
+
   {
     "title": "Test commands",
     "base_lhs": "<Leader>T",
@@ -1276,6 +1261,22 @@
     "base_lhs": "<Leader>g",
     "filetype": "rust",
     "commands": [
+      {
+        "title": "Code navigation",
+        "base_lhs": "<Leader>n",
+        "commands": [
+          {
+            "lhs": "C",
+            "rhs": "<cmd>:clearjumps<CR>",
+            "desc": "Clear Jumps"
+          },
+          {
+            "lhs": "l",
+            "rhs": "<cmd>:JumplistTelescope<CR>",
+            "desc": "Jump list"
+          }
+        ]
+      },
       {
         "lhs": "d",
         "rhs": "<cmd>Telescope lsp_definitions<CR>",
