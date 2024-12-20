@@ -198,20 +198,11 @@ end
 local custom_movement_enabled = false
 
 -- Function to check if custom movement mode is enabled
-function M.is_enabled()
-    return custom_movement_enabled
-end
 
 -- Function to toggle custom movement mode
-function M.toggle_custom_movement()
-    if not custom_movement_enabled then
-        M.turn_on_custom_movement()()
-    else
-        M.turn_off_custom_movement()()
-    end
-end
 
-function M.turn_on_custom_movement()
+
+local function turn_on_custom_movement()
     -- Enable custom movement mode
     vim.keymap.set("n", "h", custom_h, {noremap = true, silent = true})
     vim.keymap.set("n", "l", custom_l, {noremap = true, silent = true})
@@ -221,16 +212,34 @@ function M.turn_on_custom_movement()
     vim.notify("Mode 🔥 activated", vim.log.levels.SUCCESS)
 end
 
-function M.turn_off_custom_movement()
+local function turn_off_custom_movement()
     if M.is_enabled then
         vim.keymap.del("n", "h")
         vim.keymap.del("n", "l")
         vim.keymap.del("n", "j")
         vim.keymap.del("n", "k")
         custom_movement_enabled = false
-        vim.notify("Mode 🥶 activated", vim.log.levels.INFO)
+        vim.notify("Mode 🥶 deactivate", vim.log.levels.INFO)
     end
 end
 
-M.toggle_custom_movement()
+
+local function toggle_custom_movement()
+    if not custom_movement_enabled then
+        turn_on_custom_movement()
+    else
+        turn_off_custom_movement() 
+    end
+end
+
+
+function M.is_enabled()
+    return custom_movement_enabled
+end
+
+function M.setup()
+    turn_on_custom_movement()
+
+    vim.api.nvim_create_user_command("CustomMovementToggle", toggle_custom_movement, {})
+end
 return M

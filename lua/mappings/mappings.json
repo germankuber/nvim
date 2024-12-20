@@ -431,7 +431,7 @@
       },
       {
         "lhs": "c",
-        "rhs": "<cmd>lua require('config.custom_movement').toggle_custom_movement()<CR>",
+        "rhs": "<cmd>:CustomMovementToggle<CR>",
         "desc": "Toogle custom movement"
       },
       {
