@@ -72,32 +72,58 @@ return {
                 }
             )
         end
-    }, -- , {'mrjones2014/smart-splits.nvim'}, {
-    --     'stevearc/dressing.nvim',
-    --     lazy = false,
-    --     config = function()
-    --         require('dressing').setup({
-    --             input = {
-    --                 enabled = true,
-    --                 default_prompt = 'Input:',
-    --                 prompt_align = 'center',
-    --                 insert_only = false,
-    --                 anchor = 'SW',
-    --                 border = 'rounded',
-    --                 relative = 'editor',
-    --                 prefer_width = 40,
-    --                 prefer_height = 10,
-    --                 win_options = {winblend = 0},
-    --                 override = function(conf)
-    --                     conf.col = math.floor((vim.o.columns - conf.width) / 2)
-    --                     conf.row = math.floor(
-    --                                    (vim.o.lines - conf.height) / 2 - 1)
-    --                     return conf
-    --                 end
-    --             }
-    --         })
-    --     end
-    -- },
+    },
+    {
+        "s1n7ax/nvim-window-picker",
+        name = "window-picker",
+        event = "VeryLazy",
+        version = "2.*",
+        config = function()
+            require "window-picker".setup(
+                {
+                    hint = "floating-big-letter"
+                }
+            )
+            vim.api.nvim_create_user_command(
+                "PickWindow",
+                function()
+                    local win_id = require("window-picker").pick_window()
+                    if win_id then
+                        vim.api.nvim_set_current_win(win_id)
+                    end
+                end,
+                {desc = "Pick and switch to a window"}
+            )
+        end
+    },
+    {"mrjones2014/smart-splits.nvim"},
+    {
+        "stevearc/dressing.nvim",
+        lazy = false,
+        config = function()
+            require("dressing").setup(
+                {
+                    input = {
+                        enabled = true,
+                        default_prompt = "Input:",
+                        prompt_align = "center",
+                        insert_only = false,
+                        anchor = "SW",
+                        border = "rounded",
+                        relative = "editor",
+                        prefer_width = 40,
+                        prefer_height = 10,
+                        win_options = {winblend = 0},
+                        override = function(conf)
+                            conf.col = math.floor((vim.o.columns - conf.width) / 2)
+                            conf.row = math.floor((vim.o.lines - conf.height) / 2 - 1)
+                            return conf
+                        end
+                    }
+                }
+            )
+        end
+    },
     {
         "glepnir/dashboard-nvim",
         event = "VimEnter",
@@ -148,15 +174,14 @@ return {
                     }
                 }
             }
-
         end,
         dependencies = {"nvim-tree/nvim-web-devicons"}
     },
     {
         "lukas-reineke/indent-blankline.nvim",
         main = "ibl",
-        opts = {},
         config = function()
+            -- Function to set indent highlighting for Rust
             local function set_indent_blankline_for_rust()
                 vim.api.nvim_set_hl(0, "IndentBlanklineIndent1", {fg = "#E06C75", nocombine = true})
                 vim.api.nvim_set_hl(0, "IndentBlanklineIndent2", {fg = "#E5C07B", nocombine = true})
@@ -164,64 +189,67 @@ return {
                 vim.api.nvim_set_hl(0, "IndentBlanklineIndent4", {fg = "#56B6C2", nocombine = true})
                 vim.api.nvim_set_hl(0, "IndentBlanklineIndent5", {fg = "#61AFEF", nocombine = true})
                 vim.api.nvim_set_hl(0, "IndentBlanklineIndent6", {fg = "#C678DD", nocombine = true})
-
-                require("ibl").setup(
-                    {
-                        scope = {enabled = false},
-                        indent = {
-                            char = "│",
-                            highlight = {
-                                "IndentBlanklineIndent1",
-                                "IndentBlanklineIndent2",
-                                "IndentBlanklineIndent3",
-                                "IndentBlanklineIndent4",
-                                "IndentBlanklineIndent5",
-                                "IndentBlanklineIndent6"
-                            }
+    
+                require("ibl").setup({
+                    scope = {
+                        enabled = true, -- Enable scope highlighting
+                        show_start = true, -- Show start of the current scope
+                        highlight = {"IndentBlanklineScope"}, -- Highlight group for scope
+                    },
+                    indent = {
+                        char = "│",
+                        highlight = {
+                            "IndentBlanklineIndent1",
+                            "IndentBlanklineIndent2",
+                            "IndentBlanklineIndent3",
+                            "IndentBlanklineIndent4",
+                            "IndentBlanklineIndent5",
+                            "IndentBlanklineIndent6"
                         }
                     }
-                )
+                })
             end
-
+    
+            -- Function to reset to default settings
             local function restore_indent_blankline_to_default()
-                vim.api.nvim_set_hl(0, "IndentBlanklineIndent1", {})
-                vim.api.nvim_set_hl(0, "IndentBlanklineIndent2", {})
-                vim.api.nvim_set_hl(0, "IndentBlanklineIndent3", {})
-                vim.api.nvim_set_hl(0, "IndentBlanklineIndent4", {})
-                vim.api.nvim_set_hl(0, "IndentBlanklineIndent5", {})
-                vim.api.nvim_set_hl(0, "IndentBlanklineIndent6", {})
-
-                require("ibl").setup(
-                    {
-                        indent = {
-                            char = "│",
-                            highlight = {"IndentBlanklineChar"}
-                        }
-                    }
-                )
+                -- vim.api.nvim_set_hl(0, "IndentBlanklineIndent1", {})
+                -- vim.api.nvim_set_hl(0, "IndentBlanklineIndent2", {})
+                -- vim.api.nvim_set_hl(0, "IndentBlanklineIndent3", {})
+                -- vim.api.nvim_set_hl(0, "IndentBlanklineIndent4", {})
+                -- vim.api.nvim_set_hl(0, "IndentBlanklineIndent5", {})
+                -- vim.api.nvim_set_hl(0, "IndentBlanklineIndent6", {})
+    
+                require("ibl").setup({
+                    scope = { enabled = false }, -- Disable scope when not in Rust
+                    indent = {
+                        char = "│",
+                        highlight = {"IndentBlanklineChar"},
+                    },
+                })
             end
+    
+            -- Autocommand for Rust files
+            vim.api.nvim_create_autocmd("FileType", {
+                pattern = "rust",
+                callback = function()
+                    set_indent_blankline_for_rust()
+                end,
+            })
+    
+            -- Restore default on buffer unload
+            vim.api.nvim_create_autocmd("BufUnload", {
+                pattern = "*.rs",
+                callback = function()
+                    restore_indent_blankline_to_default()
+                end,
+            })
+    
+            -- Global highlight for scope block
+            vim.api.nvim_set_hl(0, "IndentBlanklineScope", { fg = "#FFFFFF", bg = "#3b4261", underline = true })
 
-            vim.api.nvim_create_autocmd(
-                "FileType",
-                {
-                    pattern = "rust",
-                    callback = function()
-                        set_indent_blankline_for_rust()
-                    end
-                }
-            )
 
-            vim.api.nvim_create_autocmd(
-                "BufUnload",
-                {
-                    pattern = "*.rs",
-                    callback = function()
-                        restore_indent_blankline_to_default()
-                    end
-                }
-            )
         end
-    },
+    },    
     {
         "nvim-treesitter/nvim-treesitter-context",
         lazy = false,
@@ -242,11 +270,11 @@ return {
             require("lualine").setup(
                 {
                     options = {
-                        theme = "sonokai", 
+                        theme = "sonokai",
                         component_separators = {left = "", right = ""},
                         section_separators = {left = "", right = ""},
                         disabled_filetypes = {"NvimTree", "dashboard", "packer"},
-                        globalstatus = true,
+                        globalstatus = true
                     },
                     sections = {
                         lualine_a = {
@@ -266,14 +294,14 @@ return {
                         lualine_b = {"branch", "diff"},
                         lualine_c = {"filename"},
                         -- lualine_x = {"encoding", "fileformat", "filetype"},
-                        lualine_x = { "filetype"},
+                        lualine_x = {"filetype"},
                         lualine_y = {
                             {
                                 function()
                                     return "⛽️" .. require("config.gas_lualine").gas_value()
                                 end,
                                 -- color = require("config.gas_lualine").gas_color(),
-                                padding = {left = 1, right = 1},
+                                padding = {left = 1, right = 1}
                                 -- separator = {
                                 --     left = "",
                                 --     color = require("config.gas_lualine").gas_color()
@@ -289,7 +317,7 @@ return {
                                     end
                                 end,
                                 -- color = {fg = "#FF4500"},
-                                padding = {left = 1, right = 1},
+                                padding = {left = 1, right = 1}
                                 -- separator = {
                                 --     left = "",
                                 --     color = {bg = "#000000", fg = "#FFFFFF"}

@@ -35,7 +35,10 @@ return {
                         sorting_strategy = "ascending",
                         winblend = 0,
                         prompt_prefix = "🔍 ",
-                        selection_caret = "➡️ "
+                        selection_caret = "➡️ ",
+                        preview = {
+                            treesitter = true -- Activa el resaltado basado en Treesitter
+                        }
                     },
                     pickers = {
                         code_action = {

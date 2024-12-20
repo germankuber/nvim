@@ -13,7 +13,9 @@ local function get_first_non_ws_col(line)
 end
 
 -- Function to get the last column of a line
-local function get_last_col(line) return #line end
+local function get_last_col(line)
+    return #line
+end
 
 -- Variable to store the desired column when moving vertically
 local desired_col = nil
@@ -22,7 +24,9 @@ local desired_col = nil
 local is_at_line_end = false
 
 -- Function to set the desired column before moving vertically
-local function set_desired_col() desired_col = vim.fn.col('.') end
+local function set_desired_col()
+    desired_col = vim.fn.col(".")
+end
 
 -- Function to restore the desired column after moving vertically
 local function restore_col(line)
@@ -31,39 +35,41 @@ local function restore_col(line)
 
     if desired_col < first_non_ws then
         -- If the desired column is before the first non-whitespace character, move to the first character
-        vim.fn.cursor(vim.fn.line('.'), first_non_ws)
+        vim.fn.cursor(vim.fn.line("."), first_non_ws)
     elseif desired_col > last_col then
         -- If the desired column is after the last character, move to the last character
-        vim.fn.cursor(vim.fn.line('.'), last_col)
+        vim.fn.cursor(vim.fn.line("."), last_col)
     else
         -- If the desired column is within the line's bounds, move to the desired column
-        vim.fn.cursor(vim.fn.line('.'), desired_col)
+        vim.fn.cursor(vim.fn.line("."), desired_col)
     end
 
     -- Update the line end status
-    is_at_line_end = (vim.fn.col('.') == last_col)
+    is_at_line_end = (vim.fn.col(".") == last_col)
 end
 
 -- Custom function for the 'h' key (move left or jump to the end of the previous non-blank line)
 local function custom_h()
     local count = vim.v.count1
-    local line = vim.fn.getline('.')
+    local line = vim.fn.getline(".")
     local first_non_ws = get_first_non_ws_col(line)
-    local current_col = vim.fn.col('.')
+    local current_col = vim.fn.col(".")
 
     if current_col > first_non_ws then
         -- Move cursor 'count' positions to the left, not going beyond the first non-whitespace character
         local target_col = math.max(current_col - count, first_non_ws)
-        vim.fn.cursor(vim.fn.line('.'), target_col)
+        vim.fn.cursor(vim.fn.line("."), target_col)
     elseif current_col == first_non_ws then
         -- If at the first non-whitespace character, jump to the end of the previous non-blank line
         local moved = 0
-        local target_line = vim.fn.line('.')
+        local target_line = vim.fn.line(".")
 
         while moved < count and target_line > 1 do
             target_line = target_line - 1
             local line_content = vim.fn.getline(target_line)
-            if not line_content:match("^%s*$") then moved = moved + 1 end
+            if not line_content:match("^%s*$") then
+                moved = moved + 1
+            end
         end
 
         if moved == count and target_line >= 1 then
@@ -73,52 +79,54 @@ local function custom_h()
             desired_col = target_last_col
             is_at_line_end = true
         end
-        -- If no non-blank line is found, do nothing
+    -- If no non-blank line is found, do nothing
     end
 
     -- Update the line end status
-    local new_line = vim.fn.getline('.')
+    local new_line = vim.fn.getline(".")
     local new_last_col = get_last_col(new_line)
-    local new_col = vim.fn.col('.')
+    local new_col = vim.fn.col(".")
     is_at_line_end = (new_col == new_last_col)
 end
 
 -- Custom function for the 'l' key (move right or jump to the beginning of the next non-blank line)
 local function custom_l()
     local count = vim.v.count1
-    local line = vim.fn.getline('.')
+    local line = vim.fn.getline(".")
     local last_col = get_last_col(line)
-    local current_col = vim.fn.col('.')
+    local current_col = vim.fn.col(".")
 
     if current_col < last_col then
         -- Move cursor 'count' positions to the right, not going beyond the last character
         local target_col = math.min(current_col + count, last_col)
-        vim.fn.cursor(vim.fn.line('.'), target_col)
+        vim.fn.cursor(vim.fn.line("."), target_col)
     elseif current_col == last_col then
         -- If at the last character, jump to the first non-whitespace character of the next non-blank line
         local moved = 0
-        local target_line = vim.fn.line('.')
+        local target_line = vim.fn.line(".")
 
-        while moved < count and target_line < vim.fn.line('$') do
+        while moved < count and target_line < vim.fn.line("$") do
             target_line = target_line + 1
             local line_content = vim.fn.getline(target_line)
-            if not line_content:match("^%s*$") then moved = moved + 1 end
+            if not line_content:match("^%s*$") then
+                moved = moved + 1
+            end
         end
 
-        if moved == count and target_line <= vim.fn.line('$') then
+        if moved == count and target_line <= vim.fn.line("$") then
             local target_line_content = vim.fn.getline(target_line)
             local first_non_ws = get_first_non_ws_col(target_line_content)
             vim.fn.cursor(target_line, first_non_ws)
             desired_col = first_non_ws
             is_at_line_end = (first_non_ws == get_last_col(target_line_content))
         end
-        -- If no non-blank line is found, do nothing
+    -- If no non-blank line is found, do nothing
     end
 
     -- Update the line end status
-    local new_line = vim.fn.getline('.')
+    local new_line = vim.fn.getline(".")
     local new_last_col = get_last_col(new_line)
-    local new_col = vim.fn.col('.')
+    local new_col = vim.fn.col(".")
     is_at_line_end = (new_col == new_last_col)
 end
 
@@ -127,12 +135,14 @@ local function custom_j()
     set_desired_col() -- Store the current column before moving
     local count = vim.v.count1
     local moved = 0
-    local target_line = vim.fn.line('.')
+    local target_line = vim.fn.line(".")
 
-    while moved < count and target_line < vim.fn.line('$') do
+    while moved < count and target_line < vim.fn.line("$") do
         target_line = target_line + 1
         local line_content = vim.fn.getline(target_line)
-        if not line_content:match("^%s*$") then moved = moved + 1 end
+        if not line_content:match("^%s*$") then
+            moved = moved + 1
+        end
     end
 
     if moved > 0 then
@@ -146,7 +156,7 @@ local function custom_j()
         else
             -- Move to the target line and restore column
             vim.fn.cursor(target_line, 1)
-            local line = vim.fn.getline('.')
+            local line = vim.fn.getline(".")
             restore_col(line)
         end
     end
@@ -157,12 +167,14 @@ local function custom_k()
     set_desired_col() -- Store the current column before moving
     local count = vim.v.count1
     local moved = 0
-    local target_line = vim.fn.line('.')
+    local target_line = vim.fn.line(".")
 
     while moved < count and target_line > 1 do
         target_line = target_line - 1
         local line_content = vim.fn.getline(target_line)
-        if not line_content:match("^%s*$") then moved = moved + 1 end
+        if not line_content:match("^%s*$") then
+            moved = moved + 1
+        end
     end
 
     if moved > 0 then
@@ -176,7 +188,7 @@ local function custom_k()
         else
             -- Move to the target line and restore column
             vim.fn.cursor(target_line, 1)
-            local line = vim.fn.getline('.')
+            local line = vim.fn.getline(".")
             restore_col(line)
         end
     end
@@ -186,28 +198,39 @@ end
 local custom_movement_enabled = false
 
 -- Function to check if custom movement mode is enabled
-function M.is_enabled() return custom_movement_enabled end
+function M.is_enabled()
+    return custom_movement_enabled
+end
 
 -- Function to toggle custom movement mode
 function M.toggle_custom_movement()
     if not custom_movement_enabled then
-        -- Enable custom movement mode
-        vim.keymap.set('n', 'h', custom_h, {noremap = true, silent = true})
-        vim.keymap.set('n', 'l', custom_l, {noremap = true, silent = true})
-        vim.keymap.set('n', 'j', custom_j, {noremap = true, silent = true})
-        vim.keymap.set('n', 'k', custom_k, {noremap = true, silent = true})
-        custom_movement_enabled = true
-        vim.notify("Mode 🔥 activated", vim.log.levels.SUCCESS)
-
+        M.turn_on_custom_movement()()
     else
-        -- Disable custom movement mode by removing the custom key mappings
-        vim.keymap.del('n', 'h')
-        vim.keymap.del('n', 'l')
-        vim.keymap.del('n', 'j')
-        vim.keymap.del('n', 'k')
+        M.turn_off_custom_movement()()
+    end
+end
+
+function M.turn_on_custom_movement()
+    -- Enable custom movement mode
+    vim.keymap.set("n", "h", custom_h, {noremap = true, silent = true})
+    vim.keymap.set("n", "l", custom_l, {noremap = true, silent = true})
+    vim.keymap.set("n", "j", custom_j, {noremap = true, silent = true})
+    vim.keymap.set("n", "k", custom_k, {noremap = true, silent = true})
+    custom_movement_enabled = true
+    vim.notify("Mode 🔥 activated", vim.log.levels.SUCCESS)
+end
+
+function M.turn_off_custom_movement()
+    if M.is_enabled then
+        vim.keymap.del("n", "h")
+        vim.keymap.del("n", "l")
+        vim.keymap.del("n", "j")
+        vim.keymap.del("n", "k")
         custom_movement_enabled = false
         vim.notify("Mode 🥶 activated", vim.log.levels.INFO)
     end
 end
+
 M.toggle_custom_movement()
 return M

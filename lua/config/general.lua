@@ -5,9 +5,11 @@ require("config.diagnostic")
 require("config.sessions")
 require("config.preview")
 require("config.refactoring").setup()
-require("config.auto_save").setup()
+-- require("config.auto_save").setup()
 require("config.refactor.refactor")
+require("config.toggle_move_mode")
 require("config.jump_config")
+require("config.resize_buffer")
 require("config.compare_files")
 require("config.sound")
 require("config.trouble")
@@ -169,7 +171,7 @@ vim.api.nvim_create_user_command(
 vim.cmd [[
   highlight CursorLineNr guifg=#ff9e64 gui=bold
 ]]
-vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#ff9e64", bold = true })
+vim.api.nvim_set_hl(0, "CursorLineNr", {fg = "#ff9e64", bold = true})
 vim.api.nvim_set_hl(0, "CursorLine", {bg = "#3b4261", underline = false, default = false})
 vim.api.nvim_set_hl(0, "CursorColumn", {bg = "#3b4261", underline = false, default = false})
 
@@ -225,11 +227,22 @@ vim.api.nvim_create_user_command(
 -- vim.api.nvim_set_hl(0, 'LspFloatWinNormal', { bg = '#1f2335', fg = '#c0caf5' }) -- Fondo para LSP
 -- vim.api.nvim_set_hl(0, 'FloatBorder', { bg = '#1f2335', fg = '#7dcfff' }) -- Bordes flotantes
 
+vim.api.nvim_create_autocmd(
+    "ColorScheme",
+    {
+        pattern = "tokyonight",
+        callback = function()
+            vim.api.nvim_set_hl(0, "CursorLineNr", {fg = "#ff9e64", bold = true})
+        end
+    }
+)
 
-vim.api.nvim_create_autocmd("ColorScheme", {
-    pattern = "tokyonight",
-    callback = function()
-        vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#ff9e64", bold = true })
-    end
-})
-
+-- vim.api.nvim_create_user_command(
+--     "ToggleTree",
+--     function()
+        
+--         require("custom_movement").turn_off_custom_movement()
+--         vim.cmd("NvimTreeToggle")
+--     end,
+--     {desc = "Toggle NvimTree"}
+-- )

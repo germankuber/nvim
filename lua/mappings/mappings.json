@@ -861,44 +861,33 @@
                     "desc": "Split window horizontally"
                   }
                 ]
+              },
+              {
+                "lhs": "r",
+                "rhs": "<cmd>:ToggleResizeMode<CR>",
+                "desc": "Resize mode"
+              },
+              {
+                "lhs": "m",
+                "rhs": "<cmd>:ToggleMoveMode<CR>",
+                "desc": "Move mode"
+              },
+              {
+                "lhs": "p",
+                "rhs": "<cmd>:PickWindow<CR>",
+                "desc": "Pick"
               }
             ]
           },
           {
             "lhs": "l",
-            "rhs": "<cmd>Telescope buffers<CR>",
+            "rhs": "<cmd>lua require('telescope.builtin').buffers({ initial_mode = 'normal' })<CR>",
             "desc": "Navigate each panel"
           },
           {
             "lhs": "s",
             "rhs": "<cmd>NvimTreeToggle<CR>",
             "desc": "Toggle Tree View"
-          }
-        ]
-      },
-      {
-        "title": "Resize",
-        "base_lhs": "",
-        "commands": [
-          {
-            "lhs": "<A-h>",
-            "rhs": "<cmd>lua require('smart-splits').resize_left()<CR>",
-            "desc": "Resize split to the left"
-          },
-          {
-            "lhs": "<A-j>",
-            "rhs": "<cmd>lua require('smart-splits').resize_down()<CR>",
-            "desc": "Resize split downward"
-          },
-          {
-            "lhs": "<A-k>",
-            "rhs": "<cmd>lua require('smart-splits').resize_up()<CR>",
-            "desc": "Resize split upward"
-          },
-          {
-            "lhs": "<A-l>",
-            "rhs": "<cmd>lua require('smart-splits').resize_right()<CR>",
-            "desc": "Resize split to the right"
           }
         ]
       }
@@ -908,7 +897,6 @@
     "title": "File commands",
     "base_lhs": "<Leader>F",
     "commands": [
-      
       {
         "title": "New",
         "base_lhs": "n",
@@ -1052,7 +1040,6 @@
       }
     ]
   },
-
   {
     "title": "Test commands",
     "base_lhs": "<Leader>T",
@@ -1269,7 +1256,7 @@
     "commands": [
       {
         "title": "Code navigation",
-        "base_lhs": "<Leader>n",
+        "base_lhs": "n",
         "commands": [
           {
             "lhs": "C",
