@@ -17,6 +17,10 @@ require("config.jump_navigation").setup()
 require("config.selection").setup()
 require("config.funny_clipboard")
 require("config.neotest_telescope").setup()
+require("config.mods")
+
+
+--mods
 
 require("config.convert_number").setup()
 require("config.transaction_detail").setup(

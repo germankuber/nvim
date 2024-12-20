@@ -667,33 +667,39 @@
     "filetype": "__codeFileType__",
     "commands": [
       {
-        "lhs": "l",
+        "lhs": "j",
         "rhs": "zj",
-        "desc": "Close fold recursively",
+        "desc": "Prev",
         "filetype": "__codeFileType__"
       },
       {
         "lhs": "k",
-        "rhs": "zC",
-        "desc": "Close fold recursively",
+        "rhs": "zk",
+        "desc": "Next ",
         "filetype": "__codeFileType__"
       },
       {
-        "lhs": "j",
-        "rhs": "zO",
-        "desc": "Open fold recursively",
-        "filetype": "__codeFileType__"
-      },
-      {
-        "lhs": "l",
-        "rhs": "zo",
-        "desc": "Open current fold",
-        "filetype": "__codeFileType__"
-      },
-      {
-        "lhs": "h",
+        "lhs": "c",
         "rhs": "zc",
-        "desc": "Close current fold",
+        "desc": "Close current",
+        "filetype": "__codeFileType__"
+      },
+      {
+        "lhs": "o",
+        "rhs": "zo",
+        "desc": "Open current",
+        "filetype": "__codeFileType__"
+      },
+      {
+        "lhs": "M",
+        "rhs": "zM",
+        "desc": "Close All",
+        "filetype": "__codeFileType__"
+      },
+      {
+        "lhs": "R",
+        "rhs": "zR",
+        "desc": "Open All",
         "filetype": "__codeFileType__"
       },
       {
@@ -703,11 +709,11 @@
         "filetype": "__codeFileType__"
       },
       {
-        "lhs": "d",
-        "rhs": "zD",
-        "desc": "Delete current fold",
+        "lhs": "Z",
+        "rhs": "<cmd>:FoldModeToggle<CR>",
+        "desc": "Preview folded code",
         "filetype": "__codeFileType__"
-      }
+      } 
     ]
   },
   {
