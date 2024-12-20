@@ -1,5 +1,5 @@
 require("config.lazy")
-require("config.bookmarks")
+require("config.bookmarks").setup() 
 require("config.terminal")
 require("config.diagnostic")
 require("config.sessions")

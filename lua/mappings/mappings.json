@@ -723,13 +723,13 @@
     "commands": [
       {
         "lhs": "<C-;>",
-        "rhs": "<cmd>lua require('config.bookmarks').next_global_bookmark()<CR>",
+        "rhs": "<cmd>:GlobalBookmarksNext<CR>",
         "desc": "Jump to next global bookmark",
         "filetype": "__codeFileType__"
       },
       {
         "lhs": "<C-g>",
-        "rhs": "<cmd>lua require('config.bookmarks').prev_global_bookmark()<CR>",
+        "rhs": "<cmd>:GlobalBookmarksPrev<CR>",
         "desc": "Jump to previous global bookmark",
         "filetype": "__codeFileType__"
       },
@@ -751,13 +751,13 @@
           },
           {
             "lhs": "n",
-            "rhs": "<cmd>lua require('config.bookmarks').next_global_bookmark()<CR>",
+            "rhs": "<cmd>:GlobalBookmarksNext<CR>",
             "desc": "Jump next",
             "filetype": "__codeFileType__"
           },
           {
             "lhs": "p",
-            "rhs": "<cmd>lua require('config.bookmarks').prev_global_bookmark()<CR>",
+            "rhs": "<cmd>:GlobalBookmarksPrev<CR>",
             "desc": "Jump prev",
             "filetype": "__codeFileType__"
           },

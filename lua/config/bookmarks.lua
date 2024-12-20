@@ -1,7 +1,7 @@
 -- ~/.config/nvim/lua/config/custom_bookmarks.lua
 local M = {}
 
-function M.next_global_bookmark()
+local function next_global_bookmark()
   local bookmark_file = vim.fn.expand "$HOME/.bookmarks"
   -- print("Buscando en el archivo de marcadores:", bookmark_file) -- Depuración
 
@@ -109,8 +109,7 @@ function M.next_global_bookmark()
   end
 end
 
--- Función para saltar al marcador global anterior (circular)
-function prev_global_bookmark()
+local function prev_global_bookmark()
   local bookmark_file = vim.fn.expand "$HOME/.bookmarks"
   -- print("Buscando en el archivo de marcadores:", bookmark_file) -- Depuración
 
@@ -220,4 +219,12 @@ function prev_global_bookmark()
   end
 end
 
+function M.setup()
+  vim.api.nvim_create_user_command("GlobalBookmarksPrev", function()
+    prev_global_bookmark()
+  end, {})
+  vim.api.nvim_create_user_command("GlobalBookmarksNext", function()
+    next_global_bookmark()
+  end, {})
+end
 return M
