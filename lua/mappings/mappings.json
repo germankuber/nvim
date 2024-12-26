@@ -431,6 +431,11 @@
         ]
       },
       {
+        "lhs": "r",
+        "rhs": "<cmd>: RequestPicker<CR>",
+        "desc": "Request"
+      },
+      {
         "lhs": "k",
         "rhs": "<cmd>lua require('config.jump_config').set_jump_input()<CR>",
         "desc": "Set size (J/K)(Up/Down)"

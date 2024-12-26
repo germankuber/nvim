@@ -1,8 +1,14 @@
 local Popup = require("nui.popup")
+local ReadFile = require("config.helpers.read_file")
 local Input = require("nui.input")
 local Layout = require("nui.layout")
 local event = require("nui.utils.autocmd").event
+local pickers = require("telescope.pickers")
+local finders = require("telescope.finders")
+local previewers = require("telescope.previewers")
+local conf = require("telescope.config").values
 local Menu = require("nui.menu")
+
 local M = {}
 
 local saved_mappings = {}
@@ -10,6 +16,7 @@ local saved_mappings = {}
 -- Modes to consider
 local modes = {"n", "i", "v", "x", "s", "o", "t", "c"}
 local inputs = {}
+local request_selected = {}
 local layout = {}
 local inputs_values = {}
 local input_status = "close"
@@ -62,10 +69,6 @@ end
 
 function M.setup(opts)
     local path = opts.path or vim.fn.expand("~/.requests")
-    local pickers = require("telescope.pickers")
-    local finders = require("telescope.finders")
-    local previewers = require("telescope.previewers")
-    local conf = require("telescope.config").values
 
     vim.api.nvim_set_hl(0, "TomlSection", {fg = "#FFD700", bold = true})
     vim.api.nvim_set_hl(0, "TomlKey", {fg = "#00FF00", bold = true})
@@ -124,11 +127,233 @@ function M.setup(opts)
         end
         layout:unmount()
     end
+    -- Function to parse a TOML-like string into a Lua table
+    function parse_toml_to_table(toml_string)
+        local result = {}
+        local currentSection = result
+        local lines = {}
+        for line in toml_string:gmatch("[^\r\n]+") do
+            table.insert(lines, line)
+        end
+
+        local function trim(s)
+            return s:match("^%s*(.-)%s*$")
+        end
+
+        local i = 1
+        local count = #lines
+
+        while i <= count do
+            local line = trim(lines[i])
+            if line == "" or line:match("^#") then
+                i = i + 1
+            elseif line:match("^%[.-%]$") then
+                local sectionName = line:match("^%[(.-)%]$")
+                result[sectionName] = {}
+                currentSection = result[sectionName]
+                i = i + 1
+            else
+                local key, value = line:match("^(.-)%s*=%s*(.*)$")
+                if key and value then
+                    key = trim(key)
+                    value = trim(value)
+
+                    if value:sub(1, 3) == "'''" then
+                        local multilineValue = {}
+                        local firstLine = value:sub(4)
+                        local closed = false
+                        if firstLine:sub(-3) == "'''" then
+                            table.insert(multilineValue, firstLine:sub(1, -4))
+                            closed = true
+                        else
+                            table.insert(multilineValue, firstLine)
+                        end
+                        i = i + 1
+                        while not closed and i <= count do
+                            local nextLine = lines[i]
+                            local tripleQuotePos = nextLine:find("'''")
+                            if tripleQuotePos then
+                                table.insert(multilineValue, nextLine:sub(1, tripleQuotePos - 1))
+                                closed = true
+                            else
+                                table.insert(multilineValue, nextLine)
+                            end
+                            i = i + 1
+                        end
+                        currentSection[key] = table.concat(multilineValue, "\n")
+                    else
+                        if value:match("^%d+$") then
+                            currentSection[key] = tonumber(value)
+                        elseif value:match('^".*"$') or value:match("^'.*'$") then
+                            currentSection[key] = value:sub(2, -2)
+                        elseif value:lower() == "true" or value:lower() == "false" then
+                            currentSection[key] = (value:lower() == "true")
+                        else
+                            currentSection[key] = value
+                        end
+                        i = i + 1
+                    end
+                else
+                    i = i + 1
+                end
+            end
+        end
+
+        return result
+    end
+
+    local function make_request(request_table)
+        -- Ensure required fields are present
+        if not request_table.url or not request_table.method then
+            error("Request table must contain 'url' and 'method' fields.")
+        end
+
+        -- Initialize the curl command
+        local cmd = {"curl", "-s", "-X", request_table.method, request_table.url}
+
+        -- Add headers if present
+        if request_table.headers then
+            for key, value in pairs(request_table.headers) do
+                -- Skip 'body' if it's mistakenly inside headers
+                if key ~= "body" then
+                    table.insert(cmd, "-H")
+                    table.insert(cmd, string.format('"%s: %s"', key, value))
+                end
+            end
+        end
+
+        for key, value in pairs(inputs_values) do
+            request_table.body = request_table.body:gsub("{{" .. key .. "}}", value)
+        end
+
+        if request_table.body then
+            table.insert(cmd, "-d")
+            table.insert(cmd, string.format("'%s'", request_table.body:gsub("\n", "")))
+        end
+
+        -- Concatenate the command table into a single string
+        local cmd_str = table.concat(cmd, " ")
+
+        -- Execute the curl command
+
+        local handle = io.popen(cmd_str)
+        local result = handle:read("*a")
+        local success, _, exit_code = handle:close()
+
+        -- Handle execution results
+        if success then
+            return result
+        else
+            error(string.format("Request failed with exit code %s", exit_code))
+        end
+    end
+    local function display_response(json_string)
+        -- Decode the JSON string
+        local ok, decoded = pcall(vim.fn.json_decode, json_string)
+        if not ok then
+            error("Invalid JSON string provided.")
+        end
+    
+        -- Function to serialize Lua table with indentation
+        local function serialize(tbl, indent)
+            indent = indent or 0
+            local s = ""
+            local indent_str = string.rep("  ", indent)
+            if type(tbl) ~= "table" then
+                if type(tbl) == "string" then
+                    s = '"' .. tbl .. '"'
+                else
+                    s = tostring(tbl)
+                end
+                return s
+            end
+            s = s .. "{\n"
+            for k, v in pairs(tbl) do
+                s = s .. indent_str .. "  " .. '"' .. k .. '": ' .. serialize(v, indent + 1) .. ",\n"
+            end
+            s = s .. indent_str .. "}"
+            return s
+        end
+    
+        -- Pretty-print the JSON
+        local formatted_json = serialize(decoded)
+    
+        -- Open a new tab to ensure full-screen buffer
+        vim.cmd('tabnew')
+        local buf = vim.api.nvim_get_current_buf()
+        vim.api.nvim_buf_set_name(buf, "Response")
+    
+        -- Prepare the content
+        local lines = {
+            "Response",
+            "",
+            "Body:",
+            "",
+        }
+    
+        -- Split the formatted JSON into lines and add to content
+        for line in formatted_json:gmatch("[^\r\n]+") do
+            table.insert(lines, line)
+        end
+    
+        -- Set the lines in the buffer
+        vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
+    
+        -- Set the buffer to be non-modifiable and read-only
+        vim.api.nvim_buf_set_option(buf, 'modifiable', false)
+        vim.api.nvim_buf_set_option(buf, 'readonly', true)
+    
+        -- Set filetype to JSON for syntax highlighting
+        vim.api.nvim_buf_set_option(buf, 'filetype', 'json')
+    
+        -- Optional: Center the view
+        vim.cmd('normal! gg')
+    end
+    
+
     local function execute()
         if input_status == "open" then
-            for _, input_name in ipairs(inputs_names_to_show) do
-                print(inputs_values[input_name])
-            end
+            request = make_request(parse_toml_to_table(request_selected.preview))
+            display_response(request)
+            -- local url = request_selected.url:match('url%s*=%s*"(.-)"') or ""
+            -- -- local method = request_selected:match('method%s*=%s*"(.-)"') or "GET"
+            -- -- local raw_headers = parse_headers_section(current_request_content)
+            -- -- local raw_body = parse_body_section(current_request_content)
+
+            -- print(url)
+            -- print(method)
+            -- print(raw_headers)
+            -- print(raw_body)
+
+            -- url = replace_placeholders(url, inputs_values)
+            -- method = replace_placeholders(method, inputs_values)
+
+            -- local headers = {}
+            -- for k, v in pairs(raw_headers) do
+            --     local header_key = replace_placeholders(k, inputs_values)
+            --     local header_val = replace_placeholders(v, inputs_values)
+            --     headers[header_key] = header_val
+            -- end
+
+            -- local body = replace_placeholders(raw_body, inputs_values)
+
+            -- local cmd = {"curl", "-s", "-X", method}
+
+            -- for key, val in pairs(headers) do
+            --     table.insert(cmd, "-H")
+            --     table.insert(cmd, key .. ": " .. val)
+            -- end
+
+            -- table.insert(cmd, url)
+
+            -- if (method == "POST" or method == "PUT" or method == "PATCH") and body ~= "" then
+            --     table.insert(cmd, "-d")
+            --     table.insert(cmd, body)
+            -- end
+
+            -- local result = vim.fn.system(cmd)
+            -- print("Resultado de la request:\n" .. result)
+
             close()
             input_status = "close"
         end
@@ -302,7 +527,6 @@ function M.setup(opts)
                 on_submit = function(value)
                 end,
                 on_change = function(value)
-                    -- print("Changed:", value)
                 end
             }
         )
@@ -312,14 +536,17 @@ function M.setup(opts)
     local function on_select(entry)
         local placeholders = parse_placeholders(entry.preview or "")
         if #placeholders == 0 then
-            return
+            input_status = "open"
+            execute()
+        else
+            show_form(placeholders)
         end
-        show_form(placeholders)
     end
     local function show_requests()
         inputs = {}
         layout = {}
         inputs_values = {}
+        request_selected = {}
         pickers.new(
             {
                 prompt_title = "Requests",
@@ -387,9 +614,9 @@ function M.setup(opts)
                         "<CR>",
                         function(prompt_bufnr)
                             local action_state = require("telescope.actions.state")
-                            local selected = action_state.get_selected_entry()
+                            request_selected = action_state.get_selected_entry()
                             require("telescope.actions").close(prompt_bufnr)
-                            on_select(selected)
+                            on_select(request_selected)
                         end
                     )
                     return true
