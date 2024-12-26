@@ -260,6 +260,17 @@
     ]
   },
   {
+    "title": "Move parent",
+    "base_lhs": "",
+    "commands": [
+      {
+        "lhs": "Y",
+        "rhs": "<cmd>:GoToParentScope<CR>",
+        "desc": "Navigate to parent"
+      }
+    ]
+  },
+  {
     "title": "Expand movement",
     "base_lhs": "",
     "commands": [
@@ -713,7 +724,7 @@
         "rhs": "<cmd>:FoldModeToggle<CR>",
         "desc": "Preview folded code",
         "filetype": "__codeFileType__"
-      } 
+      }
     ]
   },
   {

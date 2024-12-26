@@ -8,6 +8,7 @@ require("config.refactoring").setup()
 -- require("config.auto_save").setup()
 require("config.refactor.refactor")
 require("config.toggle_move_mode")
+require("config.navigation_parent")
 require("config.jump_config")
 require("config.resize_buffer")
 require("config.compare_files")
@@ -18,6 +19,9 @@ require("config.jump_navigation").setup()
 require("config.selection").setup()
 require("config.funny_clipboard")
 require("config.neotest_telescope").setup()
+require("config.request").setup({
+    path = "/Users/GermanKuber/Documents/Repositories/Borderless/mev_extractor_rust/requests"
+})
 require("config.mods")
 
 

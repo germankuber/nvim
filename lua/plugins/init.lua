@@ -13,6 +13,7 @@ return {
   require "plugins.test",
   require "plugins.compare",
   require "plugins.cmp",
+  require "plugins.toml",
   require "plugins.diagnostic",
   require "plugins.refactoring",
   require "plugins.rust",
