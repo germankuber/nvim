@@ -4,6 +4,57 @@ local event = require("nui.utils.autocmd").event
 local Menu = require("nui.menu")
 local M = {}
 
+local saved_mappings = {}
+
+-- Modes to consider
+local modes = {"n", "i", "v", "x", "s", "o", "t", "c"}
+
+-- Function to save the current mappings for a key in all modes
+local function save_mapping(key)
+    local key_mappings = {} -- Temporary table to store mappings for this key
+    for _, mode in ipairs(modes) do
+        local mappings = vim.api.nvim_get_keymap(mode)
+        for _, map in ipairs(mappings) do
+            if map.lhs == key then
+                key_mappings[mode] = map
+                break
+            end
+        end
+    end
+    saved_mappings[key] = key_mappings
+    return key_mappings -- Return the saved mappings for this key
+end
+
+-- Function to restore the saved mappings for a key in all modes
+local function restore_mapping(key)
+    local key_mappings = saved_mappings[key]
+    if not key_mappings then
+        return false -- No saved mappings for this key
+    end
+
+    for _, mode in ipairs(modes) do
+        local map = key_mappings[mode]
+        if map then
+            vim.api.nvim_set_keymap(
+                mode,
+                key,
+                map.rhs or "",
+                {
+                    noremap = not map.noremap,
+                    silent = map.silent,
+                    expr = map.expr,
+                    script = map.script
+                }
+            )
+        else
+            -- If no mapping was saved for this mode, delete the keymap
+            pcall(vim.api.nvim_del_keymap, mode, key)
+        end
+    end
+
+    return true -- Mappings restored successfully
+end
+
 function M.setup(opts)
     local path = opts.path or vim.fn.expand("~/.requests")
     local pickers = require("telescope.pickers")
@@ -62,8 +113,6 @@ function M.setup(opts)
             vim.api.nvim_buf_delete(buf, {force = true})
         end
     end
-
-
 
     local function show_form(fields)
         local Input = require("nui.input")
@@ -164,7 +213,7 @@ function M.setup(opts)
                 )
                 inp:map(
                     "i",
-                    "<Esc>",
+                    "Q",
                     function()
                         for _, input in ipairs(inputs) do
                             input:unmount()
@@ -188,12 +237,14 @@ function M.setup(opts)
             return inputs
         end
 
+        local mapping_saved = save_mapping("Q")
         create_inputs(
             fields,
             {},
             {
                 on_close = function()
                     print("Closed")
+                    restore_mapping(mapping_saved)
                 end,
                 on_submit = function(value)
                     print("Submitted:", value)
