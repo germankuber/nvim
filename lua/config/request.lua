@@ -1,5 +1,6 @@
 local Popup = require("nui.popup")
 local Input = require("nui.input")
+local Layout = require("nui.layout")
 local event = require("nui.utils.autocmd").event
 local Menu = require("nui.menu")
 local M = {}
@@ -8,7 +9,11 @@ local saved_mappings = {}
 
 -- Modes to consider
 local modes = {"n", "i", "v", "x", "s", "o", "t", "c"}
-
+local inputs = {}
+local layout = {}
+local inputs_values = {}
+local input_status = "close"
+local inputs_names_to_show = {}
 -- Function to save the current mappings for a key in all modes
 local function save_mapping(key)
     local key_mappings = {} -- Temporary table to store mappings for this key
@@ -113,6 +118,21 @@ function M.setup(opts)
             vim.api.nvim_buf_delete(buf, {force = true})
         end
     end
+    local function close()
+        for _, input in ipairs(inputs) do
+            input:unmount()
+        end
+        layout:unmount()
+    end
+    local function execute()
+        if input_status == "open" then
+            for _, input_name in ipairs(inputs_names_to_show) do
+                print(inputs_values[input_name])
+            end
+            close()
+            input_status = "close"
+        end
+    end
 
     local function show_form(fields)
         local Input = require("nui.input")
@@ -133,27 +153,50 @@ function M.setup(opts)
         end
         local function create_inputs(input_names, base_opts, handlers)
             base_opts = base_opts or {}
-            handlers =
-                handlers or
-                {
-                    on_close = function()
-                    end,
-                    on_submit = function(_)
-                    end,
-                    on_change = function(_)
-                    end
-                }
 
-            local inputs = {}
             local total_inputs = #input_names
+            inputs_names_to_show = input_names
             local current_input_index = 1
             local input_height = 4
             local screen_width = vim.api.nvim_get_option("columns")
             local input_width = 90
             local centered_col = math.floor((screen_width - input_width) / 2)
 
+            local first_row = 0
+            local first_col = 0
+
+            local top_popup = Popup({border = "double"})
+            local bottom_left_popup = Popup({border = "single"})
+            local bottom_right_popup = Popup({border = "single"})
+
+            layout =
+                Popup(
+                {
+                    enter = false,
+                    focusable = false,
+                    position = {
+                        row = math.floor((vim.api.nvim_get_option("lines") - (input_height * total_inputs)) / 2) +
+                            (0 - 1) * (input_height - 1),
+                        col = centered_col - 5
+                    },
+                    size = {
+                        width = input_width + 10,
+                        height = (input_height * #input_names) + 2
+                    }
+                }
+            )
+
+            layout:mount()
+            local text = "Press <TAB>/navigate, <Q>/close, <E>/ execute"
+            local win_width = vim.api.nvim_win_get_width(0)
+            local padding = 99 - #text
+
+            local aligned_text = string.rep(" ", padding) .. text
+
+            vim.api.nvim_buf_set_lines(layout.bufnr, 0, 1, false, {aligned_text})
             for i, name in ipairs(input_names) do
                 local row_offset = (i - 1) * (input_height - 1)
+
                 local opts =
                     vim.tbl_deep_extend(
                     "force",
@@ -171,9 +214,9 @@ function M.setup(opts)
                             height = input_height
                         },
                         border = {
-                            style = "single",
+                            style = "double",
                             text = {
-                                top = string.format("[ %s ]", name),
+                                top = string.format("[%s]", name),
                                 top_align = "left"
                             }
                         },
@@ -187,9 +230,9 @@ function M.setup(opts)
                     {
                         prompt = "> ",
                         default_value = "",
-                        on_close = handlers.on_close,
-                        on_submit = handlers.on_submit,
-                        on_change = handlers.on_change
+                        on_change = function(value)
+                            inputs_values[name] = value
+                        end
                     }
                 )
 
@@ -215,8 +258,17 @@ function M.setup(opts)
                     "i",
                     "Q",
                     function()
+                        close()
+                    end,
+                    {noremap = true, silent = true}
+                )
+
+                inp:map(
+                    "i",
+                    "E",
+                    function()
                         for _, input in ipairs(inputs) do
-                            input:unmount()
+                            execute()
                         end
                     end,
                     {noremap = true, silent = true}
@@ -237,23 +289,24 @@ function M.setup(opts)
             return inputs
         end
 
-        local mapping_saved = save_mapping("Q")
+        local mapping_saved_Q = save_mapping("Q")
+        local mapping_saved_E = save_mapping("E")
         create_inputs(
             fields,
             {},
             {
                 on_close = function()
-                    print("Closed")
-                    restore_mapping(mapping_saved)
+                    restore_mapping(mapping_saved_Q)
+                    restore_mapping(mapping_saved_E)
                 end,
                 on_submit = function(value)
-                    print("Submitted:", value)
                 end,
                 on_change = function(value)
                     -- print("Changed:", value)
                 end
             }
         )
+        input_status = "open"
     end
 
     local function on_select(entry)
@@ -264,6 +317,9 @@ function M.setup(opts)
         show_form(placeholders)
     end
     local function show_requests()
+        inputs = {}
+        layout = {}
+        inputs_values = {}
         pickers.new(
             {
                 prompt_title = "Requests",
