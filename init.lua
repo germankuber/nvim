@@ -1,4 +1,4 @@
-require "config.general"
+require "config.init"
 
 require "commands"
 require "options"

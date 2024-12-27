@@ -1274,7 +1274,6 @@
   {
     "title": "LSP commands",
     "base_lhs": "<Leader>g",
-    "filetype": "rust",
     "commands": [
       {
         "title": "Code navigation",
@@ -1322,6 +1321,11 @@
             "lhs": "p",
             "rhs": "<cmd>:lua require('illuminate').goto_prev_reference(wrap)<CR>",
             "desc": "Prev reference"
+          },
+          {
+            "lhs": "Z",
+            "rhs": "<cmd>:ReferenceModeToggle<CR>",
+            "desc": "Mods"
           }
         ]
       },

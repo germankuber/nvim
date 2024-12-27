@@ -7,6 +7,7 @@ return {
   require "plugins.treesitter",
   require "plugins.tree",
   require "plugins.theme",
+  require "plugins.rest",
   require "plugins.snippets",
   require "plugins.lsp",
   require "plugins.coding",
