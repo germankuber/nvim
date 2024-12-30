@@ -1,18 +1,32 @@
 return {
+    {
+        "simonmclean/triptych.nvim",
+        event = "VeryLazy",
+        dependencies = {
+            "nvim-lua/plenary.nvim", -- required
+            "nvim-tree/nvim-web-devicons", -- optional for icons
+            "antosha417/nvim-lsp-file-operations" -- optional LSP integration
+        },
+        opts = {},
+        config = function()
+            require("triptych").setup()
+        end
+    },
+    {
+        "sphamba/smear-cursor.nvim",
+        opts = {}
+    },
     -- {
-    --     "xiyaowong/transparent.nvim",
-    --     config = function()
-    --         require("transparent").setup(
-    --             {
-    --                 enable = true,
-    --                 extra_groups = {
-    --                     "NormalFloat",
-    --                     "NvimTreeNormal"
-    --                 },
-    --                 exclude = {}
-    --             }
-    --         )
-    --     end
+    --     "mawkler/modicator.nvim",
+    --     dependencies = "mawkler/onedark.nvim",
+    --     init = function()
+    --         vim.o.cursorline = true
+    --         vim.o.number = true
+    --         vim.o.termguicolors = true
+    --     end,
+    --     opts = {
+    --         show_warnings = true
+    --     }
     -- },
     {
         "j-hui/fidget.nvim",
@@ -189,27 +203,29 @@ return {
                 vim.api.nvim_set_hl(0, "IndentBlanklineIndent4", {fg = "#56B6C2", nocombine = true})
                 vim.api.nvim_set_hl(0, "IndentBlanklineIndent5", {fg = "#61AFEF", nocombine = true})
                 vim.api.nvim_set_hl(0, "IndentBlanklineIndent6", {fg = "#C678DD", nocombine = true})
-    
-                require("ibl").setup({
-                    scope = {
-                        enabled = true, -- Enable scope highlighting
-                        show_start = true, -- Show start of the current scope
-                        highlight = {"IndentBlanklineScope"}, -- Highlight group for scope
-                    },
-                    indent = {
-                        char = "│",
-                        highlight = {
-                            "IndentBlanklineIndent1",
-                            "IndentBlanklineIndent2",
-                            "IndentBlanklineIndent3",
-                            "IndentBlanklineIndent4",
-                            "IndentBlanklineIndent5",
-                            "IndentBlanklineIndent6"
+
+                require("ibl").setup(
+                    {
+                        scope = {
+                            enabled = true, -- Enable scope highlighting
+                            show_start = true, -- Show start of the current scope
+                            highlight = {"IndentBlanklineScope"} -- Highlight group for scope
+                        },
+                        indent = {
+                            char = "│",
+                            highlight = {
+                                "IndentBlanklineIndent1",
+                                "IndentBlanklineIndent2",
+                                "IndentBlanklineIndent3",
+                                "IndentBlanklineIndent4",
+                                "IndentBlanklineIndent5",
+                                "IndentBlanklineIndent6"
+                            }
                         }
                     }
-                })
+                )
             end
-    
+
             -- Function to reset to default settings
             local function restore_indent_blankline_to_default()
                 -- vim.api.nvim_set_hl(0, "IndentBlanklineIndent1", {})
@@ -218,38 +234,44 @@ return {
                 -- vim.api.nvim_set_hl(0, "IndentBlanklineIndent4", {})
                 -- vim.api.nvim_set_hl(0, "IndentBlanklineIndent5", {})
                 -- vim.api.nvim_set_hl(0, "IndentBlanklineIndent6", {})
-    
-                require("ibl").setup({
-                    scope = { enabled = false }, -- Disable scope when not in Rust
-                    indent = {
-                        char = "│",
-                        highlight = {"IndentBlanklineChar"},
-                    },
-                })
+
+                require("ibl").setup(
+                    {
+                        scope = {enabled = false}, -- Disable scope when not in Rust
+                        indent = {
+                            char = "│",
+                            highlight = {"IndentBlanklineChar"}
+                        }
+                    }
+                )
             end
-    
+
             -- Autocommand for Rust files
-            vim.api.nvim_create_autocmd("FileType", {
-                pattern = "rust",
-                callback = function()
-                    set_indent_blankline_for_rust()
-                end,
-            })
-    
+            vim.api.nvim_create_autocmd(
+                "FileType",
+                {
+                    pattern = "rust",
+                    callback = function()
+                        set_indent_blankline_for_rust()
+                    end
+                }
+            )
+
             -- Restore default on buffer unload
-            vim.api.nvim_create_autocmd("BufUnload", {
-                pattern = "*.rs",
-                callback = function()
-                    restore_indent_blankline_to_default()
-                end,
-            })
-    
+            vim.api.nvim_create_autocmd(
+                "BufUnload",
+                {
+                    pattern = "*.rs",
+                    callback = function()
+                        restore_indent_blankline_to_default()
+                    end
+                }
+            )
+
             -- Global highlight for scope block
-            vim.api.nvim_set_hl(0, "IndentBlanklineScope", { fg = "#FFFFFF", bg = "#3b4261", underline = true })
-
-
+            vim.api.nvim_set_hl(0, "IndentBlanklineScope", {fg = "#FFFFFF", bg = "#3b4261", underline = true})
         end
-    },    
+    },
     {
         "nvim-treesitter/nvim-treesitter-context",
         lazy = false,

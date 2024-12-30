@@ -4,6 +4,11 @@
     "base_lhs": "<Leader>j",
     "commands": [
       {
+        "lhs": "v",
+        "rhs": "<cmd>:Telescope neoclip<CR>",
+        "desc": "Registers"
+      },
+      {
         "title": "Convert",
         "base_lhs": "c",
         "commands": [
@@ -1288,6 +1293,32 @@
             "lhs": "l",
             "rhs": "<cmd>:JumplistTelescope<CR>",
             "desc": "Jump list"
+          }
+        ]
+      },
+      {
+        "lhs": "j",
+        "rhs": "<cmd>lua require('flash').jump()<CR>",
+        "desc": "Jump to position"
+      },
+      {
+        "title": "Flash navigation",
+        "base_lhs": "f",
+        "commands": [
+          {
+            "lhs": "c",
+            "rhs": "<cmd>lua require('flash').jump({pattern = vim.fn.expand('<cword>')})<CR>",
+            "desc": "Current word"
+          },
+          {
+            "lhs": "s",
+            "rhs": "<cmd>lua require('flash').treesitter() <CR>",
+            "desc": "Select scope"
+          },
+          {
+            "lhs": "t",
+            "rhs": "<cmd>lua require('flash').toggle() <CR>",
+            "desc": "Toggle search"
           }
         ]
       },

@@ -1,11 +1,16 @@
 return {
-
+    {
+        "Weissle/persistent-breakpoints.nvim"
+    },
     {
         "rcarriga/nvim-dap-ui",
         dependencies = {"mfussenegger/nvim-dap", "nvim-neotest/nvim-nio"},
         keymaps = false,
-        config = function() require("dapui").setup() end
-    }, {
+        config = function()
+            require("dapui").setup()
+        end
+    },
+    {
         "mfussenegger/nvim-dap",
         keymaps = false,
         config = function()

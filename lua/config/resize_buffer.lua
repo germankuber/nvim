@@ -4,24 +4,8 @@ local M = {}
 local resize_mode = false
 local buffer_mappings = {}
 
-local original_mappings = {}
 
-local function save_original_mapping(key)
-    local maps = vim.api.nvim_get_keymap("n")
-    for _, map in ipairs(maps) do
-        if map.lhs == key then
-            original_mappings[key] = map.rhs
-            return
-        end
-    end
-end
-local function restore_original_mapping(key)
-    if original_mappings[key] then
-        vim.keymap.set("n", key, original_mappings[key], {buffer = true})
-    else
-        vim.keymap.del("n", key, {buffer = true})
-    end
-end
+local mapping_helper = require("config.helpers.mapping")
 
 local function enable_resize_mode()
     resize_mode = true
@@ -49,16 +33,16 @@ end
 
 function M.toggle_resize_mode()
     if resize_mode then
-        restore_original_mapping("h")
-        restore_original_mapping("j")
-        restore_original_mapping("k")
-        restore_original_mapping("l")
+        mapping_helper.restore_original_mapping("h")
+        mapping_helper.restore_original_mapping("j")
+        mapping_helper.restore_original_mapping("k")
+        mapping_helper.restore_original_mapping("l")
         disable_resize_mode()
     else
-        save_original_mapping("h")
-        save_original_mapping("j")
-        save_original_mapping("k")
-        save_original_mapping("l")
+        mapping_helper.save_original_mapping("h")
+        mapping_helper.save_original_mapping("j")
+        mapping_helper.save_original_mapping("k")
+        mapping_helper.save_original_mapping("l")
         enable_resize_mode()
     end
 end
