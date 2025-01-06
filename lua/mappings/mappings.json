@@ -248,22 +248,7 @@
       }
     ]
   },
-  {
-    "title": "Map",
-    "base_lhs": "<Leader>m",
-    "commands": [
-      {
-        "lhs": "t",
-        "rhs": "<cmd>Neominimap toggle<CR>",
-        "desc": "Toggle"
-      },
-      {
-        "lhs": "f",
-        "rhs": "<cmd>Neominimap toggleFocus<CR>",
-        "desc": "Focus"
-      }
-    ]
-  },
+ 
   {
     "title": "Move parent",
     "base_lhs": "",
@@ -307,27 +292,6 @@
         "lhs": "e",
         "rhs": "<cmd>:SelectEntity<CR>",
         "desc": "Entity"
-      },
-      {
-        "title": "Multi cursor",
-        "base_lhs": "m",
-        "commands": [
-          {
-            "lhs": "s",
-            "rhs": "<cmd>:MCstart<CR>",
-            "desc": "Start"
-          },
-          {
-            "lhs": "c",
-            "rhs": "<cmd>:MCunderCursor<CR>",
-            "desc": "Unser cursor"
-          },
-          {
-            "lhs": "C",
-            "rhs": "<cmd>:MCclear<CR>",
-            "desc": "Clear"
-          }
-        ]
       }
     ]
   },
@@ -936,6 +900,22 @@
             "lhs": "s",
             "rhs": "<cmd>NvimTreeToggle<CR>",
             "desc": "Toggle Tree View"
+          },
+          {
+            "title": "Map",
+            "base_lhs": "m",
+            "commands": [
+              {
+                "lhs": "t",
+                "rhs": "<cmd>Neominimap toggle<CR>",
+                "desc": "Toggle"
+              },
+              {
+                "lhs": "f",
+                "rhs": "<cmd>Neominimap toggleFocus<CR>",
+                "desc": "Focus"
+              }
+            ]
           }
         ]
       }

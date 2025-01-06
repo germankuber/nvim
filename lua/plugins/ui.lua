@@ -1,371 +1,365 @@
-return {
-    {
-        "simonmclean/triptych.nvim",
-        event = "VeryLazy",
-        dependencies = {
-            "nvim-lua/plenary.nvim", -- required
-            "nvim-tree/nvim-web-devicons", -- optional for icons
-            "antosha417/nvim-lsp-file-operations" -- optional LSP integration
-        },
-        opts = {},
-        config = function()
-            require("triptych").setup()
-        end
+return {{
+    "petertriho/nvim-scrollbar",
+    config = function()
+        require("scrollbar").setup()
+    end
+}, {
+    "simonmclean/triptych.nvim",
+    event = "VeryLazy",
+    dependencies = {"nvim-lua/plenary.nvim", -- required
+    "nvim-tree/nvim-web-devicons", -- optional for icons
+    "antosha417/nvim-lsp-file-operations" -- optional LSP integration
     },
-    {
-        "sphamba/smear-cursor.nvim",
-        opts = {}
-    },
-    -- {
-    --     "mawkler/modicator.nvim",
-    --     dependencies = "mawkler/onedark.nvim",
-    --     init = function()
-    --         vim.o.cursorline = true
-    --         vim.o.number = true
-    --         vim.o.termguicolors = true
-    --     end,
-    --     opts = {
-    --         show_warnings = true
-    --     }
-    -- },
-    {
-        "j-hui/fidget.nvim",
-        opts = {}
-    },
-    {
-        "windwp/nvim-autopairs",
-        event = "InsertEnter",
-        config = true
-        -- use opts = {} for passing setup options
-        -- this is equivalent to setup({}) function
-    },
-    {
-        "ojroques/nvim-bufdel",
-        config = function()
-            require("bufdel").setup(
-                {
-                    next = "alternate", -- Cambia al buffer alternativo
-                    quit = true -- Cierra la ventana si es la última
-                }
-            )
-        end
-    },
-    {
-        "rmagatti/goto-preview",
-        event = "BufEnter",
-        config = true,
-        config = function()
-            require("goto-preview").setup(
-                {
-                    width = 120, -- Width of the floating window
-                    height = 25 -- Height of the floating window
-                    -- :
-                }
-            )
-        end
-    },
-    {
-        "toppair/peek.nvim",
-        event = {"VeryLazy"},
-        build = "deno task --quiet build:fast",
-        config = function()
-            require("peek").setup()
-            vim.api.nvim_create_user_command("PeekOpen", require("peek").open, {})
-            vim.api.nvim_create_user_command("PeekClose", require("peek").close, {})
-        end
-    },
-    {
-        "romgrk/barbar.nvim",
-        dependencies = {"nvim-tree/nvim-web-devicons"}, -- Opcional para íconos
-        config = function()
-            vim.g.barbar_auto_setup = false -- Configuración manual
-            require("bufferline").setup(
-                {
-                    auto_hide = false, -- Muestra siempre la barra, incluso con un solo buffer
-                    icons = {buffer_index = true, filetype = {enabled = true}}
-                }
-            )
-        end
-    },
-    {
-        "s1n7ax/nvim-window-picker",
-        name = "window-picker",
-        event = "VeryLazy",
-        version = "2.*",
-        config = function()
-            require "window-picker".setup(
-                {
-                    hint = "floating-big-letter"
-                }
-            )
-            vim.api.nvim_create_user_command(
-                "PickWindow",
-                function()
-                    local win_id = require("window-picker").pick_window()
-                    if win_id then
-                        vim.api.nvim_set_current_win(win_id)
-                    end
-                end,
-                {desc = "Pick and switch to a window"}
-            )
-        end
-    },
-    {"mrjones2014/smart-splits.nvim"},
-    {
-        "stevearc/dressing.nvim",
-        lazy = false,
-        config = function()
-            require("dressing").setup(
-                {
-                    input = {
-                        enabled = true,
-                        default_prompt = "Input:",
-                        prompt_align = "center",
-                        insert_only = false,
-                        anchor = "SW",
-                        border = "rounded",
-                        relative = "editor",
-                        prefer_width = 40,
-                        prefer_height = 10,
-                        win_options = {winblend = 0},
-                        override = function(conf)
-                            conf.col = math.floor((vim.o.columns - conf.width) / 2)
-                            conf.row = math.floor((vim.o.lines - conf.height) / 2 - 1)
-                            return conf
-                        end
-                    }
-                }
-            )
-        end
-    },
-    {
-        "glepnir/dashboard-nvim",
-        event = "VimEnter",
-        lazy = false,
-        config = function()
-            require("dashboard").setup {
-                theme = "hyper",
-                config = {
-                    week_header = {enable = true},
-                    shortcut = {
-                        {
-                            desc = "󰊳 Update",
-                            group = "update",
-                            action = "Lazy update",
-                            key = "u"
-                        },
-                        {
-                            desc = "⚡️ Sync",
-                            group = "sync",
-                            action = "Lazy sync",
-                            key = "s"
-                        },
-                        {
-                            icon = " ",
-                            icon_hl = "@variable",
-                            desc = "Files",
-                            group = "Label",
-                            action = "Telescope find_files",
-                            key = "f"
-                        }, --  {
-                        --     desc = ' Apps',
-                        --     group = 'DiagnosticHint',
-                        --     action = 'Telescope app',
-                        --     key = 'a'
-                        -- },
-                        -- {
-                        --     desc = ' dotfiles',
-                        --     group = 'Number',
-                        --     action = 'Telescope dotfiles',
-                        --     key = 'd'
-                        -- },
-                        {
-                            desc = "🗂️ projects",
-                            group = "Number",
-                            action = "Telescope project",
-                            key = "p"
-                        }
-                    }
+    opts = {},
+    config = function()
+        require("triptych").setup()
+    end
+}, {
+    "sphamba/smear-cursor.nvim",
+    opts = {}
+}, -- {
+--     "mawkler/modicator.nvim",
+--     dependencies = "mawkler/onedark.nvim",
+--     init = function()
+--         vim.o.cursorline = true
+--         vim.o.number = true
+--         vim.o.termguicolors = true
+--     end,
+--     opts = {
+--         show_warnings = true
+--     }
+-- },
+{
+    "j-hui/fidget.nvim",
+    opts = {}
+}, {
+    "windwp/nvim-autopairs",
+    event = "InsertEnter",
+    config = true
+    -- use opts = {} for passing setup options
+    -- this is equivalent to setup({}) function
+}, {
+    "ojroques/nvim-bufdel",
+    config = function()
+        require("bufdel").setup({
+            next = "alternate", -- Cambia al buffer alternativo
+            quit = true -- Cierra la ventana si es la última
+        })
+    end
+}, {
+    "rmagatti/goto-preview",
+    event = "BufEnter",
+    config = true,
+    config = function()
+        require("goto-preview").setup({
+            width = 120, -- Width of the floating window
+            height = 25 -- Height of the floating window
+            -- :
+        })
+    end
+}, {
+    "toppair/peek.nvim",
+    event = {"VeryLazy"},
+    build = "deno task --quiet build:fast",
+    config = function()
+        require("peek").setup()
+        vim.api.nvim_create_user_command("PeekOpen", require("peek").open, {})
+        vim.api.nvim_create_user_command("PeekClose", require("peek").close, {})
+    end
+}, {
+    "romgrk/barbar.nvim",
+    dependencies = {"nvim-tree/nvim-web-devicons"}, -- Opcional para íconos
+    config = function()
+        vim.g.barbar_auto_setup = false -- Configuración manual
+        require("bufferline").setup({
+            auto_hide = false, -- Muestra siempre la barra, incluso con un solo buffer
+            icons = {
+                buffer_index = true,
+                filetype = {
+                    enabled = true
                 }
             }
-        end,
-        dependencies = {"nvim-tree/nvim-web-devicons"}
-    },
-    {
-        "lukas-reineke/indent-blankline.nvim",
-        main = "ibl",
-        config = function()
-            -- Function to set indent highlighting for Rust
-            local function set_indent_blankline_for_rust()
-                vim.api.nvim_set_hl(0, "IndentBlanklineIndent1", {fg = "#E06C75", nocombine = true})
-                vim.api.nvim_set_hl(0, "IndentBlanklineIndent2", {fg = "#E5C07B", nocombine = true})
-                vim.api.nvim_set_hl(0, "IndentBlanklineIndent3", {fg = "#98C379", nocombine = true})
-                vim.api.nvim_set_hl(0, "IndentBlanklineIndent4", {fg = "#56B6C2", nocombine = true})
-                vim.api.nvim_set_hl(0, "IndentBlanklineIndent5", {fg = "#61AFEF", nocombine = true})
-                vim.api.nvim_set_hl(0, "IndentBlanklineIndent6", {fg = "#C678DD", nocombine = true})
-
-                require("ibl").setup(
-                    {
-                        scope = {
-                            enabled = true, -- Enable scope highlighting
-                            show_start = true, -- Show start of the current scope
-                            highlight = {"IndentBlanklineScope"} -- Highlight group for scope
-                        },
-                        indent = {
-                            char = "│",
-                            highlight = {
-                                "IndentBlanklineIndent1",
-                                "IndentBlanklineIndent2",
-                                "IndentBlanklineIndent3",
-                                "IndentBlanklineIndent4",
-                                "IndentBlanklineIndent5",
-                                "IndentBlanklineIndent6"
-                            }
-                        }
-                    }
-                )
+        })
+    end
+}, {
+    "s1n7ax/nvim-window-picker",
+    name = "window-picker",
+    event = "VeryLazy",
+    version = "2.*",
+    config = function()
+        require"window-picker".setup({
+            hint = "floating-big-letter"
+        })
+        vim.api.nvim_create_user_command("PickWindow", function()
+            local win_id = require("window-picker").pick_window()
+            if win_id then
+                vim.api.nvim_set_current_win(win_id)
             end
+        end, {
+            desc = "Pick and switch to a window"
+        })
+    end
+}, {"mrjones2014/smart-splits.nvim"}, {
+    "stevearc/dressing.nvim",
+    lazy = false,
+    config = function()
+        require("dressing").setup({
+            input = {
+                enabled = true,
+                default_prompt = "Input:",
+                prompt_align = "center",
+                insert_only = false,
+                anchor = "SW",
+                border = "rounded",
+                relative = "editor",
+                prefer_width = 40,
+                prefer_height = 10,
+                win_options = {
+                    winblend = 0
+                },
+                override = function(conf)
+                    conf.col = math.floor((vim.o.columns - conf.width) / 2)
+                    conf.row = math.floor((vim.o.lines - conf.height) / 2 - 1)
+                    return conf
+                end
+            }
+        })
+    end
+}, {
+    "glepnir/dashboard-nvim",
+    event = "VimEnter",
+    lazy = false,
+    config = function()
+        require("dashboard").setup {
+            theme = "hyper",
+            config = {
+                week_header = {
+                    enable = true
+                },
+                shortcut = {{
+                    desc = "󰊳 Update",
+                    group = "update",
+                    action = "Lazy update",
+                    key = "u"
+                }, {
+                    desc = "⚡️ Sync",
+                    group = "sync",
+                    action = "Lazy sync",
+                    key = "s"
+                }, {
+                    icon = " ",
+                    icon_hl = "@variable",
+                    desc = "Files",
+                    group = "Label",
+                    action = "Telescope find_files",
+                    key = "f"
+                }, --  {
+                --     desc = ' Apps',
+                --     group = 'DiagnosticHint',
+                --     action = 'Telescope app',
+                --     key = 'a'
+                -- },
+                -- {
+                --     desc = ' dotfiles',
+                --     group = 'Number',
+                --     action = 'Telescope dotfiles',
+                --     key = 'd'
+                -- },
+                {
+                    desc = "🗂️ projects",
+                    group = "Number",
+                    action = "Telescope project",
+                    key = "p"
+                }}
+            }
+        }
+    end,
+    dependencies = {"nvim-tree/nvim-web-devicons"}
+}, {
+    "lukas-reineke/indent-blankline.nvim",
+    main = "ibl",
+    config = function()
+        -- Function to set indent highlighting for Rust
+        local function set_indent_blankline_for_rust()
+            vim.api.nvim_set_hl(0, "IndentBlanklineIndent1", {
+                fg = "#E06C75",
+                nocombine = true
+            })
+            vim.api.nvim_set_hl(0, "IndentBlanklineIndent2", {
+                fg = "#E5C07B",
+                nocombine = true
+            })
+            vim.api.nvim_set_hl(0, "IndentBlanklineIndent3", {
+                fg = "#98C379",
+                nocombine = true
+            })
+            vim.api.nvim_set_hl(0, "IndentBlanklineIndent4", {
+                fg = "#56B6C2",
+                nocombine = true
+            })
+            vim.api.nvim_set_hl(0, "IndentBlanklineIndent5", {
+                fg = "#61AFEF",
+                nocombine = true
+            })
+            vim.api.nvim_set_hl(0, "IndentBlanklineIndent6", {
+                fg = "#C678DD",
+                nocombine = true
+            })
 
-            -- Function to reset to default settings
-            local function restore_indent_blankline_to_default()
-                -- vim.api.nvim_set_hl(0, "IndentBlanklineIndent1", {})
-                -- vim.api.nvim_set_hl(0, "IndentBlanklineIndent2", {})
-                -- vim.api.nvim_set_hl(0, "IndentBlanklineIndent3", {})
-                -- vim.api.nvim_set_hl(0, "IndentBlanklineIndent4", {})
-                -- vim.api.nvim_set_hl(0, "IndentBlanklineIndent5", {})
-                -- vim.api.nvim_set_hl(0, "IndentBlanklineIndent6", {})
+            require("ibl").setup({
+                scope = {
+                    enabled = true, -- Enable scope highlighting
+                    show_start = true, -- Show start of the current scope
+                    highlight = {"IndentBlanklineScope"} -- Highlight group for scope
+                },
+                indent = {
+                    char = "│",
+                    highlight = {"IndentBlanklineIndent1", "IndentBlanklineIndent2", "IndentBlanklineIndent3",
+                                 "IndentBlanklineIndent4", "IndentBlanklineIndent5", "IndentBlanklineIndent6"}
+                }
+            })
+        end
 
-                require("ibl").setup(
-                    {
-                        scope = {enabled = false}, -- Disable scope when not in Rust
-                        indent = {
-                            char = "│",
-                            highlight = {"IndentBlanklineChar"}
-                        }
-                    }
-                )
+        -- Function to reset to default settings
+        local function restore_indent_blankline_to_default()
+            -- vim.api.nvim_set_hl(0, "IndentBlanklineIndent1", {})
+            -- vim.api.nvim_set_hl(0, "IndentBlanklineIndent2", {})
+            -- vim.api.nvim_set_hl(0, "IndentBlanklineIndent3", {})
+            -- vim.api.nvim_set_hl(0, "IndentBlanklineIndent4", {})
+            -- vim.api.nvim_set_hl(0, "IndentBlanklineIndent5", {})
+            -- vim.api.nvim_set_hl(0, "IndentBlanklineIndent6", {})
+
+            require("ibl").setup({
+                scope = {
+                    enabled = false
+                }, -- Disable scope when not in Rust
+                indent = {
+                    char = "│",
+                    highlight = {"IndentBlanklineChar"}
+                }
+            })
+        end
+
+        -- Autocommand for Rust files
+        vim.api.nvim_create_autocmd("FileType", {
+            pattern = "rust",
+            callback = function()
+                set_indent_blankline_for_rust()
             end
+        })
 
-            -- Autocommand for Rust files
-            vim.api.nvim_create_autocmd(
-                "FileType",
-                {
-                    pattern = "rust",
-                    callback = function()
-                        set_indent_blankline_for_rust()
+        -- Restore default on buffer unload
+        vim.api.nvim_create_autocmd("BufUnload", {
+            pattern = "*.rs",
+            callback = function()
+                restore_indent_blankline_to_default()
+            end
+        })
+
+        -- Global highlight for scope block
+        vim.api.nvim_set_hl(0, "IndentBlanklineScope", {
+            fg = "#FFFFFF",
+            bg = "#3b4261",
+            underline = true
+        })
+    end
+}, {
+    "nvim-treesitter/nvim-treesitter-context",
+    lazy = false,
+    config = function()
+        require("treesitter-context").setup({
+            max_lines = 1,
+            multiline_threshold = 2
+        })
+    end
+}, {
+    "nvim-lualine/lualine.nvim", -- Statusline with mode-based customization
+    dependencies = {"nvim-tree/nvim-web-devicons"},
+    lazy = false,
+    config = function()
+        require("lualine").setup({
+            options = {
+                theme = "sonokai",
+                component_separators = {
+                    left = "",
+                    right = ""
+                },
+                section_separators = {
+                    left = "",
+                    right = ""
+                },
+                disabled_filetypes = {"NvimTree", "dashboard", "packer"},
+                globalstatus = true
+            },
+            sections = {
+                lualine_a = {{
+                    "mode",
+                    fmt = function(mode)
+                        local modes = {
+                            INSERT = "INSERT 🚀",
+                            NORMAL = "NORMAL 🌟",
+                            VISUAL = "VISUAL ✍️",
+                            REPLACE = "REPLACE 🔄"
+                        }
+                        return modes[mode] or mode
                     end
-                }
-            )
-
-            -- Restore default on buffer unload
-            vim.api.nvim_create_autocmd(
-                "BufUnload",
-                {
-                    pattern = "*.rs",
-                    callback = function()
-                        restore_indent_blankline_to_default()
-                    end
-                }
-            )
-
-            -- Global highlight for scope block
-            vim.api.nvim_set_hl(0, "IndentBlanklineScope", {fg = "#FFFFFF", bg = "#3b4261", underline = true})
-        end
-    },
-    {
-        "nvim-treesitter/nvim-treesitter-context",
-        lazy = false,
-        config = function()
-            require("treesitter-context").setup(
-                {
-                    max_lines = 1,
-                    multiline_threshold = 2
-                }
-            )
-        end
-    },
-    {
-        "nvim-lualine/lualine.nvim", -- Statusline with mode-based customization
-        dependencies = {"nvim-tree/nvim-web-devicons"},
-        lazy = false,
-        config = function()
-            require("lualine").setup(
-                {
-                    options = {
-                        theme = "sonokai",
-                        component_separators = {left = "", right = ""},
-                        section_separators = {left = "", right = ""},
-                        disabled_filetypes = {"NvimTree", "dashboard", "packer"},
-                        globalstatus = true
-                    },
-                    sections = {
-                        lualine_a = {
-                            {
-                                "mode",
-                                fmt = function(mode)
-                                    local modes = {
-                                        INSERT = "INSERT 🚀",
-                                        NORMAL = "NORMAL 🌟",
-                                        VISUAL = "VISUAL ✍️",
-                                        REPLACE = "REPLACE 🔄"
-                                    }
-                                    return modes[mode] or mode
-                                end
-                            }
-                        },
-                        lualine_b = {"branch", "diff"},
-                        lualine_c = {"filename"},
-                        -- lualine_x = {"encoding", "fileformat", "filetype"},
-                        lualine_x = {"filetype"},
-                        lualine_y = {
-                            {
-                                function()
-                                    return "⛽️" .. require("config.gas_lualine").gas_value()
-                                end,
-                                -- color = require("config.gas_lualine").gas_color(),
-                                padding = {left = 1, right = 1}
-                                -- separator = {
-                                --     left = "",
-                                --     color = require("config.gas_lualine").gas_color()
-                                -- }
-                            },
-                            {
-                                function()
-                                    local cm = require("config.custom_movement")
-                                    if cm.is_enabled() then
-                                        return "🔥"
-                                    else
-                                        return "🥶"
-                                    end
-                                end,
-                                -- color = {fg = "#FF4500"},
-                                padding = {left = 1, right = 1}
-                                -- separator = {
-                                --     left = "",
-                                --     color = {bg = "#000000", fg = "#FFFFFF"}
-                                -- }
-                            },
-                            {
-                                function()
-                                    local jump_config = require("config.jump_config")
-                                    return "Jump: " .. jump_config.line_jump
-                                end,
-                                padding = {left = 1, right = 1}
-                            }
-                        },
-                        lualine_z = {"location"}
-                    },
-                    inactive_sections = {
-                        lualine_a = {},
-                        lualine_b = {},
-                        lualine_c = {"filename"},
-                        lualine_x = {"location"},
-                        lualine_y = {},
-                        lualine_z = {}
-                    },
-                    extensions = {"quickfix", "fugitive"}
-                }
-            )
-        end
-    }
-}
+                }},
+                lualine_b = {"branch", "diff"},
+                lualine_c = {"filename"},
+                -- lualine_x = {"encoding", "fileformat", "filetype"},
+                lualine_x = {"filetype"},
+                lualine_y = {{
+                    function()
+                        return "⛽️" .. require("config.gas_lualine").gas_value()
+                    end,
+                    -- color = require("config.gas_lualine").gas_color(),
+                    padding = {
+                        left = 1,
+                        right = 1
+                    }
+                    -- separator = {
+                    --     left = "",
+                    --     color = require("config.gas_lualine").gas_color()
+                    -- }
+                }, {
+                    function()
+                        local cm = require("config.custom_movement")
+                        if cm.is_enabled() then
+                            return "🔥"
+                        else
+                            return "🥶"
+                        end
+                    end,
+                    -- color = {fg = "#FF4500"},
+                    padding = {
+                        left = 1,
+                        right = 1
+                    }
+                    -- separator = {
+                    --     left = "",
+                    --     color = {bg = "#000000", fg = "#FFFFFF"}
+                    -- }
+                }, {
+                    function()
+                        local jump_config = require("config.jump_config")
+                        return "Jump: " .. jump_config.line_jump
+                    end,
+                    padding = {
+                        left = 1,
+                        right = 1
+                    }
+                }},
+                lualine_z = {"location"}
+            },
+            inactive_sections = {
+                lualine_a = {},
+                lualine_b = {},
+                lualine_c = {"filename"},
+                lualine_x = {"location"},
+                lualine_y = {},
+                lualine_z = {}
+            },
+            extensions = {"quickfix", "fugitive"}
+        })
+    end
+}}
