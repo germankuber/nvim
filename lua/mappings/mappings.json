@@ -307,6 +307,27 @@
         "lhs": "e",
         "rhs": "<cmd>:SelectEntity<CR>",
         "desc": "Entity"
+      },
+      {
+        "title": "Multi cursor",
+        "base_lhs": "m",
+        "commands": [
+          {
+            "lhs": "s",
+            "rhs": "<cmd>:MCstart<CR>",
+            "desc": "Start"
+          },
+          {
+            "lhs": "c",
+            "rhs": "<cmd>:MCunderCursor<CR>",
+            "desc": "Unser cursor"
+          },
+          {
+            "lhs": "C",
+            "rhs": "<cmd>:MCclear<CR>",
+            "desc": "Clear"
+          }
+        ]
       }
     ]
   },
@@ -1057,7 +1078,7 @@
     "commands": [
       {
         "lhs": "<C-h>",
-        "rhs": "^h",
+        "rhs": "^",
         "desc": "Move to first character"
       },
       {

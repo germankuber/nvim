@@ -221,48 +221,6 @@ return {
                             end,
                             opts("Open folder or file")
                         )
-
-                        -- Enable live preview in the main window
-                        -- local preview_window = nil
-                        -- vim.api.nvim_create_autocmd("CursorMoved", {
-                        --     buffer = bufnr,
-                        --     callback = function()
-                        --         local node = api.tree.get_node_under_cursor()
-                        --         if node and node.type == "file" then
-                        --             -- Find a non-tree window for preview
-                        --             local windows = vim.api
-                        --                                 .nvim_tabpage_list_wins(0)
-                        --             local tree_win = vim.fn.bufwinid(bufnr)
-
-                        --             for _, win in ipairs(windows) do
-                        --                 if win ~= tree_win then
-                        --                     preview_window = win
-                        --                     break
-                        --                 end
-                        --             end
-
-                        --             -- Ensure preview is shown in the selected window
-                        --             if preview_window then
-
-                        --                 local buf = vim.fn
-                        --                                 .bufadd(node.absolute_path)
-                        --                 vim.fn.bufload(buf) -- Load the buffer into memory
-                        --                 vim.api
-                        --                     .nvim_win_set_buf(preview_window, buf)
-
-                        --                 -- Ensure syntax highlighting and filetype detection
-                        --                 vim.api.nvim_buf_call(buf, function()
-                        --                     vim.cmd("doautocmd BufReadPre")
-                        --                     vim.cmd("doautocmd BufReadPost")
-                        --                     vim.cmd("filetype detect")
-                        --                 end)
-
-                        --                 -- Focus back to NvimTree window
-                        --                 vim.api.nvim_set_current_win(tree_win)
-                        --             end
-                        --         end
-                        --     end
-                        -- })
                     end,
                     update_focused_file = {
                         enable = true,
@@ -298,57 +256,10 @@ return {
                             quit_on_open = false
                         }
                     }
-                    --     })
-                    --     vim.api.nvim_create_autocmd("VimEnter", {
-                    --         callback = function()
-                    --             vim.defer_fn(function()
-                    --                 for _, win in ipairs(vim.api.nvim_list_wins()) do
-                    --                     if vim.api.nvim_win_is_valid(win) then
-                    --                         local buf = vim.api.nvim_win_get_buf(win)
-                    --                         local ft =
-                    --                             vim.api.nvim_buf_get_option(buf, "filetype")
-                    --                         if win and ft ~= "NvimTree" then
-                    --                             vim.api.nvim_set_current_win(win)
-                    --                             break
-                    --                         end
-                    --                     end
-                    --                 end
-                    --             end, 100)
-                    --         end
-                    --     })
-                    --     -- Autocommand to ensure focus switches from NvimTree to another buffer
-                    --     -- and force the tree width to stay consistent
-                    --     vim.api.nvim_create_autocmd("BufWinEnter", {
-                    --         callback = function()
-                    --             local tree_win = nil
-                    --             local normal_win = nil
-
-                    --             -- Iterate through all open windows
-                    --             for _, win in ipairs(vim.api.nvim_list_wins()) do
-                    --                 local buf = vim.api.nvim_win_get_buf(win)
-                    --                 local ft = vim.api.nvim_buf_get_option(buf, "filetype")
-
-                    --                 if ft == "NvimTree" then
-                    --                     -- Identify the NvimTree window
-                    --                     tree_win = win
-                    --                     break
-                    --                 else
-                    --                     -- Identify a normal (non-tree) window
-                    --                     normal_win = win
-                    --                 end
-                    --             end
-
-                    --             if tree_win then
-                    --                 vim.api.nvim_set_current_win(tree_win) --
-                    --                 vim.api.nvim_win_set_width(tree_win, 40) -- Set the width to your desired value
-                    --             else
-                    --                 vim.api.nvim_set_current_win(normal_win) --
-                    --             end
-                    --         end
+                  
                 }
             )
 
-            -- vim.cmd([[autocmd VimEnter * NvimTreeOpen]])
         end
     }
 }
