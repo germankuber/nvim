@@ -30,6 +30,7 @@ dapui.setup(
   }
 )
 
+
 dap.listeners.after.event_initialized["dapui_config"] = function()
   dapui.open()
   local current_win = vim.api.nvim_get_current_win()
