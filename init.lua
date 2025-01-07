@@ -50,87 +50,98 @@ end, {
     desc = "List global errors using Telescope"
 })
 
-local Hydra = require("hydra")
+-- local Hydra = require("hydra")
 
-Hydra({
-    name = "Multiple Cursor",
-    mode = "n", -- Modo normal
-    body = "<leader>sms", -- Tecla que activa el modo Hydra
-    heads = {{"l", '<cmd>:MultipleCursorsAddJumpNextMatch<CR>', {
-        desc = "Next line cursor",
-        exit = false
-    }}, {"k", '<cmd>:MultipleCursorsAddUp<CR>', {
-        desc = "Previous line cursor",
-        exit = false
-    }}, {"j", '<cmd>:MultipleCursorsAddDown<CR>', {
-        desc = "Next Match",
-        exit = false
-    }}, {"<Esc>", nil, {
-        desc = "Salir de Hydra",
-        exit = true
-    }}},
-    config = {
-        invoke_on_body = true,
-        hint = {
-            border = "single",
-            position = "middle"
-        },
-        on_enter = function()
-            vim.notify("Modo Hydra Activado", vim.log.levels.INFO)
-        end,
-        on_exit = function()
-            vim.notify("Modo Hydra Desactivado", vim.log.levels.INFO)
-        end,
-        hint = {
-            -- "window" | "cmdline" | "statusline" | "statuslinemanual"
-            --   "window": show hint in a floating window
-            --   "cmdline": show hint in the echo area
-            --   "statusline": show auto-generated hint in the status line
-            --   "statuslinemanual": Do not show a hint, but return a custom status
-            --                       line hint from require("hydra.statusline").get_hint()
-            type = "window", -- defaults to "window" if `hint` is passed to the hydra
-            -- otherwise defaults to "cmdline"
+-- Hydra({
+--     name = "Multiple Cursor",
+--     mode = "n", -- Modo normal
+--     body = "<leader>sms", -- Tecla que activa el modo Hydra
+--     heads = {{"l", '<cmd>:MultipleCursorsAddJumpNextMatch<CR>', {
+--         desc = "Next line cursor",
+--         exit = false
+--     }}, {"k", '<cmd>:MultipleCursorsAddUp<CR>', {
+--         desc = "Previous line cursor",
+--         exit = false
+--     }}, {"j", '<cmd>:MultipleCursorsAddDown<CR>', {
+--         desc = "Next Match",
+--         exit = false
+--     }}, {"<Esc>", nil, {
+--         desc = "Salir de Hydra",
+--         exit = true
+--     }}},
+--     config = {
+--         invoke_on_body = true,
+--         hint = {
+--             border = "single",
+--             position = "middle"
+--         },
+--         on_enter = function()
+--             vim.notify("Modo Hydra Activado", vim.log.levels.INFO)
+--         end,
+--         on_exit = function()
+--             vim.notify("Modo Hydra Desactivado", vim.log.levels.INFO)
+--         end,
+--         hint = {
+--             -- "window" | "cmdline" | "statusline" | "statuslinemanual"
+--             --   "window": show hint in a floating window
+--             --   "cmdline": show hint in the echo area
+--             --   "statusline": show auto-generated hint in the status line
+--             --   "statuslinemanual": Do not show a hint, but return a custom status
+--             --                       line hint from require("hydra.statusline").get_hint()
+--             type = "window", -- defaults to "window" if `hint` is passed to the hydra
+--             -- otherwise defaults to "cmdline"
 
-            -- set the position of the hint window. one of:
-            --    top-left   |   top    |  top-right
-            --  -------------+----------+--------------
-            --   middle-left |  middle  | middle-right
-            --  -------------+----------+--------------
-            --   bottom-left |  bottom  | bottom-right
-            position = "middle",
+--             -- set the position of the hint window. one of:
+--             --    top-left   |   top    |  top-right
+--             --  -------------+----------+--------------
+--             --   middle-left |  middle  | middle-right
+--             --  -------------+----------+--------------
+--             --   bottom-left |  bottom  | bottom-right
+--             position = "middle",
 
-            -- Offset of the floating window from the nearest editor border
-            offset = 0,
+--             -- Offset of the floating window from the nearest editor border
+--             offset = 0,
 
-            -- options passed to `nvim_open_win()`, see :h nvim_open_win()
-            -- Lets you set border, header, footer, etc etc.
-            float_opts = {
-                -- row, col, height, width, relative, and anchor should not be
-                -- overridden
-                -- style = "minimal",
-                -- relative="win",
-                -- -- row= 10,
-                -- -- col= 10,
-                -- width= 120,
-                -- height= 3,
-                focusable = false,
-                noautocmd = true
-            },
+--             -- options passed to `nvim_open_win()`, see :h nvim_open_win()
+--             -- Lets you set border, header, footer, etc etc.
+--             float_opts = {
+--                 -- row, col, height, width, relative, and anchor should not be
+--                 -- overridden
+--                 -- style = "minimal",
+--                 -- relative="win",
+--                 -- -- row= 10,
+--                 -- -- col= 10,
+--                 -- width= 120,
+--                 -- height= 3,
+--                 focusable = false,
+--                 noautocmd = true
+--             },
 
-            -- show the hydras name (or "HYDRA:" if not given a name), at the
-            -- beginning of an auto-generated hint
-            show_name = true,
+--             -- show the hydras name (or "HYDRA:" if not given a name), at the
+--             -- beginning of an auto-generated hint
+--             show_name = true,
 
-            -- if set to true, this will prevent the hydra's hint window from displaying
-            -- immediately.
-            -- Note: you can still show the window manually by calling Hydra.hint:show()
-            -- and manually close it with Hydra.hint:close()
-            hide_on_load = false,
+--             -- if set to true, this will prevent the hydra's hint window from displaying
+--             -- immediately.
+--             -- Note: you can still show the window manually by calling Hydra.hint:show()
+--             -- and manually close it with Hydra.hint:close()
+--             hide_on_load = false,
 
-            -- Table from function names to function. Functions should return
-            -- a string. These functions can be used in hints with %{func_name}
-            -- more in :h hydra-hint
-            funcs = {}
-        }
-    }
-})
+--             -- Table from function names to function. Functions should return
+--             -- a string. These functions can be used in hints with %{func_name}
+--             -- more in :h hydra-hint
+--             funcs = {}
+--         }
+--     }
+-- })
+local moveline = require('moveline')
+vim.keymap.set('n', '<C-y>', moveline.up)
+vim.keymap.set('n', '<C-v>', moveline.down)
+vim.keymap.set('v', '<C-y>', moveline.block_up)
+vim.keymap.set('v', '<C-v>', moveline.block_down)
+
+vim.keymap.set('n', '<C-u>', '<cmd>:MultipleCursorsAddUp<CR>')
+vim.keymap.set('n', '<C-b>', '<cmd>:MultipleCursorsAddDown<CR>')
+vim.keymap.set('n', '<C-n>', '<cmd>:MultipleCursorsAddJumpNextMatch<CR>')
+vim.keymap.set('n', '<C-i>', '<cmd>lua require("multiple-cursors").align()<CR>')
+

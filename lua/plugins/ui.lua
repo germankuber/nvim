@@ -1,4 +1,7 @@
 return {{
+    'willothy/moveline.nvim',
+    build = 'make'
+}, {
     "petertriho/nvim-scrollbar",
     config = function()
         require("scrollbar").setup()
@@ -6,10 +9,7 @@ return {{
 }, {
     "simonmclean/triptych.nvim",
     event = "VeryLazy",
-    dependencies = {"nvim-lua/plenary.nvim", -- required
-    "nvim-tree/nvim-web-devicons", -- optional for icons
-    "antosha417/nvim-lsp-file-operations" -- optional LSP integration
-    },
+    dependencies = {"nvim-lua/plenary.nvim", "nvim-tree/nvim-web-devicons", "antosha417/nvim-lsp-file-operations"},
     opts = {},
     config = function()
         require("triptych").setup()
@@ -17,33 +17,19 @@ return {{
 }, {
     "sphamba/smear-cursor.nvim",
     opts = {}
-}, -- {
---     "mawkler/modicator.nvim",
---     dependencies = "mawkler/onedark.nvim",
---     init = function()
---         vim.o.cursorline = true
---         vim.o.number = true
---         vim.o.termguicolors = true
---     end,
---     opts = {
---         show_warnings = true
---     }
--- },
-{
+}, {
     "j-hui/fidget.nvim",
     opts = {}
 }, {
     "windwp/nvim-autopairs",
     event = "InsertEnter",
     config = true
-    -- use opts = {} for passing setup options
-    -- this is equivalent to setup({}) function
 }, {
     "ojroques/nvim-bufdel",
     config = function()
         require("bufdel").setup({
-            next = "alternate", -- Cambia al buffer alternativo
-            quit = true -- Cierra la ventana si es la última
+            next = "alternate",
+            quit = true
         })
     end
 }, {
@@ -52,15 +38,15 @@ return {{
     config = true,
     config = function()
         require("goto-preview").setup({
-            width = 120, -- Width of the floating window
-            height = 25 -- Height of the floating window
-            -- :
+            width = 120,
+            height = 25
+
         })
     end
 }, {
     "toppair/peek.nvim",
     event = {"VeryLazy"},
-    build = "deno task --quiet build:fast",
+    build = "deno task",
     config = function()
         require("peek").setup()
         vim.api.nvim_create_user_command("PeekOpen", require("peek").open, {})
@@ -68,11 +54,11 @@ return {{
     end
 }, {
     "romgrk/barbar.nvim",
-    dependencies = {"nvim-tree/nvim-web-devicons"}, -- Opcional para íconos
+    dependencies = {"nvim-tree/nvim-web-devicons"},
     config = function()
-        vim.g.barbar_auto_setup = false -- Configuración manual
+        vim.g.barbar_auto_setup = false
         require("bufferline").setup({
-            auto_hide = false, -- Muestra siempre la barra, incluso con un solo buffer
+            auto_hide = false,
             icons = {
                 buffer_index = true,
                 filetype = {
@@ -153,19 +139,7 @@ return {{
                     group = "Label",
                     action = "Telescope find_files",
                     key = "f"
-                }, --  {
-                --     desc = ' Apps',
-                --     group = 'DiagnosticHint',
-                --     action = 'Telescope app',
-                --     key = 'a'
-                -- },
-                -- {
-                --     desc = ' dotfiles',
-                --     group = 'Number',
-                --     action = 'Telescope dotfiles',
-                --     key = 'd'
-                -- },
-                {
+                }, {
                     desc = "🗂️ projects",
                     group = "Number",
                     action = "Telescope project",
@@ -179,7 +153,7 @@ return {{
     "lukas-reineke/indent-blankline.nvim",
     main = "ibl",
     config = function()
-        -- Function to set indent highlighting for Rust
+
         local function set_indent_blankline_for_rust()
             vim.api.nvim_set_hl(0, "IndentBlanklineIndent1", {
                 fg = "#E06C75",
@@ -208,9 +182,9 @@ return {{
 
             require("ibl").setup({
                 scope = {
-                    enabled = true, -- Enable scope highlighting
-                    show_start = true, -- Show start of the current scope
-                    highlight = {"IndentBlanklineScope"} -- Highlight group for scope
+                    enabled = true,
+                    show_start = true,
+                    highlight = {"IndentBlanklineScope"}
                 },
                 indent = {
                     char = "│",
@@ -220,19 +194,12 @@ return {{
             })
         end
 
-        -- Function to reset to default settings
         local function restore_indent_blankline_to_default()
-            -- vim.api.nvim_set_hl(0, "IndentBlanklineIndent1", {})
-            -- vim.api.nvim_set_hl(0, "IndentBlanklineIndent2", {})
-            -- vim.api.nvim_set_hl(0, "IndentBlanklineIndent3", {})
-            -- vim.api.nvim_set_hl(0, "IndentBlanklineIndent4", {})
-            -- vim.api.nvim_set_hl(0, "IndentBlanklineIndent5", {})
-            -- vim.api.nvim_set_hl(0, "IndentBlanklineIndent6", {})
 
             require("ibl").setup({
                 scope = {
                     enabled = false
-                }, -- Disable scope when not in Rust
+                },
                 indent = {
                     char = "│",
                     highlight = {"IndentBlanklineChar"}
@@ -240,7 +207,6 @@ return {{
             })
         end
 
-        -- Autocommand for Rust files
         vim.api.nvim_create_autocmd("FileType", {
             pattern = "rust",
             callback = function()
@@ -248,7 +214,6 @@ return {{
             end
         })
 
-        -- Restore default on buffer unload
         vim.api.nvim_create_autocmd("BufUnload", {
             pattern = "*.rs",
             callback = function()
@@ -256,7 +221,6 @@ return {{
             end
         })
 
-        -- Global highlight for scope block
         vim.api.nvim_set_hl(0, "IndentBlanklineScope", {
             fg = "#FFFFFF",
             bg = "#3b4261",
@@ -273,7 +237,7 @@ return {{
         })
     end
 }, {
-    "nvim-lualine/lualine.nvim", -- Statusline with mode-based customization
+    "nvim-lualine/lualine.nvim",
     dependencies = {"nvim-tree/nvim-web-devicons"},
     lazy = false,
     config = function()
@@ -306,21 +270,18 @@ return {{
                 }},
                 lualine_b = {"branch", "diff"},
                 lualine_c = {"filename"},
-                -- lualine_x = {"encoding", "fileformat", "filetype"},
+
                 lualine_x = {"filetype"},
                 lualine_y = {{
                     function()
                         return "⛽️" .. require("config.gas_lualine").gas_value()
                     end,
-                    -- color = require("config.gas_lualine").gas_color(),
+
                     padding = {
                         left = 1,
                         right = 1
                     }
-                    -- separator = {
-                    --     left = "",
-                    --     color = require("config.gas_lualine").gas_color()
-                    -- }
+
                 }, {
                     function()
                         local cm = require("config.custom_movement")
@@ -330,15 +291,12 @@ return {{
                             return "🥶"
                         end
                     end,
-                    -- color = {fg = "#FF4500"},
+
                     padding = {
                         left = 1,
                         right = 1
                     }
-                    -- separator = {
-                    --     left = "",
-                    --     color = {bg = "#000000", fg = "#FFFFFF"}
-                    -- }
+
                 }, {
                     function()
                         local jump_config = require("config.jump_config")
