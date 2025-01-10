@@ -320,4 +320,4 @@ return {{
             extensions = {"quickfix", "fugitive"}
         })
     end
-}}
+}, {"lucastavaresa/SingleComment.nvim"}}

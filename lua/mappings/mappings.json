@@ -134,6 +134,22 @@
     "base_lhs": "<Leader>r",
     "commands": [
       {
+        "lhs": "R",
+        "rhs": "<cmd>:ReplaceWithClipboard<CR>",
+        "desc": "Replace all file content"
+      },
+      {
+        "lhs": "m",
+        "mode": "v",
+        "rhs": "<cmd>lua require('SingleComment').Comment()<CR>",
+        "desc": "Comment"
+      },
+      {
+        "lhs": "m",
+        "rhs": "<cmd>lua require('SingleComment').Comment()<CR>",
+        "desc": "Comment"
+      },
+      {
         "lhs": "s",
         "rhs": "<cmd>:Telescope luasnip<CR>",
         "desc": "Snippets"
@@ -195,60 +211,59 @@
   },
   {
     "title": "Funny Copy",
-    "base_lhs": "",
+    "base_lhs": "<Leader>v",
     "commands": [
       {
-        "lhs": "<C-.>",
+        "lhs": "C",
         "rhs": "<cmd>FunnyClipboardWithCategoryCopy<CR>",
         "desc": "Copy with category",
         "mode": "v"
       },
       {
-        "title": "Funny Copy",
-        "base_lhs": "<Leader>v",
+        "lhs": "c",
+        "rhs": "<cmd>FunnyClipboardWithoutCategoryCopy<CR>",
+        "desc": "Copy without category",
+        "mode": "v"
+      },
+      {
+        "title": "Paste",
+        "base_lhs": "p",
         "commands": [
           {
-            "title": "Paste",
-            "base_lhs": "p",
-            "commands": [
-              {
-                "lhs": "c",
-                "rhs": "<cmd>FunnyClipboardWithCategoryPaste<CR>",
-                "desc": "Category"
-              },
-              {
-                "lhs": "e",
-                "rhs": "<cmd>FunnyClipboardPaste<CR>",
-                "desc": "Entry"
-              }
-            ]
+            "lhs": "c",
+            "rhs": "<cmd>FunnyClipboardWithCategoryPaste<CR>",
+            "desc": "Category"
           },
           {
-            "title": "Delete",
-            "base_lhs": "d",
-            "commands": [
-              {
-                "lhs": "c",
-                "rhs": "<cmd>FunnyClipboardWithCategoryDeleteCategory<CR>",
-                "desc": "Category"
-              },
-              {
-                "lhs": "e",
-                "rhs": "<cmd>FunnyClipboardWithCategoryDeleteEntry<CR>",
-                "desc": "Entry"
-              },
-              {
-                "lhs": "a",
-                "rhs": "<cmd>FunnyClipboardWithCategoryDeleteAll<CR>",
-                "desc": "All"
-              }
-            ]
+            "lhs": "e",
+            "rhs": "<cmd>FunnyClipboardPaste<CR>",
+            "desc": "Entry"
+          }
+        ]
+      },
+      {
+        "title": "Delete",
+        "base_lhs": "d",
+        "commands": [
+          {
+            "lhs": "c",
+            "rhs": "<cmd>FunnyClipboardWithCategoryDeleteCategory<CR>",
+            "desc": "Category"
+          },
+          {
+            "lhs": "e",
+            "rhs": "<cmd>FunnyClipboardWithCategoryDeleteEntry<CR>",
+            "desc": "Entry"
+          },
+          {
+            "lhs": "a",
+            "rhs": "<cmd>FunnyClipboardWithCategoryDeleteAll<CR>",
+            "desc": "All"
           }
         ]
       }
     ]
   },
- 
   {
     "title": "Move parent",
     "base_lhs": "",
@@ -1326,14 +1341,12 @@
       {
         "lhs": "d",
         "rhs": "<cmd>Telescope lsp_definitions<CR>",
-        "desc": "Go to definition",
-        "filetype": "rust"
+        "desc": "Go to definition"
       },
       {
         "lhs": "i",
         "rhs": "<cmd>Telescope lsp_implementations<CR>",
-        "desc": "Go to implementation",
-        "filetype": "rust"
+        "desc": "Go to implementation"
       },
       {
         "title": "References",

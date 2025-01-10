@@ -1,5 +1,4 @@
 -- funny_clipboard.lua
-
 local M = {}
 
 -- Dependencies
@@ -22,7 +21,9 @@ local clipboard_file = vim.fn.stdpath('data') .. '/funny_clipboard.json'
 -- Function to load clipboard data from the JSON file
 local function load_clipboard()
     local file = io.open(clipboard_file, "r")
-    if not file then return {} end
+    if not file then
+        return {}
+    end
     local content = file:read("*a")
     file:close()
     local status, data = pcall(vim.fn.json_decode, content)
@@ -50,7 +51,12 @@ M.clipboard = load_clipboard()
 
 -- Function to add a new entry to the clipboard
 function M.add(text, category, filetype)
-    table.insert(M.clipboard, { text = text, category = category, filetype = filetype or 'text', timestamp = os.time() })
+    table.insert(M.clipboard, {
+        text = text,
+        category = category,
+        filetype = filetype or 'text',
+        timestamp = os.time()
+    })
     save_clipboard(M.clipboard)
 end
 
@@ -89,7 +95,7 @@ local function open_picker(opts)
         sorter = sorters.get_generic_fuzzy_sorter(),
         previewer = opts.previewer,
         attach_mappings = opts.attach_mappings,
-        initial_mode = 'normal',
+        initial_mode = 'normal'
     }):find()
 end
 
@@ -99,7 +105,7 @@ function M.copy_with_category()
 
     local mode = vim.fn.mode()
     local text
-    if mode:sub(1,1) == 'v' then
+    if mode:sub(1, 1) == 'v' then
         vim.cmd('noau normal! "vy"')
         text = vim.fn.getreg('v')
     else
@@ -107,15 +113,37 @@ function M.copy_with_category()
         text = vim.fn.getreg('"')
     end
 
-    vim.ui.input({ prompt = 'Category: ' }, function(category)
+    vim.ui.input({
+        prompt = 'Category: '
+    }, function(category)
         if category and category ~= '' then
             local filetype = vim.bo.filetype
             M.add(text, category, filetype)
-            vim.notify("Copied with category: " .. category .. (filetype and (", filetype: " .. filetype) or ""), vim.log.levels.INFO)
+            vim.notify("Copied with category: " .. category .. (filetype and (", filetype: " .. filetype) or ""),
+                vim.log.levels.INFO)
         else
             vim.notify("Empty category. Text not saved.", vim.log.levels.WARN)
         end
     end)
+end
+function M.copy_without_category()
+    vim.cmd('stopinsert')
+
+    local mode = vim.fn.mode()
+    local text
+    if mode:sub(1, 1) == 'v' then
+        vim.cmd('noau normal! "vy"')
+        text = vim.fn.getreg('v')
+    else
+        vim.cmd('noau normal! yy')
+        text = vim.fn.getreg('"')
+    end
+
+    category = 'without_category'
+    local filetype = vim.bo.filetype
+    M.add(text, category, filetype)
+    vim.notify("Copied with category: " .. category .. (filetype and (", filetype: " .. filetype) or ""),
+        vim.log.levels.INFO)
 end
 
 -- Function to paste text based on selected category using Telescope
@@ -140,13 +168,15 @@ function M.paste_with_category()
 
     open_picker({
         prompt_title = "Select Category",
-        finder = finders.new_table { results = categories },
+        finder = finders.new_table {
+            results = categories
+        },
         attach_mappings = function(prompt_bufnr, map)
             actions.select_default:replace(select_category)
             map('i', '<Esc>', on_esc)
             map('n', '<Esc>', on_esc)
             return true
-        end,
+        end
     })
 end
 
@@ -188,14 +218,18 @@ function M.paste_selection(category)
 
     open_picker({
         prompt_title = "Select Text to Paste",
-        finder = finders.new_table { results = entries },
-        previewer = previewers.new_buffer_previewer({ define_preview = define_preview }),
+        finder = finders.new_table {
+            results = entries
+        },
+        previewer = previewers.new_buffer_previewer({
+            define_preview = define_preview
+        }),
         attach_mappings = function(prompt_bufnr, map)
             actions.select_default:replace(paste_entry)
             map('i', '<Esc>', on_esc)
             map('n', '<Esc>', on_esc)
             return true
-        end,
+        end
     })
 end
 
@@ -226,11 +260,15 @@ function M.list_clipboard()
 
     open_picker({
         prompt_title = "FunnyClipboard - Clipboard Entries",
-        finder = finders.new_table { results = entries },
-        previewer = previewers.new_buffer_previewer({ define_preview = define_preview }),
+        finder = finders.new_table {
+            results = entries
+        },
+        previewer = previewers.new_buffer_previewer({
+            define_preview = define_preview
+        }),
         attach_mappings = function(_, _)
             return true
-        end,
+        end
     })
 end
 
@@ -248,7 +286,9 @@ function M.delete_category()
         local function delete_category_action(prompt_bufnr)
             local selection = action_state.get_selected_entry()
             actions.close(prompt_bufnr)
-            vim.ui.select({"Yes", "No"}, { prompt = "Delete all entries in category '" .. selection[1] .. "'?" }, function(choice)
+            vim.ui.select({"Yes", "No"}, {
+                prompt = "Delete all entries in category '" .. selection[1] .. "'?"
+            }, function(choice)
                 if choice == "Yes" then
                     M.clipboard = vim.tbl_filter(function(item)
                         return item.category ~= selection[1]
@@ -268,13 +308,15 @@ function M.delete_category()
 
         open_picker({
             prompt_title = "Select Category to Delete",
-            finder = finders.new_table { results = categories },
+            finder = finders.new_table {
+                results = categories
+            },
             attach_mappings = function(prompt_bufnr, map)
                 actions.select_default:replace(delete_category_action)
                 map('i', '<Esc>', on_esc)
                 map('n', '<Esc>', on_esc)
                 return true
-            end,
+            end
         })
     end
 
@@ -302,7 +344,9 @@ function M.delete_entry()
             local index = tonumber(selection[1]:match("^%[(%d+)%]"))
             if index and M.clipboard[index] then
                 actions.close(prompt_bufnr)
-                vim.ui.select({"Yes", "No"}, { prompt = "Delete this entry?" }, function(choice)
+                vim.ui.select({"Yes", "No"}, {
+                    prompt = "Delete this entry?"
+                }, function(choice)
                     if choice == "Yes" then
                         table.remove(M.clipboard, index)
                         save_clipboard(M.clipboard)
@@ -334,14 +378,18 @@ function M.delete_entry()
 
         open_picker({
             prompt_title = "Select Entry to Delete",
-            finder = finders.new_table { results = entries },
-            previewer = previewers.new_buffer_previewer({ define_preview = define_preview }),
+            finder = finders.new_table {
+                results = entries
+            },
+            previewer = previewers.new_buffer_previewer({
+                define_preview = define_preview
+            }),
             attach_mappings = function(prompt_bufnr, map)
                 actions.select_default:replace(delete_entry_action)
                 map('i', '<Esc>', on_esc)
                 map('n', '<Esc>', on_esc)
                 return true
-            end,
+            end
         })
     end
 
@@ -391,14 +439,18 @@ function M.copy_entry()
 
     open_picker({
         prompt_title = "Select Entry to Copy to Clipboard",
-        finder = finders.new_table { results = entries },
-        previewer = previewers.new_buffer_previewer({ define_preview = define_preview }),
+        finder = finders.new_table {
+            results = entries
+        },
+        previewer = previewers.new_buffer_previewer({
+            define_preview = define_preview
+        }),
         attach_mappings = function(prompt_bufnr, map)
             actions.select_default:replace(copy_entry)
             map('i', '<Esc>', on_esc)
             map('n', '<Esc>', on_esc)
             return true
-        end,
+        end
     })
 end
 
@@ -424,7 +476,8 @@ function M.paste_entry()
         if index and M.clipboard[index] then
             local lines = vim.split(M.clipboard[index].text, "\n")
             vim.api.nvim_put(lines, 'l', true, true)
-            vim.notify("Pasted entry #" .. index .. " from category: " .. M.clipboard[index].category, vim.log.levels.INFO)
+            vim.notify("Pasted entry #" .. index .. " from category: " .. M.clipboard[index].category,
+                vim.log.levels.INFO)
         else
             vim.notify("Invalid selection.", vim.log.levels.ERROR)
         end
@@ -446,14 +499,18 @@ function M.paste_entry()
 
     open_picker({
         prompt_title = "Select Entry to Paste",
-        finder = finders.new_table { results = entries },
-        previewer = previewers.new_buffer_previewer({ define_preview = define_preview }),
+        finder = finders.new_table {
+            results = entries
+        },
+        previewer = previewers.new_buffer_previewer({
+            define_preview = define_preview
+        }),
         attach_mappings = function(prompt_bufnr, map)
             actions.select_default:replace(paste_entry)
             map('i', '<Esc>', on_esc)
             map('n', '<Esc>', on_esc)
             return true
-        end,
+        end
     })
 end
 
@@ -466,7 +523,9 @@ function M.delete_all_entries()
         return
     end
 
-    vim.ui.select({"Yes", "No"}, { prompt = "Are you sure you want to delete **all** clipboard entries?" }, function(choice)
+    vim.ui.select({"Yes", "No"}, {
+        prompt = "Are you sure you want to delete **all** clipboard entries?"
+    }, function(choice)
         if choice == "Yes" then
             M.clipboard = {}
             save_clipboard(M.clipboard)
@@ -479,14 +538,35 @@ end
 
 -- Function to create user commands
 function M.setup_commands()
-    vim.api.nvim_create_user_command('FunnyClipboardWithCategoryCopy', M.copy_with_category, { desc = "Copy text with a category and automatic filetype detection" })
-    vim.api.nvim_create_user_command('FunnyClipboardWithCategoryPaste', M.paste_with_category, { desc = "Paste text by selecting a category" })
-    vim.api.nvim_create_user_command('FunnyClipboardWithCategoryList', M.list_clipboard, { desc = "List all clipboard entries with categories using Telescope" })
-    vim.api.nvim_create_user_command('FunnyClipboardWithCategoryDeleteCategory', M.delete_category, { desc = "Delete a category and all its clipboard entries" })
-    vim.api.nvim_create_user_command('FunnyClipboardWithCategoryDeleteEntry', M.delete_entry, { desc = "Delete a specific clipboard entry" })
-    vim.api.nvim_create_user_command('FunnyClipboardWithCategoryCopyEntry', M.copy_entry, { desc = "Copy a specific clipboard entry to the system clipboard" })
-    vim.api.nvim_create_user_command('FunnyClipboardPaste', M.paste_entry, { desc = "Paste a specific clipboard entry directly into the buffer" })
-    vim.api.nvim_create_user_command('FunnyClipboardWithCategoryDeleteAll', M.delete_all_entries, { desc = "Delete all clipboard entries" })
+    vim.api.nvim_create_user_command('FunnyClipboardWithCategoryCopy', M.copy_with_category, {
+        desc = "Copy text with a category and automatic filetype detection"
+    })
+    vim.api.nvim_create_user_command('FunnyClipboardWithoutCategoryCopy', M.copy_without_category, {
+        desc = "Copy text without category and automatic filetype detection"
+    })
+
+    
+    vim.api.nvim_create_user_command('FunnyClipboardWithCategoryPaste', M.paste_with_category, {
+        desc = "Paste text by selecting a category"
+    })
+    vim.api.nvim_create_user_command('FunnyClipboardWithCategoryList', M.list_clipboard, {
+        desc = "List all clipboard entries with categories using Telescope"
+    })
+    vim.api.nvim_create_user_command('FunnyClipboardWithCategoryDeleteCategory', M.delete_category, {
+        desc = "Delete a category and all its clipboard entries"
+    })
+    vim.api.nvim_create_user_command('FunnyClipboardWithCategoryDeleteEntry', M.delete_entry, {
+        desc = "Delete a specific clipboard entry"
+    })
+    vim.api.nvim_create_user_command('FunnyClipboardWithCategoryCopyEntry', M.copy_entry, {
+        desc = "Copy a specific clipboard entry to the system clipboard"
+    })
+    vim.api.nvim_create_user_command('FunnyClipboardPaste', M.paste_entry, {
+        desc = "Paste a specific clipboard entry directly into the buffer"
+    })
+    vim.api.nvim_create_user_command('FunnyClipboardWithCategoryDeleteAll', M.delete_all_entries, {
+        desc = "Delete all clipboard entries"
+    })
 end
 
 -- Initialize the plugin by setting up commands

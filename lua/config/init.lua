@@ -255,3 +255,12 @@ vim.api.nvim_create_autocmd(
 --     end,
 --     {desc = "Toggle NvimTree"}
 -- )
+
+
+vim.api.nvim_create_user_command(
+  "ReplaceWithClipboard",
+  function()
+    vim.cmd("normal! ggVG\"+p")
+  end,
+  { desc = "Replace entire file content with clipboard" }
+)
