@@ -1,12 +1,18 @@
 return {{
+    "desdic/macrothis.nvim",
+    opts = {},
+ },
+{'HiPhish/rainbow-delimiters.nvim'}, {
     'willothy/moveline.nvim',
     build = 'make'
-}, {
+},
+ {
     "petertriho/nvim-scrollbar",
     config = function()
         require("scrollbar").setup()
     end
-}, {
+},
+ {
     "simonmclean/triptych.nvim",
     event = "VeryLazy",
     dependencies = {"nvim-lua/plenary.nvim", "nvim-tree/nvim-web-devicons", "antosha417/nvim-lsp-file-operations"},
@@ -14,13 +20,15 @@ return {{
     config = function()
         require("triptych").setup()
     end
-}, {
-    "sphamba/smear-cursor.nvim",
-    opts = {}
-}, {
-    "j-hui/fidget.nvim",
-    opts = {}
-}, {
+}, 
+-- {
+--     "sphamba/smear-cursor.nvim",
+--     opts = {}
+-- }, {
+--     "j-hui/fidget.nvim",
+--     opts = {}
+-- }, 
+{
     "windwp/nvim-autopairs",
     event = "InsertEnter",
     config = true
@@ -85,7 +93,9 @@ return {{
             desc = "Pick and switch to a window"
         })
     end
-}, {"mrjones2014/smart-splits.nvim"}, {
+}, 
+-- {"mrjones2014/smart-splits.nvim"}, 
+{
     "stevearc/dressing.nvim",
     lazy = false,
     config = function()
@@ -320,4 +330,19 @@ return {{
             extensions = {"quickfix", "fugitive"}
         })
     end
-}, {"lucastavaresa/SingleComment.nvim"}}
+},
+--  {"lucastavaresa/SingleComment.nvim"}, {
+--     "max397574/better-escape.nvim",
+--     config = function()
+--         require("better_escape").setup()
+--     end
+-- }, {
+--     "Darazaki/indent-o-matic",
+--     config = function()
+--         require("indent-o-matic").setup({
+--             max_lines = 2048, -- Máximo de líneas a analizar
+--             standard_widths = {2, 4, 8} -- Tamaños de indentación esperados
+--         })
+--     end
+-- }
+}

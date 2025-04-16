@@ -145,3 +145,16 @@ vim.keymap.set('n', '<C-b>', '<cmd>:MultipleCursorsAddDown<CR>')
 vim.keymap.set('n', '<C-n>', '<cmd>:MultipleCursorsAddJumpNextMatch<CR>')
 vim.keymap.set('n', '<C-i>', '<cmd>lua require("multiple-cursors").align()<CR>')
 
+vim.keymap.set('n', 'D', '"_dd', {
+    noremap = true,
+    silent = true
+})
+
+vim.keymap.set('v', 'D', '"_d', {
+    noremap = true,
+    silent = true
+})
+
+
+vim.cmd([[highlight Visual guibg=#A0D9B4 guifg=#000000]])
+vim.o.scrolloff = 15

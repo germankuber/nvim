@@ -50,3 +50,6 @@ vim.opt.foldcolumn = "0"
 vim.schedule(function()
     vim.opt.laststatus = 2
   end)
+
+
+ 

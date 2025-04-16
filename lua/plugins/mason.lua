@@ -12,7 +12,9 @@ return {
             -- Setup Mason-LSPConfig
             require("mason-lspconfig").setup({
                 ensure_installed = {
-                    "rust_analyzer", -- Rust
+                    "solidity_ls",
+                    "efm",
+                    "rust_analyzer", -- j
                     "dockerls", -- Docker
                     "bashls", -- Bash
                     "jsonls", -- JSON

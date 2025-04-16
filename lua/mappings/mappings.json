@@ -724,6 +724,12 @@
         "filetype": "__codeFileType__"
       },
       {
+        "lhs": "O",
+        "rhs": "zO",
+        "desc": "Open current recursively",
+        "filetype": "__codeFileType__"
+      },
+      {
         "lhs": "p",
         "rhs": "<cmd>:UfoFoldPreview<CR>",
         "desc": "Preview folded code",
@@ -732,7 +738,7 @@
       {
         "lhs": "Z",
         "rhs": "<cmd>:FoldModeToggle<CR>",
-        "desc": "Preview folded code",
+        "desc": "Folding Mode",
         "filetype": "__codeFileType__"
       }
     ]
@@ -1251,6 +1257,11 @@
             "lhs": "h",
             "rhs": "<cmd>:GotoPrevError<CR>",
             "desc": "Previous"
+          },
+          {
+            "lhs": "L",
+            "rhs": "<cmd>lua require('telescope.builtin').diagnostics({ bufnr = 3, initial_mode = 'normal', severity = vim.diagnostic.severity.ERROR })<CR>",
+            "desc": "list"
           }
         ]
       },
@@ -1268,6 +1279,11 @@
             "lhs": "h",
             "rhs": "<cmd>:GotoPrevHint<CR>",
             "desc": "Previous"
+          },
+          {
+            "lhs": "L",
+            "rhs": "<cmd>lua require('telescope.builtin').diagnostics({ bufnr = 3, initial_mode = 'normal', severity = vim.diagnostic.severity.HINT })<CR>",
+            "desc": "list"
           }
         ]
       },
@@ -1287,6 +1303,11 @@
             "rhs": "<cmd>:GotoPrevWarning<CR>",
             "desc": "Previous",
             "filetype": "__codeFileType__"
+          },
+          {
+            "lhs": "L",
+            "rhs": "<cmd>lua require('telescope.builtin').diagnostics({ bufnr = 3, initial_mode = 'normal', severity = vim.diagnostic.severity.WARN })<CR>",
+            "desc": "list"
           }
         ]
       }
