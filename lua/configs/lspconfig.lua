@@ -1,61 +1,128 @@
-local lspconfig = require "lspconfig"
-local capabilities = require("cmp_nvim_lsp").default_capabilities()
+local lspconfig = require('lspconfig')
 
--- Configuración para JSON
-lspconfig.jsonls.setup {
-    settings = {
-        json = {
-            schemas = require("schemastore").json.schemas(),
-            validate = { enable = true }
-        }
+-- Python LSP (Pyright)
+lspconfig.pyright.setup{
+  capabilities = capabilities,
+  on_attach   = on_attach,
+  settings = {
+    python = {
+      analysis = {
+        autoImportCompletions = true,
+        useLibraryCodeForTypes = true,
+        autoSearchPaths = true,
+      },
     },
-    capabilities = capabilities,
-    on_attach = on_attach
+  },
+  on_init = function(client)
+    -- tu lógica de virtualenv
+    local cwd = vim.fn.getcwd()
+    local venv = cwd .. "/.venv/bin/python"
+    if vim.fn.filereadable(venv) == 1 then
+      client.config.settings.python.pythonPath = venv
+    end
+  end,
 }
 
--- Configuración para Lua
+-- Lua LSP
 lspconfig.lua_ls.setup {
-    settings = {
-        Lua = {
-            runtime = { version = "LuaJIT" },
-            diagnostics = { globals = {"vim"} },
-            workspace = {
-                library = vim.api.nvim_get_runtime_file("", true),
-                checkThirdParty = false
-            },
-            telemetry = { enable = false }
-        }
+  capabilities = capabilities,
+  on_attach   = on_attach,
+  settings = {
+    Lua = {
+      runtime = {
+        version = "LuaJIT",
+        path = vim.split(package.path, ";"),
+      },
+      diagnostics = {
+        globals = { "vim" },
+      },
+      workspace = {
+        library = vim.api.nvim_get_runtime_file("", true),
+      },
+      telemetry = {
+        enable = false,
+      },
     },
-    capabilities = capabilities,
-    on_attach = on_attach
+  },
 }
 
--- LSP para TOML
-lspconfig.taplo.setup {
-    capabilities = capabilities
+-- JSON LSP
+lspconfig.jsonls.setup {
+  capabilities = capabilities,
+  on_attach   = on_attach,
+  settings = {
+    json = {
+      schemas  = require('schemastore').json.schemas(),
+      validate = { enable = true },
+    },
+  },
 }
 
--- Configuración genérica para múltiples servidores
-local servers = {"html", "cssls", "ts_ls", "pyright", "rust_analyzer"}
-for _, server in ipairs(servers) do
-    lspconfig[server].setup {
-        capabilities = capabilities,
-        on_attach = on_attach
-    }
+-- Solidity LSP
+lspconfig.solidity_ls.setup({
+  capabilities = capabilities,
+  on_attach   = on_attach,
+  autostart   = true,
+  filetypes   = { "solidity" },
+  root_dir    = require("lspconfig.util").root_pattern(
+                  "hardhat.config.*", "foundry.toml", "remappings.txt", ".git"
+               ),
+  cmd = {
+    "/Users/GermanKuber/.nvm/versions/node/v20.19.0/bin/vscode-solidity-server",
+    "--stdio"
+  },
+  settings = {
+    solidity = {
+      includePath = "node_modules",
+    },
+  },
+})
+
+-- EFM para formateo, lint y code actions
+lspconfig.efm.setup({
+  capabilities = capabilities,
+  on_attach   = on_attach,
+  filetypes = {
+    "solidity", "lua", "python", "json", "jsonc",
+    "sh", "javascript", "javascriptreact",
+    "typescript", "typescriptreact", "svelte",
+    "vue", "markdown", "docker", "html",
+    "css", "c", "cpp",
+  },
+  init_options = {
+    documentFormatting      = true,
+    documentRangeFormatting = true,
+    hover                   = true,
+    documentSymbol          = true,
+    codeAction              = true,
+    completion              = true,
+  },
+  settings = {
+    languages = {
+      solidity = { solhint, prettier_d },
+    },
+  },
+})
+local function organize_imports()
+  local params = {
+    command = "_typescript.organizeImports",
+    arguments = {vim.api.nvim_buf_get_name(0)},
+  }
+  vim.lsp.buf.execute_command(params)
 end
 
--- Configuración para Hardhat-vscode (servidor para Solidity)
-lspconfig.solidity.setup {
-    cmd = { "hardhat-vscode-server", "--stdio" },
-    filetypes = { "solidity" },
-    root_dir = lspconfig.util.root_pattern("hardhat.config.js", "hardhat.config.ts"),
-    settings = {
-        solidity = {
-            includePath = "",
-            remapping = { ["@OpenZeppelin/"] = "OpenZeppelin/openzeppelin-contracts@4.6.0/" },
-            allowPaths = {}
-        }
-    },
-    capabilities = capabilities,
-    on_attach = on_attach
+lspconfig.tsserver.setup {
+  on_attach = on_attach,
+  capabilities = capabilities,
+  init_options = {
+    preferences = {
+      disableSuggestions = true,
+    }
+  },
+  commands = {
+    OrganizeImports = {
+      organize_imports,
+      description = "Organize Imports",
+    }
+  }
 }
