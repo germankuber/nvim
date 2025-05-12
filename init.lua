@@ -158,3 +158,10 @@ vim.keymap.set('v', 'D', '"_d', {
 
 vim.cmd([[highlight Visual guibg=#A0D9B4 guifg=#000000]])
 vim.o.scrolloff = 15
+vim.opt.clipboard = "unnamedplus"
+
+local opts = { noremap = true, silent = true }
+vim.keymap.set('n', 'd', '"_d', opts)
+vim.keymap.set('v', 'd', '"_d', opts)
+vim.keymap.set('n', 'x', '"_x', opts)
+vim.keymap.set('v', 'x', '"_x', opts)

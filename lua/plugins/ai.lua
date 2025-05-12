@@ -1,17 +1,18 @@
 return {
-    -- {
-    --     "jackMort/ChatGPT.nvim",
-    --     event = "VeryLazy",
-    --     config = function() require("chatgpt").setup() end,
-    --     dependencies = {
-    --         "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim",
-    --         "folke/trouble.nvim", -- optional
-    --         "nvim-telescope/telescope.nvim"
-    --     }
-    -- },
+    {
+        "jackMort/ChatGPT.nvim",
+        event = "VeryLazy",
+        config = function() require("chatgpt").setup() end,
+        dependencies = {
+            "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim",
+            "folke/trouble.nvim", -- optional
+            "nvim-telescope/telescope.nvim"
+        }
+    },
     {
         "yetone/avante.nvim",
         event = "VeryLazy",
+        filetype= "rust",
         version = false, -- Never set this value to "*"! Never!
         opts = {
           -- add any opts here

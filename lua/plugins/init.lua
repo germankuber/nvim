@@ -29,10 +29,13 @@ return {
   require "plugins.bookmarks",
   require "plugins.mason",
   require "plugins.save",
-  -- require "plugins.neominimap",
+  require "plugins.neominimap",
   require "plugins.visual_multi",
   require "plugins.navigation",
   require "plugins.terminal",
   require "plugins.whichkey",
   require "plugins.illuminate",
+  require "plugins.db",
+
+
 }

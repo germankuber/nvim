@@ -50,7 +50,7 @@
   },
   {
     "title": "CharGPT commands",
-    "base_lhs": "<Leader>G",
+    "base_lhs": "<Leader>A",
     "commands": [
       {
         "lhs": "q",
@@ -60,7 +60,6 @@
       {
         "title": "Code",
         "base_lhs": "c",
-        "filetype": "rust",
         "commands": [
           {
             "lhs": "o",
@@ -117,6 +116,12 @@
         "rhs": "<cmd>:Lspsaga code_action<CR>",
         "desc": "Code actions"
       },
+
+      {
+        "lhs": "i",
+        "rhs": "<cmd>lua require('lspimport').import() <CR>",
+        "desc": "Auto import"
+      },
       {
         "lhs": "t",
         "rhs": "<cmd>:Lspsaga peek_definition<CR>",
@@ -167,7 +172,7 @@
       },
       {
         "lhs": "f",
-        "rhs": "<cmd>lua vim.lsp.buf.format()<CR>",
+        "rhs": "<cmd>:lua require('conform').format()<CR>",
         "desc": "Format"
       },
       {

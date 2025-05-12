@@ -121,45 +121,47 @@ return {{
             }
         })
     end
-}, {
-    "glepnir/dashboard-nvim",
-    event = "VimEnter",
-    lazy = false,
-    config = function()
-        require("dashboard").setup {
-            theme = "hyper",
-            config = {
-                week_header = {
-                    enable = true
-                },
-                shortcut = {{
-                    desc = "󰊳 Update",
-                    group = "update",
-                    action = "Lazy update",
-                    key = "u"
-                }, {
-                    desc = "⚡️ Sync",
-                    group = "sync",
-                    action = "Lazy sync",
-                    key = "s"
-                }, {
-                    icon = " ",
-                    icon_hl = "@variable",
-                    desc = "Files",
-                    group = "Label",
-                    action = "Telescope find_files",
-                    key = "f"
-                }, {
-                    desc = "🗂️ projects",
-                    group = "Number",
-                    action = "Telescope project",
-                    key = "p"
-                }}
-            }
-        }
-    end,
-    dependencies = {"nvim-tree/nvim-web-devicons"}
-}, {
+},
+--  {
+--     "glepnir/dashboard-nvim",
+--     event = "VimEnter",
+--     lazy = false,
+--     config = function()
+--         require("dashboard").setup {
+--             theme = "hyper",
+--             config = {
+--                 week_header = {
+--                     enable = true
+--                 },
+--                 shortcut = {{
+--                     desc = "󰊳 Update",
+--                     group = "update",
+--                     action = "Lazy update",
+--                     key = "u"
+--                 }, {
+--                     desc = "⚡️ Sync",
+--                     group = "sync",
+--                     action = "Lazy sync",
+--                     key = "s"
+--                 }, {
+--                     icon = " ",
+--                     icon_hl = "@variable",
+--                     desc = "Files",
+--                     group = "Label",
+--                     action = "Telescope find_files",
+--                     key = "f"
+--                 }, {
+--                     desc = "🗂️ projects",
+--                     group = "Number",
+--                     action = "Telescope project",
+--                     key = "p"
+--                 }}
+--             }
+--         }
+--     end,
+--     dependencies = {"nvim-tree/nvim-web-devicons"}
+-- }, 
+{
     "lukas-reineke/indent-blankline.nvim",
     main = "ibl",
     config = function()
