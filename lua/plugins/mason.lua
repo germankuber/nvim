@@ -19,7 +19,8 @@ return {
                     "taplo", -- TOML
                     "solidity_ls", -- Solidity
                     "pyright", -- Python
-                    "ts_ls" -- TypeScript/JavaScript
+                    "ts_ls", -- TypeScript/JavaScript
+                    "omnisharp"
                 },
                 automatic_installation = true -- Automatically install servers
             })
