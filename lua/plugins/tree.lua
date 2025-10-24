@@ -255,10 +255,30 @@ return {
                             resize_window = false,
                             quit_on_open = false
                         }
+                    },
+                    hijack_directories = {
+                        enable = true,
+                        auto_open = false,
                     }
-                  
                 }
             )
+
+            -- Autocomando para limpiar buffers de nvim-tree huérfanos
+            vim.api.nvim_create_autocmd("BufEnter", {
+                group = vim.api.nvim_create_augroup("NvimTreeCleanup", { clear = true }),
+                callback = function()
+                    -- Limpiar buffers huérfanos de NvimTree
+                    local buffers = vim.api.nvim_list_bufs()
+                    for _, buf in ipairs(buffers) do
+                        if vim.api.nvim_buf_is_valid(buf) then
+                            local name = vim.api.nvim_buf_get_name(buf)
+                            if name:match("NvimTree_") and not vim.api.nvim_buf_is_loaded(buf) then
+                                vim.api.nvim_buf_delete(buf, { force = true })
+                            end
+                        end
+                    end
+                end,
+            })
 
         end
     }
