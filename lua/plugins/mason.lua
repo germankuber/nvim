@@ -20,7 +20,8 @@ return {
                     "solidity_ls", -- Solidity
                     "pyright", -- Python
                     "ts_ls", -- TypeScript/JavaScript
-                    "omnisharp"
+                    -- "omnisharp", -- C# (OmniSharp) [deshabilitado a pedido]
+                    "csharp_ls", -- C# principal
                 },
                 automatic_installation = true -- Automatically install servers
             })

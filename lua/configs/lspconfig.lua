@@ -158,35 +158,86 @@ lspconfig.ts_ls.setup {
         }
     }
 }
--- C# LSP (OmniSharp)
-lspconfig.omnisharp.setup {
-  capabilities = capabilities,
-  on_attach = on_attach,
-  -- Usar el binario de Mason con ruta completa
-  cmd = {
-    vim.fn.stdpath("data") .. "/mason/bin/omnisharp",
-    "--languageserver",
-    "--hostPID",
-    tostring(vim.fn.getpid())
-  },
-  root_dir = lspconfig.util.root_pattern("*.csproj", "*.sln"),
-  -- Configuración para mejorar estabilidad
-  handlers = {
-    ["textDocument/definition"] = function(...)
-      return vim.lsp.handlers["textDocument/definition"](...)
-    end,
-  },
-  settings = {
-    FormattingOptions = {
-      EnableEditorConfigSupport = true,
-      OrganizeImports = true,
-    },
-    RoslynExtensionsOptions = {
-      EnableAnalyzersSupport = true,
-      EnableImportCompletion = true,
-    },
-  },
-}
+do
+  -- Resolver ruta real del binario de OmniSharp instalado por Mason.
+  -- En algunos sistemas el enlace simbólico puede quedar colgando si el paquete no está instalado.
+  local mason_bin = vim.fn.stdpath("data") .. "/mason/bin/"
+  local candidates = {
+    mason_bin .. "omnisharp",   -- nombre en minúsculas
+    mason_bin .. "OmniSharp",   -- algunos registros lo nombran así
+  }
+
+  local resolved
+  for _, p in ipairs(candidates) do
+    local real = (vim.uv or vim.loop).fs_realpath(p)
+    if real then
+      resolved = real
+      break
+    end
+  end
+
+  if resolved then
+    lspconfig.omnisharp.setup {
+      capabilities = capabilities,
+      on_attach = on_attach,
+      cmd = {
+        resolved,
+        "--languageserver",
+        "--hostPID",
+        tostring(vim.fn.getpid())
+      },
+      root_dir = lspconfig.util.root_pattern("*.csproj", "*.sln"),
+      handlers = {
+        ["textDocument/definition"] = function(...)
+          return vim.lsp.handlers["textDocument/definition"](...)
+        end,
+      },
+      settings = {
+        FormattingOptions = {
+          EnableEditorConfigSupport = true,
+          OrganizeImports = true,
+        },
+        RoslynExtensionsOptions = {
+          EnableAnalyzersSupport = true,
+          EnableImportCompletion = true,
+        },
+      },
+    }
+  else
+    -- Intentar fallback a csharp_ls si existe su binario en Mason.
+    local csharp_candidates = {
+      mason_bin .. "csharp-ls",
+      mason_bin .. "csharp-language-server",
+    }
+    local csharp_resolved
+    for _, p in ipairs(csharp_candidates) do
+      local real = (vim.uv or vim.loop).fs_realpath(p)
+      if real then
+        csharp_resolved = real
+        break
+      end
+    end
+
+    if csharp_resolved then
+      lspconfig.csharp_ls.setup {
+        capabilities = capabilities,
+        on_attach = on_attach,
+        cmd = { csharp_resolved },
+        root_dir = lspconfig.util.root_pattern("*.csproj", "*.sln"),
+      }
+      -- Silenciar mensaje informativo: usar csharp_ls sin avisar.
+    else
+      -- No iniciar OmniSharp ni csharp_ls; evitar error de spawn y dar feedback útil.
+      vim.schedule(function()
+        vim.notify_once(
+          "C# LSP no configurado: OmniSharp ausente y csharp_ls no instalado. " ..
+          "Abre :Mason e instala 'omnisharp' o 'csharp_ls'.",
+          vim.log.levels.WARN
+        )
+      end)
+    end
+  end
+end
 
 -- Restaurar todas las funciones originales después de configurar todos los LSP servers
 vim.notify = original_notify
