@@ -161,18 +161,13 @@ lspconfig.ts_ls.setup {
 -- C# LSP (OmniSharp)
 lspconfig.omnisharp.setup {
   capabilities = capabilities,
-  on_attach = function(client, bufnr)
-    -- Llamar tu función on_attach original
-    on_attach(client, bufnr)
-    -- Desactivar diagnósticos específicamente para OmniSharp
-    vim.diagnostic.config({
-      virtual_text = false,
-      signs = false,
-      underline = false,
-    }, bufnr)
-  end,
+  on_attach = on_attach,
   cmd = { "omnisharp", "--languageserver", "--hostPID", tostring(vim.fn.getpid()) },
   root_dir = lspconfig.util.root_pattern("*.csproj", "*.sln", ".git"),
+  -- Añadir configuración para evitar errores de JSON parsing
+  handlers = {
+    ["textDocument/publishDiagnostics"] = function() end,  -- Ignorar diagnósticos de OmniSharp
+  },
 }
 
 -- Restaurar todas las funciones originales después de configurar todos los LSP servers
