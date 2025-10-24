@@ -162,11 +162,29 @@ lspconfig.ts_ls.setup {
 lspconfig.omnisharp.setup {
   capabilities = capabilities,
   on_attach = on_attach,
-  cmd = { "omnisharp", "--languageserver", "--hostPID", tostring(vim.fn.getpid()) },
-  root_dir = lspconfig.util.root_pattern("*.csproj", "*.sln", ".git"),
-  -- Añadir configuración para evitar errores de JSON parsing
+  -- Usar el binario de Mason con ruta completa
+  cmd = {
+    vim.fn.stdpath("data") .. "/mason/bin/omnisharp",
+    "--languageserver",
+    "--hostPID",
+    tostring(vim.fn.getpid())
+  },
+  root_dir = lspconfig.util.root_pattern("*.csproj", "*.sln"),
+  -- Configuración para mejorar estabilidad
   handlers = {
-    ["textDocument/publishDiagnostics"] = function() end,  -- Ignorar diagnósticos de OmniSharp
+    ["textDocument/definition"] = function(...)
+      return vim.lsp.handlers["textDocument/definition"](...)
+    end,
+  },
+  settings = {
+    FormattingOptions = {
+      EnableEditorConfigSupport = true,
+      OrganizeImports = true,
+    },
+    RoslynExtensionsOptions = {
+      EnableAnalyzersSupport = true,
+      EnableImportCompletion = true,
+    },
   },
 }
 
