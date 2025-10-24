@@ -2,6 +2,7 @@ return {
   -- require "plugins.persistence",
   -- require "plugins.comments",
   require "plugins.dashboard",
+  require "plugins.avante",
   require "plugins.telescope",
   require "plugins.ui",
   require "plugins.git",
