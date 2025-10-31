@@ -204,38 +204,14 @@ do
       },
     }
   else
-    -- Intentar fallback a csharp_ls si existe su binario en Mason.
-    local csharp_candidates = {
-      mason_bin .. "csharp-ls",
-      mason_bin .. "csharp-language-server",
-    }
-    local csharp_resolved
-    for _, p in ipairs(csharp_candidates) do
-      local real = (vim.uv or vim.loop).fs_realpath(p)
-      if real then
-        csharp_resolved = real
-        break
-      end
-    end
-
-    if csharp_resolved then
-      lspconfig.csharp_ls.setup {
-        capabilities = capabilities,
-        on_attach = on_attach,
-        cmd = { csharp_resolved },
-        root_dir = lspconfig.util.root_pattern("*.csproj", "*.sln"),
-      }
-      -- Silenciar mensaje informativo: usar csharp_ls sin avisar.
-    else
-      -- No iniciar OmniSharp ni csharp_ls; evitar error de spawn y dar feedback útil.
-      vim.schedule(function()
-        vim.notify_once(
-          "C# LSP no configurado: OmniSharp ausente y csharp_ls no instalado. " ..
-          "Abre :Mason e instala 'omnisharp' o 'csharp_ls'.",
-          vim.log.levels.WARN
-        )
-      end)
-    end
+    -- No usar csharp_ls para evitar errores con versiones recientes de lspconfig.
+    -- Mostrar aviso para instalar OmniSharp, que es el backend recomendado.
+    vim.schedule(function()
+      vim.notify_once(
+        "C# LSP: OmniSharp no encontrado. Abre :Mason e instala 'omnisharp'.",
+        vim.log.levels.WARN
+      )
+    end)
   end
 end
 
