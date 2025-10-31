@@ -57,9 +57,6 @@ return {
         -- shell
         "shfmt",
         "shellcheck",
-
-        -- csharp
-        "csharpier",
       },
       automatic_installation = true,
     },

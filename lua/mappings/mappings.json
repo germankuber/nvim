@@ -172,7 +172,7 @@
       },
       {
         "lhs": "f",
-        "rhs": "<cmd>lua require('conform').format({ lsp_fallback = true, async = false, timeout_ms = 3000 })<CR>",
+        "rhs": "<cmd>:lua require('conform').format()<CR>",
         "desc": "Format"
       },
       {

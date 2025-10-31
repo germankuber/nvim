@@ -11,17 +11,8 @@ return {
         typescript  = { "prettierd" },
         json        = { "prettierd" },
         sh          = { "shfmt" },
-        cs          = { "csharpier", "dotnet_format" },
+        -- C#: sin formateador explícito; se puede usar LSP o configurar luego
       },
-      notify_on_error = true,
-      -- Ajustes específicos de formateadores
-      formatters = {
-        -- Evitar que CSharpier haga saltos de línea tan agresivos
-        csharpier = {
-          prepend_args = { "--width", "140" },
-        },
-      },
-
       -- auto‑formato al guardar (opcional)
       -- format_on_save = function(bufnr)
       --   return { lsp_fallback = true, timeout_ms = 3000 }
