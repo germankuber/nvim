@@ -25,14 +25,14 @@ return {
                 vim.api.nvim_set_hl(0, "GitSignsDelete", { fg = "#f14c4c", bold = true })  -- VS Code-like red
 
                 -- Full line highlights
-                vim.api.nvim_set_hl(0, "GitSignsAddLn",    { bg = "#203329" }) -- VS Code-like greenish bg
-                vim.api.nvim_set_hl(0, "GitSignsChangeLn", { bg = "#3a3200" }) -- darker yellow bg
-                vim.api.nvim_set_hl(0, "GitSignsDeleteLn", { bg = "#3a1f1f" }) -- VS Code-like reddish bg
+                vim.api.nvim_set_hl(0, "GitSignsAddLn",    { bg = "#114d2b" }) -- more intense green bg
+                vim.api.nvim_set_hl(0, "GitSignsChangeLn", { bg = "#4d3b00" }) -- more intense yellow bg
+                vim.api.nvim_set_hl(0, "GitSignsDeleteLn", { bg = "#5a2222" }) -- more intense red bg
 
                 -- Inline word-diff (if enabled in future)
-                vim.api.nvim_set_hl(0, "GitSignsAddInline",    { fg = "#81b88b", bg = "#203329", bold = true })
-                vim.api.nvim_set_hl(0, "GitSignsChangeInline", { fg = "#ffd75f", bg = "#3a3200", bold = true })
-                vim.api.nvim_set_hl(0, "GitSignsDeleteInline", { fg = "#f14c4c", bg = "#3a1f1f", bold = true })
+                vim.api.nvim_set_hl(0, "GitSignsAddInline",    { fg = "#81b88b", bg = "#114d2b", bold = true })
+                vim.api.nvim_set_hl(0, "GitSignsChangeInline", { fg = "#ffd75f", bg = "#4d3b00", bold = true })
+                vim.api.nvim_set_hl(0, "GitSignsDeleteInline", { fg = "#f14c4c", bg = "#5a2222", bold = true })
             end
 
             set_gitsigns_highlights()
