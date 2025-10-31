@@ -21,7 +21,7 @@ return {
                     "solidity_ls", -- Solidity
                     "pyright", -- Python
                     "ts_ls", -- TypeScript/JavaScript
-                    -- "omnisharp", -- C# (OmniSharp)
+                    "omnisharp", -- C# (OmniSharp)
                     -- "csharp_ls", -- C# alternative (disabled due to lspconfig issue)
                 },
                 automatic_installation = true -- Automatically install servers
