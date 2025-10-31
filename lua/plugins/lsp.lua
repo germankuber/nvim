@@ -11,8 +11,9 @@ return {
         typescript  = { "prettierd" },
         json        = { "prettierd" },
         sh          = { "shfmt" },
-        cs          = { "csharpier" },
+        cs          = { "csharpier", "dotnet_format" },
       },
+      notify_on_error = true,
       -- Ajustes específicos de formateadores
       formatters = {
         -- Evitar que CSharpier haga saltos de línea tan agresivos
