@@ -13,6 +13,13 @@ return {
         sh          = { "shfmt" },
         cs          = { "csharpier" },
       },
+      -- Ajustes específicos de formateadores
+      formatters = {
+        -- Evitar que CSharpier haga saltos de línea tan agresivos
+        csharpier = {
+          prepend_args = { "--width", "140" },
+        },
+      },
 
       -- auto‑formato al guardar (opcional)
       -- format_on_save = function(bufnr)
