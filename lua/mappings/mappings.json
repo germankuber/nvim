@@ -870,6 +870,11 @@
         "base_lhs": "<Leader>p",
         "commands": [
           {
+            "lhs": "f",
+            "rhs": "<cmd>:PickWindow<CR>",
+            "desc": "Pick Window"
+          },
+          {
             "title": "Terminal Commands",
             "base_lhs": "t",
             "commands": [
@@ -929,11 +934,6 @@
                 "lhs": "m",
                 "rhs": "<cmd>:ToggleMoveMode<CR>",
                 "desc": "Move mode"
-              },
-              {
-                "lhs": "p",
-                "rhs": "<cmd>:PickWindow<CR>",
-                "desc": "Pick"
               }
             ]
           },
