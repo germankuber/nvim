@@ -17,6 +17,30 @@ return {
                 linehl = true,
                 word_diff = false
             })
+
+            local function set_gitsigns_highlights()
+                -- Signs (gutter)
+                vim.api.nvim_set_hl(0, "GitSignsAdd",    { fg = "#9ece6a" })  -- green
+                vim.api.nvim_set_hl(0, "GitSignsChange", { fg = "#e0af68" })  -- yellow
+                vim.api.nvim_set_hl(0, "GitSignsDelete", { fg = "#f7768e" })  -- red
+
+                -- Full line highlights
+                vim.api.nvim_set_hl(0, "GitSignsAddLn",    { bg = "#1f2d1f" }) -- greenish bg
+                vim.api.nvim_set_hl(0, "GitSignsChangeLn", { bg = "#2f2a1f" }) -- yellowish bg
+                vim.api.nvim_set_hl(0, "GitSignsDeleteLn", { bg = "#2f1f23" }) -- reddish bg
+
+                -- Inline word-diff (if enabled in future)
+                vim.api.nvim_set_hl(0, "GitSignsAddInline",    { fg = "#9ece6a", bg = "#1f2d1f" })
+                vim.api.nvim_set_hl(0, "GitSignsChangeInline", { fg = "#e0af68", bg = "#2f2a1f" })
+                vim.api.nvim_set_hl(0, "GitSignsDeleteInline", { fg = "#f7768e", bg = "#2f1f23" })
+            end
+
+            set_gitsigns_highlights()
+            vim.api.nvim_create_autocmd("ColorScheme", {
+                callback = function()
+                    set_gitsigns_highlights()
+                end,
+            })
         end
     },
     {
