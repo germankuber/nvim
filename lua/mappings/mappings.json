@@ -627,6 +627,11 @@
         "desc": "Git status (normal mode)"
       },
       {
+        "lhs": "c",
+        "rhs": "<cmd>Gitsigns toggle_linehl<CR>",
+        "desc": "Toggle Git line highlights"
+      },
+      {
         "title": "History",
         "base_lhs": "h",
         "commands": [
