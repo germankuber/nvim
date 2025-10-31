@@ -8,6 +8,18 @@ return {
         opts = {blame_options = {"-w"}}
     },
     {
+        "lewis6991/gitsigns.nvim",
+        lazy = false,
+        config = function()
+            require("gitsigns").setup({
+                signcolumn = true,
+                numhl = false,
+                linehl = true,
+                word_diff = false
+            })
+        end
+    },
+    {
         "SuperBo/fugit2.nvim",
         lazy = false,
         opts = {width = 100},
