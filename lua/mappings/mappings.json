@@ -632,6 +632,16 @@
         "desc": "Toggle Git line highlights"
       },
       {
+        "lhs": "do",
+        "rhs": "<cmd>DiffviewOpen<CR>",
+        "desc": "Diffview Open"
+      },
+      {
+        "lhs": "dc",
+        "rhs": "<cmd>DiffviewClose<CR>",
+        "desc": "Diffview Close"
+      },
+      {
         "title": "History",
         "base_lhs": "h",
         "commands": [
