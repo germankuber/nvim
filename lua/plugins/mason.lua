@@ -3,7 +3,8 @@ return {
         "williamboman/mason.nvim",
         build = ":MasonUpdate", -- Automatically update Mason registry
         dependencies = {
-            "williamboman/mason-lspconfig.nvim" -- Bridges Mason with lspconfig
+            "williamboman/mason-lspconfig.nvim", -- Bridges Mason with lspconfig
+            "jay-babu/mason-nvim-dap.nvim" -- Bridges Mason with nvim-dap
         },
         config = function()
             require("mason").setup()
@@ -24,6 +25,13 @@ return {
                     "csharp_ls", -- C# principal
                 },
                 automatic_installation = true -- Automatically install servers
+            })
+
+            require("mason-nvim-dap").setup({
+                ensure_installed = {
+                    "netcoredbg", -- .NET Core debugger
+                },
+                automatic_installation = true,
             })
         end
     },
@@ -49,6 +57,9 @@ return {
         -- shell
         "shfmt",
         "shellcheck",
+
+        -- csharp
+        "csharpier",
       },
       automatic_installation = true,
     },

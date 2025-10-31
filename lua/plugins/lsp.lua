@@ -11,6 +11,7 @@ return {
         typescript  = { "prettierd" },
         json        = { "prettierd" },
         sh          = { "shfmt" },
+        cs          = { "csharpier" },
       },
 
       -- auto‑formato al guardar (opcional)
