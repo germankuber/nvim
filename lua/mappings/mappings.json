@@ -622,6 +622,11 @@
         "desc": "Engine"
       },
       {
+        "lhs": "u",
+        "rhs": "<cmd>lua require('telescope.builtin').git_status({ initial_mode = 'normal' })<CR>",
+        "desc": "Git status (normal mode)"
+      },
+      {
         "title": "History",
         "base_lhs": "h",
         "commands": [
