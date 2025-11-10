@@ -107,52 +107,29 @@ vim.cmd [[
   highlight DiagnosticUnderlineHint gui=undercurl guisp=#4EC9B0
 ]]
 
-vim.fn.sign_define(
-    "DiagnosticSignError",
-    {
-        text = "\u{ea87}",
-        texthl = "DiagnosticSignError"
-    }
-)
-vim.fn.sign_define(
-    "DiagnosticSignWarn",
-    {
-        text = "\u{EA6C}",
-        texthl = "DiagnosticSignWarn"
-    }
-)
-vim.fn.sign_define(
-    "DiagnosticSignInfo",
-    {
-        text = "\u{f449}",
-        texthl = "DiagnosticSignInfo"
-    }
-)
-vim.fn.sign_define(
-    "DiagnosticSignHint",
-    {
-        text = "\u{f0626}",
-        texthl = "DiagnosticSignHint"
-    }
-)
-
-vim.diagnostic.config(
-    {
-        virtual_text = {
-            prefix = "●",
-            spacing = 2,
-            severity = {
-                min = vim.diagnostic.severity.WARN,
-                max = vim.diagnostic.severity.ERROR
-            }
+-- Configure diagnostic signs using the new API
+vim.diagnostic.config({
+    virtual_text = {
+        prefix = "●",
+        spacing = 2,
+        severity = {
+            min = vim.diagnostic.severity.WARN,
+            max = vim.diagnostic.severity.ERROR
+        }
+    },
+    signs = {
+        text = {
+            [vim.diagnostic.severity.ERROR] = "\u{ea87}",
+            [vim.diagnostic.severity.WARN] = "\u{EA6C}",
+            [vim.diagnostic.severity.INFO] = "\u{f449}",
+            [vim.diagnostic.severity.HINT] = "\u{f0626}",
         },
-        signs = true,
-        underline = true,
-        update_in_insert = false,
-        severity_sort = true,
-        virtual_lines = true
-    }
-)
+    },
+    underline = true,
+    update_in_insert = false,
+    severity_sort = true,
+    virtual_lines = true
+})
 
 vim.lsp.inlay_hint.enable(true)
 

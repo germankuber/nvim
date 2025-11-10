@@ -3,6 +3,7 @@ return {
         "williamboman/mason.nvim",
         build = ":MasonUpdate", -- Automatically update Mason registry
         dependencies = {
+            "neovim/nvim-lspconfig", -- Must be loaded BEFORE mason-lspconfig
             "williamboman/mason-lspconfig.nvim", -- Bridges Mason with lspconfig
             "jay-babu/mason-nvim-dap.nvim" -- Bridges Mason with nvim-dap
         },
@@ -13,18 +14,16 @@ return {
                 ensure_installed = {
                     "solidity_ls",
                     "efm",
-                    "rust_analyzer", -- j
+                    "rust_analyzer",
                     "dockerls", -- Docker
                     "bashls", -- Bash
                     "jsonls", -- JSON
                     "taplo", -- TOML
-                    "solidity_ls", -- Solidity
                     "pyright", -- Python
                     "ts_ls", -- TypeScript/JavaScript
                     "omnisharp", -- C# (OmniSharp)
-                    -- "csharp_ls", -- C# alternative (disabled due to lspconfig issue)
                 },
-                automatic_installation = true -- Automatically install servers
+                automatic_installation = true,
             })
 
             require("mason-nvim-dap").setup({

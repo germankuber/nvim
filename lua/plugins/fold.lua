@@ -57,9 +57,7 @@ return {
                 end
             }
 
-            vim.fn.sign_define("FoldClosed", {text = "▸", texthl = "Folded"})
-            vim.fn.sign_define("FoldOpen", {text = "▾", texthl = "Folded"})
-            vim.fn.sign_define("FoldSeparator", {text = " ", texthl = "Folded"})
+            -- nvim-ufo maneja los signos de folding internamente, no es necesario definirlos manualmente
         end
     }
 }

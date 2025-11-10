@@ -99,12 +99,16 @@ return {{
             },
         }
 
-        -- Configurar iconos para breakpoints
-        vim.fn.sign_define('DapBreakpoint', { text='🔴', texthl='', linehl='', numhl='' })
-        vim.fn.sign_define('DapBreakpointCondition', { text='🟡', texthl='', linehl='', numhl='' })
+        -- Configurar iconos para breakpoints usando la nueva API
+        vim.api.nvim_set_hl(0, 'DapBreakpoint', { ctermbg = 0, fg = '#993939' })
+        vim.api.nvim_set_hl(0, 'DapLogPoint', { ctermbg = 0, fg = '#61afef' })
+        vim.api.nvim_set_hl(0, 'DapStopped', { ctermbg = 0, fg = '#98c379' })
+
+        vim.fn.sign_define('DapBreakpoint', { text='🔴', texthl='DapBreakpoint', linehl='', numhl='' })
+        vim.fn.sign_define('DapBreakpointCondition', { text='🟡', texthl='DapLogPoint', linehl='', numhl='' })
         vim.fn.sign_define('DapBreakpointRejected', { text='⚫', texthl='', linehl='', numhl='' })
-        vim.fn.sign_define('DapLogPoint', { text='📝', texthl='', linehl='', numhl='' })
-        vim.fn.sign_define('DapStopped', { text='▶️', texthl='', linehl='debugPC', numhl='' })
+        vim.fn.sign_define('DapLogPoint', { text='📝', texthl='DapLogPoint', linehl='', numhl='' })
+        vim.fn.sign_define('DapStopped', { text='▶️', texthl='DapStopped', linehl='debugPC', numhl='' })
 
         -- Registrar keybindings con which-key
         local wk_ok, wk = pcall(require, "which-key")
