@@ -21,14 +21,15 @@ return {
   },
   -- omnisharp-extended-lsp.nvim removed - now using roslyn.nvim
   {
-    "hrsh7th/cmp-nvim-lsp",
-    lazy = false,
+    "neovim/nvim-lspconfig",
+    dependencies = {
+      "hrsh7th/cmp-nvim-lsp",
+      "b0o/schemastore.nvim",
+    },
     config = function()
-      -- Cargar configuración LSP nativa de Neovim 0.11+
       require "configs.lspconfig"
     end,
   },
-  { "b0o/schemastore.nvim", lazy = true },
   { "stevanmilic/nvim-lspimport" },
   {
     "pmizio/typescript-tools.nvim",
