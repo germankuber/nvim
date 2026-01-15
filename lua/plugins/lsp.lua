@@ -10,7 +10,7 @@ return {
         typescript  = { "prettierd" },
         json        = { "prettierd" },
         sh          = { "shfmt" },
-        cs          = { "csharpier" },
+        cs          = { "dotnet_format" },
       },
       -- Format on save
       format_on_save = {
