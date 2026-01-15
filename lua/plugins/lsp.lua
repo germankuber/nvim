@@ -12,11 +12,17 @@ return {
         sh          = { "shfmt" },
         cs          = { "dotnet_format" },
       },
-      -- Format on save
-      format_on_save = {
-        timeout_ms = 3000,
-        lsp_fallback = true,
-      },
+      -- Format on save (except C# to preserve manual Include/ThenInclude indentation)
+      format_on_save = function(bufnr)
+        local ft = vim.bo[bufnr].filetype
+        if ft == "cs" then
+          return nil
+        end
+        return {
+          timeout_ms = 3000,
+          lsp_fallback = true,
+        }
+      end,
     },
   },
   -- omnisharp-extended-lsp.nvim removed - now using roslyn.nvim
