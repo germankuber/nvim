@@ -3,7 +3,6 @@ return {
     "stevearc/conform.nvim",
     dependencies = "williamboman/mason.nvim",
     opts = {
-      -- qué usar por filetype
       formatters_by_ft = {
         python      = { "isort", "black" },
         lua         = { "stylua" },
@@ -13,10 +12,11 @@ return {
         sh          = { "shfmt" },
         cs          = { "csharpier" },
       },
-      -- auto‑formato al guardar (opcional)
-      -- format_on_save = function(bufnr)
-      --   return { lsp_fallback = true, timeout_ms = 3000 }
-      -- end,
+      -- Format on save
+      format_on_save = {
+        timeout_ms = 3000,
+        lsp_fallback = true,
+      },
     },
   },
   -- omnisharp-extended-lsp.nvim removed - now using roslyn.nvim
