@@ -16,9 +16,12 @@ return {
         },
         formatters = {
           csharpier = {
-            command = "csharpier",
-            args = { "format", "--write-stdout" },
+            command = vim.fn.expand("~/.dotnet/tools/csharpier"),
+            args = function(_, ctx)
+              return { "format", "--write-stdout", "--stdin-path", ctx.filename }
+            end,
             stdin = true,
+            cwd = require("conform.util").root_file({ ".csharpierrc.json", "*.sln", "*.csproj" }),
           },
         },
         format_on_save = function(bufnr)

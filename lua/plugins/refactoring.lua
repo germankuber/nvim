@@ -10,7 +10,8 @@ return {
                         ignore_whitespace = true
                     },
                     telescope = require("telescope.themes").get_dropdown {
-                        winblend = 10
+                        winblend = 10,
+                        initial_mode = "normal",
                     }
                 }
             )
