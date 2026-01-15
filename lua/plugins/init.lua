@@ -19,6 +19,7 @@ return {
   require "plugins.compare",
   require "plugins.cmp",
   require "plugins.toml",
+  require "plugins.bicep",
   require "plugins.diagnostic",
   require "plugins.refactoring",
   require "plugins.rust",
@@ -38,6 +39,5 @@ return {
   require "plugins.whichkey",
   require "plugins.illuminate",
   require "plugins.db",
-
-
+  require "plugins.csharp",
 }
