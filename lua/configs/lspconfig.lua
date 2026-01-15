@@ -1,16 +1,15 @@
-local lspconfig = require('lspconfig')
+-- LSP Configuration using Neovim 0.11+ native API
+-- See :help lspconfig-nvim-0.11
 
 -- Configurar nivel de log de LSP
 vim.lsp.set_log_level("ERROR")
 
+-- Capabilities para autocompletado con nvim-cmp
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
-local on_attach = function(_, _)
-end
 -- Python LSP (Pyright)
-lspconfig.pyright.setup {
+vim.lsp.config.pyright = {
     capabilities = capabilities,
-    on_attach = on_attach,
     settings = {
         python = {
             analysis = {
@@ -21,7 +20,6 @@ lspconfig.pyright.setup {
         }
     },
     on_init = function(client)
-        -- tu lógica de virtualenv
         local cwd = vim.fn.getcwd()
         local venv = cwd .. "/.venv/bin/python"
         if vim.fn.filereadable(venv) == 1 then
@@ -31,9 +29,8 @@ lspconfig.pyright.setup {
 }
 
 -- Lua LSP
-lspconfig.lua_ls.setup {
+vim.lsp.config.lua_ls = {
     capabilities = capabilities,
-    on_attach = on_attach,
     settings = {
         Lua = {
             runtime = {
@@ -54,9 +51,8 @@ lspconfig.lua_ls.setup {
 }
 
 -- JSON LSP
-lspconfig.jsonls.setup {
+vim.lsp.config.jsonls = {
     capabilities = capabilities,
-    on_attach = on_attach,
     settings = {
         json = {
             schemas = require('schemastore').json.schemas(),
@@ -68,24 +64,22 @@ lspconfig.jsonls.setup {
 }
 
 -- Solidity LSP
-lspconfig.solidity_ls.setup({
+vim.lsp.config.solidity_ls = {
     capabilities = capabilities,
-    on_attach = on_attach,
     autostart = true,
     filetypes = {"solidity"},
-    root_dir = lspconfig.util.root_pattern("hardhat.config.*", "foundry.toml", "remappings.txt", ".git"),
+    root_markers = {"hardhat.config.js", "hardhat.config.ts", "foundry.toml", "remappings.txt", ".git"},
     cmd = {"/Users/GermanKuber/.nvm/versions/node/v22.21.0/bin/vscode-solidity-server", "--stdio"},
     settings = {
         solidity = {
             includePath = "node_modules"
         }
     }
-})
+}
 
 -- EFM para formateo, lint y code actions
-lspconfig.efm.setup({
+vim.lsp.config.efm = {
     capabilities = capabilities,
-    on_attach = on_attach,
     filetypes = {"solidity", "lua", "python", "json", "jsonc", "sh", "javascript", "javascriptreact", "typescript",
                  "typescriptreact", "svelte", "vue", "markdown", "docker", "html", "css", "c", "cpp"},
     init_options = {
@@ -97,32 +91,37 @@ lspconfig.efm.setup({
         completion = true
     },
     settings = {
-        languages = {
-            solidity = {solhint, prettier_d}
-        }
+        languages = {}
     }
-})
-local function organize_imports()
-    local params = {
-        command = "_typescript.organizeImports",
-        arguments = {vim.api.nvim_buf_get_name(0)}
-    }
-    vim.lsp.buf.execute_command(params)
-end
+}
 
-lspconfig.ts_ls.setup {
-    on_attach = on_attach,
+-- TypeScript LSP
+vim.lsp.config.ts_ls = {
     capabilities = capabilities,
     init_options = {
         preferences = {
             disableSuggestions = true
         }
-    },
-    commands = {
-        OrganizeImports = {
-            organize_imports,
-            description = "Organize Imports"
-        }
     }
 }
+
+-- Habilitar todos los LSPs configurados
+vim.lsp.enable({
+    'pyright',
+    'lua_ls',
+    'jsonls',
+    'solidity_ls',
+    'efm',
+    'ts_ls',
+})
+
+-- Comando para organizar imports en TypeScript
+vim.api.nvim_create_user_command('OrganizeImports', function()
+    local params = {
+        command = "_typescript.organizeImports",
+        arguments = {vim.api.nvim_buf_get_name(0)}
+    }
+    vim.lsp.buf.execute_command(params)
+end, { desc = "Organize TypeScript Imports" })
+
 -- C# LSP: Configurado via roslyn.nvim (ver lua/plugins/csharp.lua)

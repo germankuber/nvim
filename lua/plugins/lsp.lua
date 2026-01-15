@@ -11,26 +11,28 @@ return {
         typescript  = { "prettierd" },
         json        = { "prettierd" },
         sh          = { "shfmt" },
-        -- C#: sin formateador explícito; se puede usar LSP o configurar luego
+        cs          = { "csharpier" },
       },
       -- auto‑formato al guardar (opcional)
       -- format_on_save = function(bufnr)
       --   return { lsp_fallback = true, timeout_ms = 3000 }
       -- end,
     },
-  },{
-    "neovim/nvim-lspconfig",
-    dependencies = {
-      "hrsh7th/cmp-nvim-lsp",
-      "b0o/schemastore.nvim",
-    },
+  },
+  -- omnisharp-extended-lsp.nvim removed - now using roslyn.nvim
+  {
+    "hrsh7th/cmp-nvim-lsp",
+    lazy = false,
     config = function()
+      -- Cargar configuración LSP nativa de Neovim 0.11+
       require "configs.lspconfig"
     end,
   },
-{ "stevanmilic/nvim-lspimport" },
- {"b0o/schemastore.nvim"}, {
+  { "b0o/schemastore.nvim", lazy = true },
+  { "stevanmilic/nvim-lspimport" },
+  {
     "pmizio/typescript-tools.nvim",
-    dependencies = {"nvim-lua/plenary.nvim", "neovim/nvim-lspconfig"},
+    dependencies = {"nvim-lua/plenary.nvim"},
     opts = {}
-}}
+  },
+}
