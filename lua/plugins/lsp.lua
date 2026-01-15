@@ -3,7 +3,8 @@ return {
     "stevearc/conform.nvim",
     dependencies = "williamboman/mason.nvim",
     config = function()
-      require("conform").setup({
+      local conform = require("conform")
+      conform.setup({
         formatters_by_ft = {
           python      = { "isort", "black" },
           lua         = { "stylua" },
@@ -13,10 +14,27 @@ return {
           sh          = { "shfmt" },
           cs          = { "csharpier" },
         },
-        format_on_save = {
-          timeout_ms = 5000,
-          lsp_fallback = true,
+        formatters = {
+          csharpier = {
+            command = "csharpier",
+            args = { "format", "--write-stdout" },
+            stdin = true,
+          },
         },
+        format_on_save = function(bufnr)
+          local ft = vim.bo[bufnr].filetype
+          -- C# uses csharpier only, no LSP fallback
+          if ft == "cs" then
+            return {
+              timeout_ms = 5000,
+              lsp_fallback = false,
+            }
+          end
+          return {
+            timeout_ms = 3000,
+            lsp_fallback = true,
+          }
+        end,
       })
     end,
   },

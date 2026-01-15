@@ -564,12 +564,12 @@
         "commands": [
           {
             "lhs": "w",
-            "rhs": "<cmd>lua require('conform').format({ async = false, lsp_fallback = true })<CR><cmd>w!<CR>",
+            "rhs": "<cmd>lua require('conform').format({ async = false, lsp_fallback = false })<CR><cmd>w!<CR>",
             "desc": "Format and save"
           },
           {
             "lhs": "q",
-            "rhs": "<cmd>lua require('conform').format({ async = false, lsp_fallback = true })<CR><cmd>wq!<CR>",
+            "rhs": "<cmd>lua require('conform').format({ async = false, lsp_fallback = false })<CR><cmd>wq!<CR>",
             "desc": "Format, save and quit"
           }
         ]
