@@ -564,13 +564,13 @@
         "commands": [
           {
             "lhs": "w",
-            "rhs": "<cmd>w!<CR>",
-            "desc": "Force"
+            "rhs": "<cmd>lua require('conform').format({ async = false, lsp_fallback = true })<CR><cmd>w!<CR>",
+            "desc": "Format and save"
           },
           {
             "lhs": "q",
-            "rhs": "<cmd>wq!<CR>",
-            "desc": "Force and quit all windows"
+            "rhs": "<cmd>lua require('conform').format({ async = false, lsp_fallback = true })<CR><cmd>wq!<CR>",
+            "desc": "Format, save and quit"
           }
         ]
       }
