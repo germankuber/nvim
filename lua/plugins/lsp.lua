@@ -10,19 +10,20 @@ return {
         typescript  = { "prettierd" },
         json        = { "prettierd" },
         sh          = { "shfmt" },
-        cs          = { "dotnet_format" },
+        cs          = { "csharpier" },
       },
-      -- Format on save (except C# to preserve manual Include/ThenInclude indentation)
-      format_on_save = function(bufnr)
-        local ft = vim.bo[bufnr].filetype
-        if ft == "cs" then
-          return nil
-        end
-        return {
-          timeout_ms = 3000,
-          lsp_fallback = true,
-        }
-      end,
+      formatters = {
+        csharpier = {
+          command = "csharpier",
+          args = { "format", "--write-stdout" },
+          stdin = true,
+        },
+      },
+      -- Format on save
+      format_on_save = {
+        timeout_ms = 3000,
+        lsp_fallback = true,
+      },
     },
   },
   -- omnisharp-extended-lsp.nvim removed - now using roslyn.nvim
