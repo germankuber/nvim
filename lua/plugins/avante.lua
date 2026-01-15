@@ -9,22 +9,26 @@ return {
             provider = "copilot",  -- Empieza con Copilot, cambia a "claude" si prefieres
             auto_suggestions_provider = "copilot",
 
-            -- Configuración de Claude
-            claude = {
-                endpoint = "https://api.anthropic.com",
-                model = "claude-sonnet-4-20250514",
-                timeout = 30000,
-                temperature = 0,
-                max_tokens = 8000,
-            },
-
-            -- Configuración de Copilot
-            copilot = {
-                endpoint = "https://api.githubcopilot.com",
-                model = "gpt-4o-2024-05-13",
-                timeout = 30000,
-                temperature = 0,
-                max_tokens = 8000,
+            -- Nueva configuración de providers
+            providers = {
+                claude = {
+                    endpoint = "https://api.anthropic.com",
+                    model = "claude-sonnet-4-20250514",
+                    timeout = 30000,
+                    extra_request_body = {
+                        temperature = 0,
+                        max_tokens = 8000,
+                    },
+                },
+                copilot = {
+                    endpoint = "https://api.githubcopilot.com",
+                    model = "gpt-4o-2024-05-13",
+                    timeout = 30000,
+                    extra_request_body = {
+                        temperature = 0,
+                        max_tokens = 8000,
+                    },
+                },
             },
 
             -- Comportamiento general

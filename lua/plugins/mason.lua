@@ -8,7 +8,12 @@ return {
             "jay-babu/mason-nvim-dap.nvim" -- Bridges Mason with nvim-dap
         },
         config = function()
-            require("mason").setup()
+            require("mason").setup({
+                registries = {
+                    "github:mason-org/mason-registry",
+                    "github:Crashdummyy/mason-registry", -- Required for roslyn LSP
+                },
+            })
 
             require("mason-lspconfig").setup({
                 ensure_installed = {
@@ -21,7 +26,7 @@ return {
                     "taplo", -- TOML
                     "pyright", -- Python
                     "ts_ls", -- TypeScript/JavaScript
-                    "omnisharp", -- C# (OmniSharp)
+                    -- roslyn is installed separately via :MasonInstall roslyn (managed by roslyn.nvim)
                 },
                 automatic_installation = true,
             })
@@ -56,6 +61,9 @@ return {
         -- shell
         "shfmt",
         "shellcheck",
+
+        -- C#
+        "csharpier",
       },
       automatic_installation = true,
     },

@@ -10,6 +10,10 @@ return {
 
 
             vim.cmd.colorscheme("sonokai")
+
+            -- Custom: Green comments
+            vim.api.nvim_set_hl(0, "Comment", { fg = "#98c379", italic = true })
+            vim.api.nvim_set_hl(0, "@comment", { fg = "#98c379", italic = true })
         end
     }
 }
