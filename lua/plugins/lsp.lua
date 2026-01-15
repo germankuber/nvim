@@ -17,11 +17,12 @@ return {
           command = "csharpier",
           args = { "format", "--write-stdout" },
           stdin = true,
+          cwd = require("conform.util").root_file({ ".csharpierrc.json", ".csharpierrc", "*.sln", "*.csproj" }),
         },
       },
       -- Format on save
       format_on_save = {
-        timeout_ms = 3000,
+        timeout_ms = 5000,
         lsp_fallback = true,
       },
     },
