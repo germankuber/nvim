@@ -1,16 +1,8 @@
--- Silenciar el warning de deprecación de lspconfig (hasta migración completa a nvim 0.11+ API)
+-- Silenciar el warning de deprecación de lspconfig durante toda la configuración
 local original_deprecate = vim.deprecate
-vim.deprecate = function(name, alternative, version, plugin, backtrace)
-    if plugin == "nvim-lspconfig" then
-        return -- Silenciar warnings de lspconfig
-    end
-    return original_deprecate(name, alternative, version, plugin, backtrace)
-end
+vim.deprecate = function() end
 
 local lspconfig = require('lspconfig')
-
--- Restaurar vim.deprecate
-vim.deprecate = original_deprecate
 
 -- Configurar nivel de log de LSP
 vim.lsp.set_log_level("ERROR")
@@ -139,3 +131,6 @@ lspconfig.ts_ls.setup {
 }
 
 -- C# LSP: Configurado via roslyn.nvim (ver lua/plugins/csharp.lua)
+
+-- Restaurar vim.deprecate
+vim.deprecate = original_deprecate
