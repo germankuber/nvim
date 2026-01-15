@@ -13,14 +13,6 @@ return {
           sh          = { "shfmt" },
           cs          = { "csharpier" },
         },
-        formatters = {
-          csharpier = {
-            command = "csharpier",
-            args = { "format", "--write-stdout" },
-            stdin = true,
-            cwd = require("conform.util").root_file({ ".csharpierrc.json", ".csharpierrc", "*.sln", "*.csproj" }),
-          },
-        },
         format_on_save = {
           timeout_ms = 5000,
           lsp_fallback = true,
