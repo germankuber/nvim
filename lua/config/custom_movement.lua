@@ -130,8 +130,22 @@ local function custom_l()
     is_at_line_end = (new_col == new_last_col)
 end
 
+-- Filetypes where we want standard j/k behavior (cursor stays at column 1)
+local excluded_filetypes = {
+    NvimTree = true,
+    ["neo-tree"] = true,
+    oil = true,
+}
+
 -- Custom function for the 'j' key (move down, skipping blank lines)
 local function custom_j()
+    local ft = vim.bo.filetype
+    -- In excluded filetypes, use standard j movement
+    if excluded_filetypes[ft] then
+        vim.cmd("normal! " .. vim.v.count1 .. "j")
+        return
+    end
+
     set_desired_col() -- Store the current column before moving
     local count = vim.v.count1
     local moved = 0
@@ -164,6 +178,13 @@ end
 
 -- Custom function for the 'k' key (move up, skipping blank lines)
 local function custom_k()
+    local ft = vim.bo.filetype
+    -- In excluded filetypes, use standard k movement
+    if excluded_filetypes[ft] then
+        vim.cmd("normal! " .. vim.v.count1 .. "k")
+        return
+    end
+
     set_desired_col() -- Store the current column before moving
     local count = vim.v.count1
     local moved = 0
